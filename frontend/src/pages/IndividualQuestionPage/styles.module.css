@@ -1,0 +1,102 @@
+.mainSection {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  min-height: 100vh;
+  margin-left: 0.6rem;
+  margin-right: 0.6rem;
+}
+
+.root {
+  background-color: #a5a1b4;
+  background-image: url("../../assets/img/questionLibraryConntentBG.svg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  /* overflow: hidden; */
+  max-height: 90rem;
+  margin-top: 3.6rem;
+}
+h1 {
+  font-size: 2rem;
+  color: rgba(189, 179, 230);
+  font-weight: 500;
+  background-color: rgba(189, 179, 230, 0);
+  border-radius: 0.25rem;
+  padding: 0.5rem;
+  /* border-color: #a5a1b4; */
+}
+
+h2 {
+  font-size: 1.5rem;
+  color: rgba(189, 179, 230);
+  font-weight: 500;
+}
+p {
+  color: #ecf3fe;
+}
+
+.headerCard {
+  height: 4vh;
+  width: 100%;
+  margin: 0;
+}
+.rowOne {
+  height: 38vh;
+  overflow: auto;
+}
+
+.Cards {
+  height: 93%;
+  background: rgba(27, 31, 34, 0.9) !important;
+  margin-top: 0rem;
+  margin-bottom: 1rem;
+  align-content: center;
+}
+
+.rowTwo {
+  height: 38vh;
+  overflow: auto;
+}
+.cardHeaders {
+  background-color: rgb(50, 53, 61);
+  padding-bottom: 0;
+}
+
+.typographyHeadings {
+  font-weight: 600;
+  color: #ecf3fe;
+}
+
+.splitter {
+  background-color: transparent !important;
+  /* color: black !important; */
+  width: 1rem !important;
+  border: none !important;
+  margin: 0 !important;
+  border-radius: 4px;
+}
+
+.splitter:hover {
+  background-color: rgba(102, 79, 186, 0.3) !important;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 0.4rem;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgb(98, 103, 119);
+  border-radius: 4rem;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(189, 179, 230);
+}

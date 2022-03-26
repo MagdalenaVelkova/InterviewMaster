@@ -1,0 +1,49 @@
+.row {
+  justify-content: center;
+  margin: 0;
+}
+.sectionTitle {
+  background-color: #22272a;
+}
+.waveSection {
+  background-color: #22272a;
+  background-image: url("../../assets/img/questionLibraryBG.svg");
+  aspect-ratio: 960/150;
+  width: 100%;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.sectionContent {
+  background-color: #22272a;
+  background-image: url("../../assets/img/questionLibraryConntentBG.svg");
+  width: 100%;
+  height: auto;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.titleContainer {
+  padding-top: 6rem;
+}
+
+.mainHeadings {
+  color: white;
+  text-align: center;
+  font-weight: 300;
+  font-size: 4rem;
+}
+/* .containerRoot {
+  background-color: #a5a1b4;
+  background-image: url("../../assets/img/questionLibraryBG.svg");
+  background-repeat: no-repeat;
+  background-size: cover;
+} */
+.container {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  min-height: 100vh;
+}
+.row {
+  align-items: center;
+}
