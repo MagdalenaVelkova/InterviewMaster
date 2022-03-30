@@ -1,8 +1,9 @@
-import { Container, Row, Col, Form, Button } from "react-bootstrap";
-import styles from "./LoginStyles.module.css";
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { Col, Container, Form, Row } from "react-bootstrap";
+import { useDispatch } from "react-redux";
+import BaseButton from "../../components/Buttons/BaseButton";
 import { loginUser } from "../../redux/actions";
+import styles from "./LoginStyles.module.css";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -60,15 +61,9 @@ const Login = () => {
                   />
                 </Form.Group>
 
-                <Button
-                  className="btn btn-custom shadow lift me-3"
-                  variant="outline-light"
-                  type="submit"
-                  onClick={handleSubmit}
-                >
-                  Submit
+                <BaseButton text="Submit" onClick={handleSubmit}>
                   {errorDisplay}
-                </Button>
+                </BaseButton>
               </Form>
             </Col>
           </Row>

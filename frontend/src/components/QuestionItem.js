@@ -1,15 +1,14 @@
-import React from "react";
-import { useHistory } from "react-router";
-import { Row, Col } from "react-bootstrap";
-import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
+import IconButton from "@material-ui/core/IconButton";
+import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import FavoriteIcon from "@material-ui/icons/Favorite";
-import IconButton from "@material-ui/core/IconButton";
+import React from "react";
+import { Col, Row } from "react-bootstrap";
 import CardHeader from "react-bootstrap/esm/CardHeader";
-
 import { useSelector } from "react-redux";
+import { useHistory } from "react-router";
 
 function QuestionItem(props) {
   const isAuthenticated = useSelector(
@@ -78,7 +77,7 @@ function QuestionItem(props) {
       <CardHeader className={classes.header}>
         <Row>
           <Col>
-            <p className={classes.topic}>{question.topic}</p>
+            <p className={classes.topic}>{question.topic.value}</p>
           </Col>
 
           {isAuthenticated ? (
@@ -99,11 +98,11 @@ function QuestionItem(props) {
       </CardHeader>
       <CardContent
         className={classes.cardContent}
-        onClick={() => getIndividualQuestion(question._id)}
+        onClick={() => getIndividualQuestion(question.id)}
       >
         <div className={classes.sizer}>
           <Typography variant="h6" component="h2" className={classes.title}>
-            {question.question_title}
+            {question.question}
           </Typography>
         </div>
       </CardContent>

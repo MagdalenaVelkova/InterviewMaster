@@ -1,6 +1,7 @@
-import { Container, Image, Col, Row, Button, Carousel } from "react-bootstrap";
+import { Col, Container, Image, Row } from "react-bootstrap";
 import myImage from "../../assets/img/header_image.png";
-import styles from "./LandingStyles.module.css";
+import BaseButton from "../../components/Buttons/BaseButton";
+import styles from "./Landing.module.css";
 function LandingPage() {
   return (
     <div>
@@ -16,25 +17,16 @@ function LandingPage() {
                 <span style={{ color: "#664fba" }}>
                   <b>Master</b>
                 </span>
-                . <br></br>Get ready for the real world.
+                . <br />
+                Get ready for the real world.
               </h1>
               <p className="lead text-md-start text-muted mb-6 mb-lg-8">
                 This is an app for competency based interviews and application
                 tracking.
               </p>
               <div className="text-md-start">
-                <Button
-                  className="btn btn-lg shadow lift me-4"
-                  variant="outline-light"
-                >
-                  Browse Our Questions Library
-                </Button>
-                <Button
-                  className="btn btn-lg shadow lift me-4"
-                  variant="outline-light"
-                >
-                  Register
-                </Button>
+                <BaseButton text="Browse Our Questions Library" />
+                <BaseButton text="Register" />
               </div>
               {/* Column Ends*/}
             </Col>

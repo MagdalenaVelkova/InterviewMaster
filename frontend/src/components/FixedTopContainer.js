@@ -1,7 +1,6 @@
 import ErrorDisplay from "./ErrorDisplay";
-import Header from "./Header";
-import { Container } from "react-bootstrap";
 import styles from "./FixedTopContainerStyles.module.css";
+import Header from "./Header";
 
 const FixedTopContainer = () => {
   return (

@@ -11,4 +11,8 @@ namespace InterviewMaster.Domain.InterviewPreparation
         public Response Response { get; set; }
         public DateTime Date { get; set; }
     }
+
+    // add response
+
+    //create constructor and updaTE DATE FOR EACH RESPONSE 
 }

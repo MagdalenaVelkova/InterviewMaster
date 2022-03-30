@@ -1,32 +1,27 @@
-import { Container, Row, Col, Form, Button } from "react-bootstrap";
-import Card from "@material-ui/core/Card";
-import styles from "./styles.module.css";
-import { useState, useEffect } from "react";
-import axios from "axios";
-import { useParams } from "react-router-dom";
-import CardHeader from "react-bootstrap/esm/CardHeader";
-import Typography from "@material-ui/core/Typography";
 import { CardContent } from "@material-ui/core";
-import TextEditor from "../../components/TextEditor";
+import Card from "@material-ui/core/Card";
+import axios from "axios";
 import "draft-js/dist/Draft.css";
-import { ReflexContainer, ReflexSplitter, ReflexElement } from "react-reflex";
-import QuestionMenu from "../../components/QuestionMenu";
-
+import { useEffect, useState } from "react";
+import CardHeader from "react-bootstrap/esm/CardHeader";
+import { ReflexContainer, ReflexElement, ReflexSplitter } from "react-reflex";
 import "react-reflex/styles.css";
+import { useParams } from "react-router-dom";
+import QuestionMenu from "../../components/QuestionMenu";
+import TextEditor from "../../components/TextEditor";
+import styles from "./IndividualQuestionPage.module.css";
 
-const IndividualQuestionPage = (props) => {
+const IndividualQuestionPage = () => {
   const [question, setQuestion] = useState([]);
   const [exampleAnswers, setExampleAnswers] = useState([]);
   const [questionPrompts, setQuestionPrompts] = useState([]);
   let { id } = useParams();
 
   const getQuestion = async () => {
-    const res = await axios.get(
-      `http://localhost:8000/api/interview/question/${id}`
-    );
+    const res = await axios.get(`http://localhost:5000/api/questions/${id}`);
     setQuestion(res.data);
-    setExampleAnswers(res.data.example_answers);
-    setQuestionPrompts(res.data.question_prompts);
+    setExampleAnswers(res.data.exampleAnswers);
+    setQuestionPrompts(res.data.prompts);
   };
 
   useEffect(() => {
@@ -52,7 +47,7 @@ const IndividualQuestionPage = (props) => {
                   {questionPrompts.map((answer, index) => (
                     <div>
                       <h2>Tip {index + 1}:</h2>
-                      <p>{answer}</p>
+                      <p>{answer.value}</p>
                     </div>
                   ))}
                 </CardContent>
@@ -65,14 +60,16 @@ const IndividualQuestionPage = (props) => {
                   {exampleAnswers.map((answer, index) => (
                     <div>
                       <h2>Example Answer {index + 1}:</h2>
-                      <p>{answer}</p>
+                      <p>{answer.value}</p>
                     </div>
                   ))}
                 </CardContent>
               </Card>
             </div>
           </ReflexElement>
+
           <ReflexSplitter className={styles.splitter} />
+
           <ReflexElement className="right-pane">
             <div className="pane-content">
               <Card className={styles.Cards}>

@@ -29,12 +29,19 @@ namespace Application.Controllers
 
 
         // GET api/<ValuesController>/5
-        [HttpGet("{topicValue}")]
+        [HttpGet("/topic/{topicValue}")]
         public async Task<List<InterviewQuestion>> GetQuestionsByTopic(string topicValue)
         {
             var topic = new Topic(topicValue);
             var questions = await questionsService.GetQuestionsByTopic(topic);
             return questions;
+        }
+
+        [HttpGet("{id}")]
+        public InterviewQuestion GetQuestionById(string id)
+        {
+            var question= questionsService.GetQuestion(id);
+            return question;
         }
 
         // POST api/<ValuesController>

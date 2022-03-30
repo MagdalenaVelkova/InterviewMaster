@@ -1,7 +1,5 @@
-import { Container, Row, Col, Form, Button } from "react-bootstrap";
-import styles from "./styles.module.css";
-import { useState, useEffect } from "react";
 import axios from "axios";
+import { useEffect, useState } from "react";
 
 const ProfilePage = (props) => {
   const [profile, setProfile] = useState("");

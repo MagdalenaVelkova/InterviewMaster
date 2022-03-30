@@ -12,5 +12,6 @@ namespace InterviewMaster.Application.Services
         public Task<List<InterviewQuestion>> GetQuestionsByTopic(Topic topic);
 
         public Task<InterviewQuestion> PostQuestion(InterviewQuestion interviewQuestion);
+        public InterviewQuestion? GetQuestion(string id);
     }
 }

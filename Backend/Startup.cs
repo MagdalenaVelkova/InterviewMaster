@@ -25,6 +25,7 @@ namespace InterviewMaster
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors();
             //services.AddAuthentication(AzureADDefaults.BearerAuthenticationScheme)
             //   .AddAzureADBearer(options => Configuration.Bind("AzureAd", options));
             services.Configure<DatabaseSettings>(Configuration.GetSection("InterviewMasterDatabase"));
@@ -53,6 +54,7 @@ namespace InterviewMaster
         {
             if (env.IsDevelopment())
             {
+                app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000"));
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Interview Master Docs v1"));

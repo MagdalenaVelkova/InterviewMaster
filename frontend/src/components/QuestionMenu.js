@@ -1,15 +1,13 @@
-import { Navbar, Container, Nav, NavDropdown } from "react-bootstrap";
-import React from "react";
-import { LinkContainer } from "react-router-bootstrap";
-import { useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
-import ListRoundedIcon from "@material-ui/icons/ListRounded";
-import ArrowForwardRoundedIcon from "@material-ui/icons/ArrowForwardRounded";
-import FavoriteRoundedIcon from "@material-ui/icons/FavoriteRounded";
+import { IconButton } from "@material-ui/core";
 import AccountCircleRoundedIcon from "@material-ui/icons/AccountCircleRounded";
+import ArrowForwardRoundedIcon from "@material-ui/icons/ArrowForwardRounded";
 import ExitToAppRoundedIcon from "@material-ui/icons/ExitToAppRounded";
-import { ButtonBase, IconButton } from "@material-ui/core";
-import { height, maxHeight } from "@material-ui/system";
+import FavoriteRoundedIcon from "@material-ui/icons/FavoriteRounded";
+import ListRoundedIcon from "@material-ui/icons/ListRounded";
+import React from "react";
+import { Container, Nav, Navbar } from "react-bootstrap";
+import { useSelector } from "react-redux";
+import { LinkContainer } from "react-router-bootstrap";
 
 function QuestionMenu() {
   const isAuthenticated = useSelector(

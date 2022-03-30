@@ -33,6 +33,17 @@ namespace InterviewMaster.Persistance.Repositories
             }).ToListAsync();
         }
 
+        public InterviewQuestion? GetQuestion(string id)
+        {
+            return Query().Where(dto => dto.Id == id).Select(dto => new InterviewQuestion
+            {
+                Id = dto.Id,
+                Question = dto.Question,
+                Topic = new Topic(dto.Topic.ToString()),
+                Prompts = dto.Prompts.Select(prompt => new Prompt(prompt)),
+                ExampleAnswers = dto.ExampleAnswers.Select(exampleAnswer => new ExampleAnswer(exampleAnswer))
+            }).FirstOrDefault();
+        }
         public Task<List<InterviewQuestion>> GetQuestionsByTopic(Topic topic)
         {
             return Query().Where(dto => dto.Topic==topic.Value.ToLower()).Select(dto => new InterviewQuestion

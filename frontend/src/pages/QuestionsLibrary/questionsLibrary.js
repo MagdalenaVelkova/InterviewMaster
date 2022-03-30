@@ -1,22 +1,22 @@
-import { Container, Row, Col, Form, Button } from "react-bootstrap";
-import styles from "./styles.module.css";
-import { useState, useEffect } from "react";
 import axios from "axios";
-import QuestionListView from "../../components/QuestionListView";
+import React, { useEffect, useState } from "react";
+import { Col, Container, Row } from "react-bootstrap";
+import QuestionItem from "../../components/QuestionItem";
+import styles from "./QuestionsLibrary.module.css";
 
-const QuestionsLibrary = (props) => {
+const QuestionsLibrary = () => {
   const [questions, setQuestions] = useState([]);
 
   const getQuestions = async () => {
-    const res = await axios.get(
-      "http://localhost:8000/api/interview/questions"
-    );
+    const res = await axios.get("http://localhost:5000/api/questions");
     setQuestions(res.data);
   };
 
   useEffect(() => {
     getQuestions();
   }, []);
+
+  const columnNumber = 3;
 
   return (
     <div>
@@ -34,7 +34,15 @@ const QuestionsLibrary = (props) => {
       </section>
       <div className={styles.waveSection}></div>
       <section className={styles.sectionContent}>
-        <QuestionListView data={questions}></QuestionListView>
+        <Container>
+          <Row>
+            {questions.map((question, index) => (
+              <Col md={columnNumber}>
+                <QuestionItem data={question} key={index}></QuestionItem>
+              </Col>
+            ))}
+          </Row>
+        </Container>
       </section>
     </div>
   );

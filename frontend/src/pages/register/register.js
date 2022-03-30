@@ -1,9 +1,10 @@
-import { Container, Row, Col, Form, Button } from "react-bootstrap";
+import { Container, Row, Col, Form } from "react-bootstrap";
 import styles from "./styles.module.css";
 import { useState } from "react";
 import axios from "axios";
+import BaseButton from "../../components/Buttons/BaseButton";
 
-const Register = () => {
+function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -101,14 +102,7 @@ const Register = () => {
                     name="lastName"
                   />
                 </Form.Group>
-                <Button
-                  className="btn btn-custom shadow lift me-3"
-                  variant="outline-light"
-                  type="submit"
-                  onClick={handleSubmit}
-                >
-                  Submit
-                </Button>
+                <BaseButton text="Submit" onClick={handleSubmit} />
               </Form>
             </Col>
           </Row>
@@ -116,5 +110,5 @@ const Register = () => {
       </section>
     </Container>
   );
-};
+}
 export default Register;
