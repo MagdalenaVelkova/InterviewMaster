@@ -1,5 +1,18 @@
 .row {
   justify-content: center;
+  padding: 3rem;
+  padding-top: 1rem;
+  border-radius: 0.2rem;
+  margin-top: 5rem;
+}
+.col {
+  background: rgba(0, 0, 0, 0.15);
+  padding: 3rem;
+  padding-left: 6rem;
+  padding-right: 6rem;
+}
+.title {
+  color: #b3a7dc;
 }
 .formCol {
   background-color: #a5a1b4;

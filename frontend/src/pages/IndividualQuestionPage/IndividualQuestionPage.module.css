@@ -48,7 +48,7 @@ p {
 .Cards {
   height: 93%;
   background: rgba(27, 31, 34, 0.9) !important;
-  margin-top: 0rem;
+  margin-top: 1rem;
   margin-bottom: 1rem;
   align-content: center;
 }

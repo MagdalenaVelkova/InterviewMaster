@@ -3,13 +3,12 @@ using System;
 
 namespace InterviewMaster.Domain.InterviewPreparation
 {
-    class UserSolution
+    public class UserSolution
     {
-        public Guid Id { get; set; }
-        public Guid UserId { get; set; }
-        public Guid InterviewQuestionId { get; set; }
+        public string Id { get; set; }
+        public string UserId { get; set; }
+        public string InterviewQuestionId { get; set; }
         public Response Response { get; set; }
-        public DateTime Date { get; set; }
     }
 
     // add response

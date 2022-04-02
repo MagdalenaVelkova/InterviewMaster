@@ -38,29 +38,22 @@ namespace Application.Controllers
         }
 
         [HttpGet("{id}")]
-        public InterviewQuestion GetQuestionById(string id)
+        public ActionResult GetQuestionById(string id)
         {
             var question= questionsService.GetQuestion(id);
-            return question;
+            if (question != null)
+            {
+                return Ok(question);
+            }
+            return NotFound();
         }
 
-        // POST api/<ValuesController>
+        // Needs fixing 
         [HttpPost]
-        public void Post([FromBody] InterviewQuestion interviewQuestion)
+        public async Task<string> Post([FromBody] InterviewQuestion interviewQuestion)
         {
-            questionsService.PostQuestion(interviewQuestion);
+         return await questionsService.PostQuestion(interviewQuestion);
         }
 
-        // PUT api/<ValuesController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<ValuesController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
     }
 }

@@ -1,6 +1,6 @@
 import { Col, Container, Image, Row } from "react-bootstrap";
 import myImage from "../../assets/img/header_image.png";
-import BaseButton from "../../components/Buttons/BaseButton";
+import BaseButton from "../../components/buttons/BaseButton";
 import styles from "./Landing.module.css";
 function LandingPage() {
   return (

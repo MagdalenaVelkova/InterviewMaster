@@ -47,6 +47,7 @@ namespace InterviewMaster
             services.AddScoped<IIdGenerator, IdGenerator>();
             services.AddScoped<IQuestionsService, QuestionsRepository>();
             services.AddScoped<IUserProfileService, UserProfileRepository>();
+            services.AddScoped<IUserSolutionsService, UserSolutionsRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

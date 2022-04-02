@@ -56,7 +56,7 @@ namespace InterviewMaster.Persistance.Repositories
             }).ToListAsync();
         }
 
-        public async Task<InterviewQuestion> PostQuestion(InterviewQuestion interviewQuestion)
+        public async Task<string> PostQuestion(InterviewQuestion interviewQuestion)
         {
             var entity = new InterviewQuestionDTO
             {
@@ -69,7 +69,7 @@ namespace InterviewMaster.Persistance.Repositories
 
             await Collection.InsertOneAsync(entity);
 
-            return interviewQuestion;
+            return entity.Id;
         }
 
 

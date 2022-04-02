@@ -20,7 +20,7 @@ namespace InterviewMaster.Persistance.Repositories
         public override string DbCollectionName => "UserProfile";
 
         // create user
-        public async Task<UserProfile> CreateUser(UserProfile user)
+        public async Task<string> CreateUser(UserProfile user)
         {
             var entity = new UserProfileDTO
             {
@@ -33,7 +33,7 @@ namespace InterviewMaster.Persistance.Repositories
 
             await Collection.InsertOneAsync(entity);
 
-            return user;
+            return entity.Id;
         }
 
         // find user

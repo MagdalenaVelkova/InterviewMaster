@@ -1,47 +1,69 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { Col, Container, Row } from "react-bootstrap";
+import QuestionItem from "../../components/questionItem/QuestionItem";
 
 const ProfilePage = (props) => {
+  const columnNumber = 3;
   const [profile, setProfile] = useState("");
   const [favouriteQuestions, setFavouriteQuestions] = useState([]);
-  const [myApplications, setMyApplications] = useState([]);
+  const [respondedQuestions, setRespondedQuestions] = useState([]);
 
+  // need to dynamically get user id with redux
+  let id = "6248688a883d00ca573c9392";
   const getProfile = async () => {
-    const res = await axios.get("http://localhost:8000/api/user/myprofile");
+    const res = await axios.get(`http://localhost:5000/api/users/${id}`);
     setProfile(res.data);
   };
 
   const getFavouriteQuestions = async () => {
     const res = await axios.get(
-      "http://localhost:8000/api/interview/favourites"
+      `http://localhost:5000/api/users/${id}/favourites`
     );
     setFavouriteQuestions(res.data);
   };
 
-  const getMyApplications = async () => {
-    const res = await axios.get("http://localhost:8000/api/my-applications");
-    setMyApplications(res.data);
+  const getRespondedQuestions = async () => {
+    const res = await axios.get(
+      `http://localhost:5000/api/users/${id}/solutions`
+    );
+    setRespondedQuestions(res.data);
   };
 
   useEffect(() => {
     getProfile();
     getFavouriteQuestions();
-    getMyApplications();
+    getRespondedQuestions();
   }, []);
   return (
     <div>
       <div>
+        {props.data}
         <p>{profile.email}</p>
-        <p>{profile.first_name}</p>
-        <p>{profile.last_name}</p>
+        <p>{profile.firstName}</p>
+        <p>{profile.lastName}</p>
       </div>
 
       {/* get a question list of favourite questions here */}
-      <div>
-        {favouriteQuestions.map((question) => (
-          <p>{question.question_title}</p>
-        ))}
-      </div>
+      <Container>
+        <Row>
+          {favouriteQuestions.map((interviewQuestion, index) => (
+            <Col md={columnNumber}>
+              <QuestionItem data={interviewQuestion} key={index}></QuestionItem>
+            </Col>
+          ))}
+        </Row>
+      </Container>
+
+      <Container>
+        <Row>
+          {respondedQuestions.map((interviewQuestion, index) => (
+            <Col md={columnNumber}>
+              <QuestionItem data={interviewQuestion} key={index}></QuestionItem>
+            </Col>
+          ))}
+        </Row>
+      </Container>
     </div>
   );
 };

@@ -1,8 +1,8 @@
-import { Container, Row, Col, Form } from "react-bootstrap";
-import styles from "./styles.module.css";
-import { useState } from "react";
 import axios from "axios";
-import BaseButton from "../../components/Buttons/BaseButton";
+import { useState } from "react";
+import { Col, Container, Form, Row } from "react-bootstrap";
+import BaseButton from "../../components/buttons/BaseButton";
+import styles from "./Register.module.css";
 
 function Register() {
   const [email, setEmail] = useState("");
@@ -48,16 +48,8 @@ function Register() {
       <section>
         <Container className={styles.container}>
           <Row className={styles.row}>
-            <Col
-              md={6}
-              style={{
-                background: "rgba(0, 0, 0, 0.15)",
-                padding: "3rem",
-                paddingTop: "1rem",
-                borderRadius: "0.2rem",
-              }}
-            >
-              <h1 style={{ color: "#664fba" }}>Register</h1>
+            <Col md={8} className={styles.col}>
+              <h1 className={styles.title}>Register</h1>
               <Form onSubmit={handleSubmit}>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                   <Form.Label className="text-light">Email address</Form.Label>

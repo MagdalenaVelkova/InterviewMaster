@@ -5,7 +5,7 @@ namespace InterviewMaster.Application.Services
 {
     public interface IUserProfileService
     {
-        public Task<UserProfile> CreateUser(UserProfile user);
+        public Task<string> CreateUser(UserProfile user);
 
         public UserProfile? GetUser(string userId);
     }
