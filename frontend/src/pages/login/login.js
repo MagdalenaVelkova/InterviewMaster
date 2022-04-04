@@ -53,7 +53,7 @@ const Login = () => {
                   />
                 </Form.Group>
 
-                <BaseButton text="Submit" onClick={handleSubmit}>
+                <BaseButton text="Submit" clickHandler={handleSubmit}>
                   {errorDisplay}
                 </BaseButton>
               </Form>

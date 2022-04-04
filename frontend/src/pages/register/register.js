@@ -94,7 +94,7 @@ function Register() {
                     name="lastName"
                   />
                 </Form.Group>
-                <BaseButton text="Submit" onClick={handleSubmit} />
+                <BaseButton text="Submit" clickHandler={handleSubmit} />
               </Form>
             </Col>
           </Row>

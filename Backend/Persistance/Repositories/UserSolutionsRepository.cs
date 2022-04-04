@@ -46,17 +46,35 @@ namespace InterviewMaster.Persistance.Repositories
             }).FirstOrDefault();
         }
 
-        public async Task<string> PostSolution(UserSolution userSolution)
+        public async Task<string> CreateOneOrUpdate(UserSolution userSolution)
         {
-            var entity = new UserSolutionDTO
+            var existingSolution = GetUserSolutionByUserAndQuestion(userSolution.InterviewQuestionId, userSolution.UserId);
+            UserSolutionDTO entity;
+            if (existingSolution!=null)
             {
-                Id = idGenerator.Generate(),
-                UserId = userSolution.UserId,
-                InterviewQuestionId = userSolution.InterviewQuestionId,
-                Response = userSolution.Response,
-            };
+                entity = new UserSolutionDTO
+                {
+                    Id = existingSolution.Id,
+                    UserId = existingSolution.UserId,
+                    InterviewQuestionId = existingSolution.InterviewQuestionId,
+                    Response = userSolution.Response,
+                };
 
-            await Collection.InsertOneAsync(entity);
+                await Collection.FindOneAndReplaceAsync(x => x.Id == existingSolution.Id, entity);
+            }
+            else
+            {
+                entity = new UserSolutionDTO
+                {
+                    Id = idGenerator.Generate(),
+                    UserId = userSolution.UserId,
+                    InterviewQuestionId = userSolution.InterviewQuestionId,
+                    Response = userSolution.Response,
+                };
+
+                await Collection.InsertOneAsync(entity);
+            }
+           
 
             return entity.Id;
         }

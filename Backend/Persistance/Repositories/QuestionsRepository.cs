@@ -23,7 +23,7 @@ namespace InterviewMaster.Persistance.Repositories
 
         public Task<List<InterviewQuestion>> GetAllQuestions()
         {
-             return Query().Select(dto => new InterviewQuestion
+            return Query().Select(dto => new InterviewQuestion
             {
                 Id = dto.Id,
                 Question = dto.Question,
@@ -35,18 +35,26 @@ namespace InterviewMaster.Persistance.Repositories
 
         public InterviewQuestion? GetQuestion(string id)
         {
-            return Query().Where(dto => dto.Id == id).Select(dto => new InterviewQuestion
+            var interviewQuestionDTO = Query().Where(dto => dto.Id == id).FirstOrDefault();
+            if (interviewQuestionDTO != null)
             {
-                Id = dto.Id,
-                Question = dto.Question,
-                Topic = new Topic(dto.Topic.ToString()),
-                Prompts = dto.Prompts.Select(prompt => new Prompt(prompt)),
-                ExampleAnswers = dto.ExampleAnswers.Select(exampleAnswer => new ExampleAnswer(exampleAnswer))
-            }).FirstOrDefault();
+                return new InterviewQuestion
+                {
+                    Id = interviewQuestionDTO.Id,
+                    Question = interviewQuestionDTO.Question,
+                    Topic = new Topic(interviewQuestionDTO.Topic.ToString()),
+                    Prompts = interviewQuestionDTO.Prompts.Select(prompt => new Prompt(prompt)),
+                    ExampleAnswers = interviewQuestionDTO.ExampleAnswers.Select(exampleAnswer => new ExampleAnswer(exampleAnswer))
+                };
+            }
+            else 
+            {
+                return null;
+            }
         }
         public Task<List<InterviewQuestion>> GetQuestionsByTopic(Topic topic)
         {
-            return Query().Where(dto => dto.Topic==topic.Value.ToLower()).Select(dto => new InterviewQuestion
+            return Query().Where(dto => dto.Topic == topic.Value.ToLower()).Select(dto => new InterviewQuestion
             {
                 Id = dto.Id,
                 Question = dto.Question,

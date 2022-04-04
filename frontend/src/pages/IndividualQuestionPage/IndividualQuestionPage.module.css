@@ -41,10 +41,13 @@ p {
   margin: 0;
 }
 .rowOne {
-  height: 38vh;
+  height: 37vh;
   overflow: auto;
 }
-
+.answerStyle {
+  height: 83vh;
+  overflow: auto;
+}
 .Cards {
   height: 93%;
   background: rgba(27, 31, 34, 0.9) !important;
@@ -54,7 +57,7 @@ p {
 }
 
 .rowTwo {
-  height: 38vh;
+  height: 37vh;
   overflow: auto;
 }
 .cardHeaders {

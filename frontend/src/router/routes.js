@@ -14,7 +14,7 @@ const Routes = () => {
       <Route path="/login" component={login}></Route>
       <Route path="/register" component={register}></Route>
       <Route
-        path="/questionslibrary/:id"
+        path="/questionslibrary/:interviewQuestionId"
         component={individualQuestionPage}
       ></Route>
       <Route path="/texteditor" component={textEditor}></Route>

@@ -13,22 +13,36 @@ import styles from "./IndividualQuestionPage.module.css";
 
 // https://www.npmjs.com/package/react-draft-wysiwyg
 // https://stackoverflow.com/questions/51180361/react-draft-wysiwyg-render-saved-content-to-update
+// https://joshtronic.com/2017/10/05/react-draft-wysiwyg-with-mongodb/
 const IndividualQuestionPage = () => {
   const [question, setQuestion] = useState([]);
+  const [userSolution, setUserSolution] = useState({});
   const [exampleAnswers, setExampleAnswers] = useState([]);
   const [questionPrompts, setQuestionPrompts] = useState([]);
-  let { id } = useParams();
+  let { interviewQuestionId } = useParams();
 
   const getQuestion = async () => {
-    const res = await axios.get(`http://localhost:5000/api/questions/${id}`);
+    const res = await axios.get(
+      `http://localhost:5000/api/questions/${interviewQuestionId}`
+    );
     setQuestion(res.data);
     setExampleAnswers(res.data.exampleAnswers);
     setQuestionPrompts(res.data.prompts);
   };
 
+  let userId = "6248688a883d00ca573c9392";
+  const getSolution = async () => {
+    const res = await axios.get(
+      `http://localhost:5000/api/usersolutions/${interviewQuestionId}/${userId}`
+    );
+    setUserSolution(res.data);
+  };
+
   useEffect(() => {
     getQuestion();
+    getSolution();
   }, []);
+  console.log(userSolution);
   return (
     <div>
       <section className={styles.mainSection}>
@@ -78,18 +92,11 @@ const IndividualQuestionPage = () => {
                 <CardHeader className={styles.cardHeaders}>
                   <p className={styles.typographyHeadings}>Your Answer</p>
                 </CardHeader>
-                <CardContent className={styles.rowOne} style={{ padding: 0 }}>
-                  <TextEditor></TextEditor>
-                </CardContent>
-              </Card>
-              <Card className={styles.Cards}>
-                <CardHeader className={styles.cardHeaders}>
-                  <p className={styles.typographyHeadings}>
-                    Your Bullet Points
-                  </p>
-                </CardHeader>
-                <CardContent style={{ padding: 0 }} className={styles.rowTwo}>
-                  <TextEditor></TextEditor>
+                <CardContent
+                  className={styles.answerStyle}
+                  style={{ padding: 0 }}
+                >
+                  <TextEditor {...userSolution}></TextEditor>
                 </CardContent>
               </Card>
             </div>

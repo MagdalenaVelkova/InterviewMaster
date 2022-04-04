@@ -44,7 +44,7 @@ namespace InterviewMaster.Controllers
         }
 
         [HttpPost]
-        public async Task<string> Post(UserSolutionDTO userSolutionDTO)
+        public async Task<string> PostSolution(UserSolutionDTO userSolutionDTO)
         {
             var userSolution = new UserSolution() {
             Id = userSolutionDTO.Id,
@@ -53,7 +53,7 @@ namespace InterviewMaster.Controllers
             Response = new Response(userSolutionDTO.Response)
             };
 
-            return await userSolutionsService.PostSolution(userSolution);
+            return await userSolutionsService.CreateOneOrUpdate(userSolution);
         }
     }
 }

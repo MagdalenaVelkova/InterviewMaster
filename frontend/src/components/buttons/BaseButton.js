@@ -7,6 +7,7 @@ const BaseButton = (props) => {
       className="btn btn-lg shadow lift me-4"
       variant="outline-light"
       type="submit"
+      onClick={props.clickHandler}
     >
       {buttonText}
     </Button>
