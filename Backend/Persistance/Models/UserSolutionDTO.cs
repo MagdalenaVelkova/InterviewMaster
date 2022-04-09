@@ -22,5 +22,6 @@ namespace InterviewMaster.Persistance.Models
 
         [BsonElement("response")]
         public Response Response { get; set; }
+
     }
 }

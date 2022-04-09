@@ -1,10 +1,4 @@
-﻿using InterviewMaster.Domain.InterviewPreparation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace InterviewMaster.Controllers.DTOs
+﻿namespace InterviewMaster.Controllers.DTOs
 {
     public class UserSolutionDTO
     {

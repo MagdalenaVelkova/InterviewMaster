@@ -7,19 +7,18 @@ import CardHeader from "react-bootstrap/esm/CardHeader";
 import { ReflexContainer, ReflexElement, ReflexSplitter } from "react-reflex";
 import "react-reflex/styles.css";
 import { useParams } from "react-router-dom";
+import NewTextEditor from "../../components/NewTextEditor";
 import QuestionMenu from "../../components/QuestionMenu";
-import TextEditor from "../../components/TextEditor";
 import styles from "./IndividualQuestionPage.module.css";
-
 // https://www.npmjs.com/package/react-draft-wysiwyg
 // https://stackoverflow.com/questions/51180361/react-draft-wysiwyg-render-saved-content-to-update
 // https://joshtronic.com/2017/10/05/react-draft-wysiwyg-with-mongodb/
 const IndividualQuestionPage = () => {
-  const [question, setQuestion] = useState([]);
-  const [userSolution, setUserSolution] = useState({});
+  let { interviewQuestionId } = useParams("");
+
+  const [question, setQuestion] = useState({});
   const [exampleAnswers, setExampleAnswers] = useState([]);
   const [questionPrompts, setQuestionPrompts] = useState([]);
-  let { interviewQuestionId } = useParams();
 
   const getQuestion = async () => {
     const res = await axios.get(
@@ -30,25 +29,16 @@ const IndividualQuestionPage = () => {
     setQuestionPrompts(res.data.prompts);
   };
 
-  let userId = "6248688a883d00ca573c9392";
-  const getSolution = async () => {
-    const res = await axios.get(
-      `http://localhost:5000/api/usersolutions/${interviewQuestionId}/${userId}`
-    );
-    setUserSolution(res.data);
-  };
-
   useEffect(() => {
     getQuestion();
-    getSolution();
   }, []);
-  console.log(userSolution);
+  console.log("interviewQuestionId=", interviewQuestionId);
   return (
     <div>
       <section className={styles.mainSection}>
         <QuestionMenu></QuestionMenu>
         <ReflexContainer
-          orientation="vertiverticalcal"
+          orientation="vertical"
           className={styles.root}
           windowResizeAware="true"
         >
@@ -59,7 +49,7 @@ const IndividualQuestionPage = () => {
                   <p className={styles.typographyHeadings}>Prompts</p>
                 </CardHeader>
                 <CardContent className={styles.rowOne}>
-                  <h1>{question.question_title}</h1>
+                  <h1>{question.question}</h1>
                   {questionPrompts.map((answer, index) => (
                     <div>
                       <h2>Tip {index + 1}:</h2>
@@ -96,7 +86,9 @@ const IndividualQuestionPage = () => {
                   className={styles.answerStyle}
                   style={{ padding: 0 }}
                 >
-                  <TextEditor {...userSolution}></TextEditor>
+                  <NewTextEditor
+                    interviewQuestionId={interviewQuestionId}
+                  ></NewTextEditor>
                 </CardContent>
               </Card>
             </div>
