@@ -31,7 +31,6 @@ const NewTextEditor = ({ interviewQuestionId }) => {
   };
 
   const handleSubmit = async (event) => {
-    console.log("handle sub");
     try {
       console.log(convertToRaw(editorState.getCurrentContent()));
       event.preventDefault();
@@ -56,29 +55,29 @@ const NewTextEditor = ({ interviewQuestionId }) => {
 
   return (
     <div>
-      <Container>
-        <reactDraftWysiwyg.Editor
-          editorState={editorState}
-          wrapperClassName="wrapper-class"
-          editorClassName="editor-class"
-          toolbarClassName="toolbar-class"
-          editorStyle={{
-            marginLeft: "0.5rem",
-            marginRight: "0.5rem",
-            minHeight: "100%",
-            color: "#ecf3fe",
-          }}
-          toolbarStyle={{
-            backgroundColor: "#32353D",
-            border: "0",
-            margin: "0",
-            paddingTop: "0",
-            width: "100%",
-          }}
-          onEditorStateChange={onEditorStateChange}
-        />
+      <reactDraftWysiwyg.Editor
+        editorState={editorState}
+        wrapperClassName="wrapper-class"
+        editorClassName="editor-class"
+        toolbarClassName="toolbar-class"
+        editorStyle={{
+          marginLeft: "0.5rem",
+          marginRight: "0.5rem",
+          minHeight: "66vh",
+          color: "#ecf3fe",
+        }}
+        toolbarStyle={{
+          backgroundColor: "#32353D",
+          border: "0",
+          margin: "0",
+          paddingTop: "0",
+          width: "100%",
+        }}
+        onEditorStateChange={onEditorStateChange}
+      />
+      <Container style={{ marginBottom: "1rem" }}>
+        <BaseButton text="Submit Response" clickHandler={handleSubmit} />
       </Container>
-      <BaseButton text="Submit Response" clickHandler={handleSubmit} />
     </div>
   );
 };

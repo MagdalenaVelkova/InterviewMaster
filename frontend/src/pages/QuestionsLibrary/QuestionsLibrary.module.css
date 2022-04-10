@@ -8,7 +8,7 @@
 .waveSection {
   background-color: #22272a;
   background-image: url("../../assets/img/questionLibraryBG.svg");
-  aspect-ratio: 960/150;
+  aspect-ratio: 960/95;
   width: 100%;
   background-repeat: no-repeat;
   background-size: cover;

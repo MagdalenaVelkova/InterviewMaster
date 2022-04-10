@@ -1,8 +1,17 @@
 import { Col, Container, Image, Row } from "react-bootstrap";
+import { useHistory } from "react-router";
 import myImage from "../../assets/img/header_image.png";
 import BaseButton from "../../components/buttons/BaseButton";
 import styles from "./Landing.module.css";
 function LandingPage() {
+  const history = useHistory();
+
+  const handleSubmitQuestionsLibrary = () => {
+    history.push(`/questionslibrary`);
+  };
+  const handleSubmitRegister = () => {
+    history.push(`/register`);
+  };
   return (
     <div>
       {/* Section One  */}
@@ -25,8 +34,14 @@ function LandingPage() {
                 tracking.
               </p>
               <div className="text-md-start">
-                <BaseButton text="Browse Our Questions Library" />
-                <BaseButton text="Register" />
+                <BaseButton
+                  text="Browse Our Questions Library"
+                  clickHandler={handleSubmitQuestionsLibrary}
+                />
+                <BaseButton
+                  text="Register"
+                  clickHandler={handleSubmitRegister}
+                />
               </div>
               {/* Column Ends*/}
             </Col>
@@ -100,7 +115,7 @@ function LandingPage() {
       <section className={styles.sectionThree}>
         <Container>
           {/* Row */}
-          <Row clasName={styles.row}>
+          <Row className={styles.row}>
             <Col>
               <h2 className={styles.HeadingThree}>
                 Something that it's made for students and it's free.
@@ -111,7 +126,7 @@ function LandingPage() {
             {/* Row Ends */}
           </Row>
           {/* Row */}
-          <Row clasName="justify-content-center">
+          <Row className="justify-content-center">
             {/* Column */}
             <Col> {/* Column Ends*/}</Col>
             {/* Row Ends */}

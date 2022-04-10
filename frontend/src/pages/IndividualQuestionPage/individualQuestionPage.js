@@ -10,6 +10,7 @@ import { useParams } from "react-router-dom";
 import NewTextEditor from "../../components/NewTextEditor";
 import QuestionMenu from "../../components/QuestionMenu";
 import styles from "./IndividualQuestionPage.module.css";
+
 // https://www.npmjs.com/package/react-draft-wysiwyg
 // https://stackoverflow.com/questions/51180361/react-draft-wysiwyg-render-saved-content-to-update
 // https://joshtronic.com/2017/10/05/react-draft-wysiwyg-with-mongodb/
@@ -38,7 +39,7 @@ const IndividualQuestionPage = () => {
       <section className={styles.mainSection}>
         <QuestionMenu></QuestionMenu>
         <ReflexContainer
-          orientation="vertical"
+          orientation="vertivertical"
           className={styles.root}
           windowResizeAware="true"
         >
@@ -82,14 +83,10 @@ const IndividualQuestionPage = () => {
                 <CardHeader className={styles.cardHeaders}>
                   <p className={styles.typographyHeadings}>Your Answer</p>
                 </CardHeader>
-                <CardContent
-                  className={styles.answerStyle}
-                  style={{ padding: 0 }}
-                >
-                  <NewTextEditor
-                    interviewQuestionId={interviewQuestionId}
-                  ></NewTextEditor>
-                </CardContent>
+
+                <NewTextEditor
+                  interviewQuestionId={interviewQuestionId}
+                ></NewTextEditor>
               </Card>
             </div>
           </ReflexElement>

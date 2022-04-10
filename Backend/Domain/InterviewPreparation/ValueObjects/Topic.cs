@@ -11,7 +11,7 @@ namespace InterviewMaster.Domain.InterviewPreparation.ValueObjects
             var topics = new HashSet<string> { "general", "collaboration", "problem solving", "adaptability", "organisation" };
             if (topics.Contains(value.ToLower()))
             {
-                Value = value;
+                Value = value.ToLower();
             }
             else
             {

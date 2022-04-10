@@ -1,23 +1,9 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
-import { Col, Container, Row } from "react-bootstrap";
-import QuestionItem from "../../components/questionItem/QuestionItem";
+import React from "react";
+import { Container, Row } from "react-bootstrap";
+import Tabs from "../../components/tabs/BaseTabs";
 import styles from "./QuestionsLibrary.module.css";
 
 const QuestionsLibrary = () => {
-  const [questions, setQuestions] = useState([]);
-
-  const getQuestions = async () => {
-    const res = await axios.get("http://localhost:5000/api/questions");
-    setQuestions(res.data);
-  };
-
-  useEffect(() => {
-    getQuestions();
-  }, []);
-
-  const columnNumber = 3;
-
   return (
     <div>
       <section className={styles.sectionTitle}>
@@ -33,13 +19,7 @@ const QuestionsLibrary = () => {
       <div className={styles.waveSection}></div>
       <section className={styles.sectionContent}>
         <Container>
-          <Row>
-            {questions.map((question, index) => (
-              <Col md={columnNumber}>
-                <QuestionItem data={question} key={index}></QuestionItem>
-              </Col>
-            ))}
-          </Row>
+          <Tabs />
         </Container>
       </section>
     </div>

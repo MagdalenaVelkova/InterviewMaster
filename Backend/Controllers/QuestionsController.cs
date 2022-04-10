@@ -32,6 +32,10 @@ namespace Application.Controllers
         [HttpGet("/topic/{topicValue}")]
         public async Task<List<InterviewQuestion>> GetQuestionsByTopic(string topicValue)
         {
+            if (topicValue.ToLower() == "all")
+            {
+                return await GetQuestions();
+            }
             var topic = new Topic(topicValue);
             var questions = await questionsService.GetQuestionsByTopic(topic);
             return questions;

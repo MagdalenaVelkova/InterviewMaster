@@ -1,5 +1,4 @@
 import { Route, Switch } from "react-router-dom";
-import textEditor from "../components/TextEditor";
 import allApplicationsPage from "../pages/allApplicationsPage/AllApplicationsPage";
 import individualQuestionPage from "../pages/individualQuestionPage/IndividualQuestionPage";
 import landingPage from "../pages/landing/Landing";
@@ -17,7 +16,6 @@ const Routes = () => {
         path="/questionslibrary/:interviewQuestionId"
         component={individualQuestionPage}
       ></Route>
-      <Route path="/texteditor" component={textEditor}></Route>
       <Route path="/questionslibrary" component={questionsLibrary}></Route>
       <Route path="/myprofile/:id" component={profilePage}></Route>
       <Route path="/applications" component={allApplicationsPage}></Route>

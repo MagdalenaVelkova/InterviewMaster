@@ -54,7 +54,7 @@ namespace InterviewMaster.Persistance.Repositories
         }
         public Task<List<InterviewQuestion>> GetQuestionsByTopic(Topic topic)
         {
-            return Query().Where(dto => dto.Topic == topic.Value.ToLower()).Select(dto => new InterviewQuestion
+            return Query().Where(dto => dto.Topic == topic.Value).Select(dto => new InterviewQuestion
             {
                 Id = dto.Id,
                 Question = dto.Question,
