@@ -8,5 +8,7 @@ namespace InterviewMaster.Application.Services
         public Task<string> CreateUser(UserProfile user);
 
         public UserProfile? GetUser(string userId);
+
+        public UserProfile? GetUserProfile(string email, string password);
     }
 }

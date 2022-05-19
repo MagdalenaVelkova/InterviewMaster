@@ -1,3 +1,4 @@
+import { CacheProvider } from "@emotion/react";
 import { ThemeProvider } from "@mui/material";
 import AOS from "aos";
 import "aos/dist/aos.css"; // You can also use <link> for styles
@@ -9,6 +10,7 @@ import "./App.css";
 import FixedTopContainer from "./components/FixedTopContainer";
 import store from "./redux/store";
 import Routes from "./router/Routes";
+import createEmotionCache from "./utils/CreateCache";
 import theme from "./utils/Theme.js";
 
 AOS.init();
@@ -16,14 +18,16 @@ AOS.init();
 function App() {
   return (
     <Provider store={store}>
-      <ThemeProvider theme={theme}>
-        <div className="App">
-          <BrowserRouter>
-            <Routes></Routes>
-            <FixedTopContainer></FixedTopContainer>
-          </BrowserRouter>
-        </div>
-      </ThemeProvider>
+      <CacheProvider value={createEmotionCache()}>
+        <ThemeProvider theme={theme}>
+          <div className="App">
+            <BrowserRouter>
+              <Routes></Routes>
+              <FixedTopContainer></FixedTopContainer>
+            </BrowserRouter>
+          </div>
+        </ThemeProvider>
+      </CacheProvider>
     </Provider>
   );
 }

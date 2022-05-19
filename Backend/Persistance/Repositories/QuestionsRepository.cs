@@ -3,8 +3,10 @@ using InterviewMaster.Domain.InterviewPreparation;
 using InterviewMaster.Domain.InterviewPreparation.ValueObjects;
 using InterviewMaster.Persistance.Extensions;
 using InterviewMaster.Persistance.Models;
+using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -35,22 +37,30 @@ namespace InterviewMaster.Persistance.Repositories
 
         public InterviewQuestion? GetQuestion(string id)
         {
-            var interviewQuestionDTO = Query().Where(dto => dto.Id == id).FirstOrDefault();
-            if (interviewQuestionDTO != null)
+            try
             {
-                return new InterviewQuestion
+                var interviewQuestionDTO = Query().Where(dto => dto.Id == id).FirstOrDefault();
+                if (interviewQuestionDTO != null)
                 {
-                    Id = interviewQuestionDTO.Id,
-                    Question = interviewQuestionDTO.Question,
-                    Topic = new Topic(interviewQuestionDTO.Topic.ToString()),
-                    Prompts = interviewQuestionDTO.Prompts.Select(prompt => new Prompt(prompt)),
-                    ExampleAnswers = interviewQuestionDTO.ExampleAnswers.Select(exampleAnswer => new ExampleAnswer(exampleAnswer))
-                };
+                    return new InterviewQuestion
+                    {
+                        Id = interviewQuestionDTO.Id,
+                        Question = interviewQuestionDTO.Question,
+                        Topic = new Topic(interviewQuestionDTO.Topic.ToString()),
+                        Prompts = interviewQuestionDTO.Prompts.Select(prompt => new Prompt(prompt)),
+                        ExampleAnswers = interviewQuestionDTO.ExampleAnswers.Select(exampleAnswer => new ExampleAnswer(exampleAnswer))
+                    };
+                }
+                else
+                {
+                    return null;
+                }
             }
-            else 
+            catch (FormatException e)
             {
+                // log exception
                 return null;
-            }
+            }          
         }
         public Task<List<InterviewQuestion>> GetQuestionsByTopic(Topic topic)
         {

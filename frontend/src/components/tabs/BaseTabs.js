@@ -64,7 +64,9 @@ export default function BaseTabs() {
   console.log("value=", value);
   return (
     <Box sx={{ width: "100%" }}>
-      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+      <Box
+        sx={{ borderBottom: 1, borderColor: "divider", marginBottom: "2rem" }}
+      >
         <Tabs
           value={value}
           onChange={handleChange}

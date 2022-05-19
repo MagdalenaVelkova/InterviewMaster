@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
+using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 
 namespace InterviewMaster.Domain.Identity
 {
@@ -8,9 +10,11 @@ namespace InterviewMaster.Domain.Identity
         public string UserId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-
+        public string Email { get; set; }
+        public string PasswordHash { get; set; }
         public IEnumerable<string> FavouriteQuestionsIds { get; set; }
 
         public IEnumerable<string> UserSolutionIds { get; set; }
-}
+    }
+
 }
