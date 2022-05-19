@@ -14,9 +14,10 @@ namespace InterviewMaster.Application.Services
 
         private readonly string key;
 
-        public IdentityService()
+        public IdentityService(IUserProfileService userProfileService)
         {
-            this.key = "???";
+            this.key = "VrFPOluCe4zkUnnFA8Q5gIxSh6T7u6MO";
+            this.userProfileService = userProfileService;
         }
         public string? Authenticate(string email, string password)
         {

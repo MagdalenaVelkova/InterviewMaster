@@ -71,6 +71,7 @@ namespace InterviewMaster
             services.AddScoped<IQuestionsService, QuestionsRepository>();
             services.AddScoped<IUserProfileService, UserProfileRepository>();
             services.AddScoped<IUserSolutionsService, UserSolutionsRepository>();
+            services.AddScoped<IdentityService>();
 
 
         }

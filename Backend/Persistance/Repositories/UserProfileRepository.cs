@@ -4,6 +4,7 @@ using InterviewMaster.Persistance.Extensions;
 using InterviewMaster.Persistance.Models;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -27,8 +28,10 @@ namespace InterviewMaster.Persistance.Repositories
                 Id = idGenerator.Generate(),
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                FavouriteQuestions = user.FavouriteQuestionsIds,
-                UserSolutions = user.UserSolutionIds
+                Email = user.Email,
+                Password = user.PasswordHash,
+                FavouriteQuestions = new List<string>(),
+                UserSolutions = new List<string>()
             };
 
             await Collection.InsertOneAsync(entity);
@@ -47,6 +50,18 @@ namespace InterviewMaster.Persistance.Repositories
                 FavouriteQuestionsIds = x.FavouriteQuestions,
                 UserSolutionIds = x.UserSolutions
             }).FirstOrDefault();
+        }
+
+        public UserProfile GetUserProfile(string email, string password)
+        {
+            return Query().Where(x => x.Email == email && x.Password == password).Select(x => new UserProfile()
+            {
+                UserId = x.Id,
+                FirstName = x.FirstName,
+                LastName = x.LastName,
+                FavouriteQuestionsIds = x.FavouriteQuestions,
+                UserSolutionIds = x.UserSolutions
+            }).FirstOrDefault(); ;
         }
 
 

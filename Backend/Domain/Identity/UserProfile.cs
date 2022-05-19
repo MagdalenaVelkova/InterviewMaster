@@ -15,6 +15,9 @@ namespace InterviewMaster.Domain.Identity
         public IEnumerable<string> FavouriteQuestionsIds { get; set; }
 
         public IEnumerable<string> UserSolutionIds { get; set; }
+
+
+        //hash password here method? 
     }
 
 }
