@@ -9,11 +9,21 @@ import QuestionItem from "../questionItem/QuestionItem";
 function TabPanel(props) {
   const { value, index, topic, ...other } = props;
   const [questions, setQuestions] = useState([]);
+  const [profile, setProfile] = useState({});
 
   const getQuestions = async (topic) => {
     const res = await axios.get(`http://localhost:5000/topic/${topic}`);
     setQuestions(res.data);
   };
+
+  const getProfile = async () => {
+    const res = await axios.get(`http://localhost:5000/userprofile`);
+    setProfile(res.data);
+  };
+
+  useEffect(() => {
+    getProfile();
+  }, []);
 
   useEffect(() => {
     getQuestions(topic);
@@ -32,7 +42,12 @@ function TabPanel(props) {
       <Row>
         {questions.map((question, index) => (
           <Col md={columnNumber} key={index}>
-            <QuestionItem data={question} key={index}></QuestionItem>
+            <QuestionItem
+              question={question}
+              userId={profile.userId}
+              favouriteQuestions={profile.favouriteQuestions}
+              key={index}
+            ></QuestionItem>
           </Col>
         ))}
       </Row>

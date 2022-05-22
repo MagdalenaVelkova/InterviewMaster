@@ -2,14 +2,16 @@
 using InterviewMaster.Controllers.DTOs;
 using InterviewMaster.Domain.Identity;
 using InterviewMaster.Domain.InterviewPreparation;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Primitives;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Application.Controllers
 {
-    [Authorize]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/[controller]")]
     [ApiController]
     public class UsersController : ControllerBase
@@ -28,15 +30,31 @@ namespace Application.Controllers
 
         }
 
-        [HttpGet("{id}")]
-        public IActionResult Get(string id)
+        [HttpGet("/authorised")]
+        public  IActionResult GetIsAuthorised()
         {
-            var userProfile = userProfileService.GetUser(id);
-            if (userProfile != null)
+            return Ok();
+        }
+
+        [HttpGet("/userprofile")]
+        public IActionResult GetUserProfile()
+        {
+            StringValues bearerToken;
+            var tokenExists  =  HttpContext.Request.Headers.TryGetValue("Authorization", out bearerToken);
+            if (tokenExists)
             {
-                return Ok(userProfile);
+                var token = bearerToken.ToString().Split(" ")[1];
+
+                var id = identityService.GetUserIdFromToken(token.ToString());
+                var userProfile = userProfileService.GetUser(id);
+                if (userProfile != null)
+                {
+                    return Ok(userProfile);
+                }
+
+                return NotFound();
             }
-            return NotFound();
+            return Unauthorized();
         }
 
         [HttpGet("{id}/favourites")]
@@ -76,6 +94,23 @@ namespace Application.Controllers
             }
             return NotFound();
         }
+
+        [HttpPost("addfavourite")]
+        public async Task<IActionResult> AddFavourite(string questionId, string userId)
+        {
+            if (userProfileService.UserExists(userId) && questionsService.QuestionExists(questionId))
+            {
+                var result = await userProfileService.AddToFavourite(questionId, userId);
+                if (result != null) { 
+                return Ok();
+                }
+                return NotFound();
+            }
+            
+                return BadRequest();
+
+        }
+
         [AllowAnonymous]
         [HttpPost("register")]
         public async Task<string> Register(UserProfile userProfile)
@@ -85,7 +120,7 @@ namespace Application.Controllers
 
         [AllowAnonymous]
         [HttpPost("login")]
-        public ActionResult Login([FromBody] UserLoginDTO userCredentials)
+        public IActionResult Login([FromBody] UserLoginDTO userCredentials)
         {
             var token = identityService.Authenticate(userCredentials.Email, userCredentials.Password);
 

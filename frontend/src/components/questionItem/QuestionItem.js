@@ -3,27 +3,36 @@ import CardContent from "@material-ui/core/CardContent";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import FavoriteIcon from "@material-ui/icons/Favorite";
-import React from "react";
+import React, { useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import CardHeader from "react-bootstrap/esm/CardHeader";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import styles from "./QuestionItem.module.css";
 
-function QuestionItem(props) {
+function QuestionItem({ question, userId, favouriteQuestions }) {
   const isAuthenticated = useSelector(
     (state) => state.userReducer.isAuthenticated
   );
-  const question = props.data;
 
   const history = useHistory();
+  const favouritedQuestion = "#F97D7D";
+  const nonFavouritedQuestion = "#6C6A71";
 
+  // change to get the actual value of favourite
+  const [favouriteValue, setFavouriteValue] = useState(true);
   const getIndividualQuestion = (id) => {
     history.push(`/questionslibrary/${id}`);
   };
 
   const favouriteQuestionIconClick = (event) => {
-    event.target.style.fill = "#664FBA";
+    setFavouriteValue(!favouriteValue);
+
+    if (favouriteValue) {
+      event.target.style.fill = favouritedQuestion;
+    } else {
+      event.target.style.fill = nonFavouritedQuestion;
+    }
   };
   return (
     <Card className={styles.root}>

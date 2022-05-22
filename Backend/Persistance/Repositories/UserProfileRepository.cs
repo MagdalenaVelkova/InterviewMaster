@@ -20,6 +20,25 @@ namespace InterviewMaster.Persistance.Repositories
         }
         public override string DbCollectionName => "UserProfile";
 
+        public async Task<string>?  AddToFavourite(string questionId, string userId)
+        {
+
+            var filterProifile = Builders<UserProfileDTO>.Filter.Eq(x => x.Id, userId);
+            var updateFavourite = Builders<UserProfileDTO>.Update.Push(x => x.FavouriteQuestions, questionId);
+
+            var result = await Collection.FindOneAndUpdateAsync<UserProfileDTO>(filterProifile, updateFavourite);
+
+            if (result ==null)
+            {
+                return null;
+
+            }
+            return questionId;
+
+            //Collection.Update(Query().Where(x => x.Id == userId), Update.Push(FavouriteQuestions, questionId));
+
+        }
+
         // create user
         public async Task<string> CreateUser(UserProfile user)
         {
@@ -62,6 +81,11 @@ namespace InterviewMaster.Persistance.Repositories
                 FavouriteQuestionsIds = x.FavouriteQuestions,
                 UserSolutionIds = x.UserSolutions
             }).FirstOrDefault(); ;
+        }
+
+        public bool UserExists(string id)
+        {
+            return Query().Any(x => x.Id == id);
         }
 
 

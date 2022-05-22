@@ -10,22 +10,21 @@ const ProfilePage = (props) => {
   const [respondedQuestions, setRespondedQuestions] = useState([]);
 
   // need to dynamically get user id with redux
-  let id = "6248688a883d00ca573c9392";
   const getProfile = async () => {
-    const res = await axios.get(`http://localhost:5000/api/users/${id}`);
+    const res = await axios.get(`http://localhost:5000/userprofile`);
     setProfile(res.data);
   };
 
   const getFavouriteQuestions = async () => {
     const res = await axios.get(
-      `http://localhost:5000/api/users/${id}/favourites`
+      `http://localhost:5000/api/users/${profile.userId}/favourites`
     );
     setFavouriteQuestions(res.data);
   };
 
   const getRespondedQuestions = async () => {
     const res = await axios.get(
-      `http://localhost:5000/api/users/${id}/solutions`
+      `http://localhost:5000/api/users/${profile.userId}/solutions`
     );
     setRespondedQuestions(res.data);
   };

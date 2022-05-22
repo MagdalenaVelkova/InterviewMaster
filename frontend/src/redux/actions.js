@@ -1,11 +1,11 @@
+import axios from "axios";
 import {
   ADD_ERROR,
-  REMOVE_ERROR,
   LOGIN,
   LOGOUT,
+  REMOVE_ERROR,
   USER_LOADING,
 } from "./actionTypes";
-import axios from "axios";
 
 /**
  * Calls the backend to verify that the current user is authenticated with a valid Json Web token.
@@ -13,13 +13,17 @@ import axios from "axios";
  */
 export const loginUser = (email, password) => async (dispatch) => {
   try {
-    const payload = new FormData();
-    payload.append("username", email);
-    payload.append("password", password);
-    const res = await axios.post("http://localhost:8000/api/token", payload, {
-      "Content-Type": "multipart/form-data",
-    });
-    sessionStorage.setItem("token", res.data.access_token);
+    const payload = { email: email, password: password };
+    const res = await axios.post(
+      "http://localhost:5000/api/users/login",
+      payload,
+      {
+        "Content-Type": "application/json",
+      }
+    );
+    console.log(res.data);
+    localStorage.setItem("token", res.data);
+
     dispatch({ type: LOGIN });
   } catch (error) {
     dispatch(addErrorMessage("Invalid credentials! Please, try again!"));
@@ -31,7 +35,6 @@ export const registerUser = (values) => async (dispatch) => {
     const payload = {
       emailAddress: values.email,
       password: values.password,
-      role: values.role,
     };
     const res = await axios.post(payload);
     dispatch(loginUser(values));
@@ -39,20 +42,15 @@ export const registerUser = (values) => async (dispatch) => {
 };
 
 export const logoutUser = () => async (dispatch) => {
-  try {
-    sessionStorage.removeItem("token");
-    const res = await axios.post();
-  } catch (error) {
-    const err = error;
-  } finally {
-    dispatch({ type: LOGOUT });
-  }
+  console.log("dispatching logout");
+  localStorage.clear();
+  dispatch({ type: LOGOUT });
 };
 
-export const isUserAthenticated = () => async (dispatch) => {
+export const validateToken = () => async (dispatch) => {
   try {
     dispatch({ type: USER_LOADING });
-    const res = await axios.get();
+    const res = await axios.get("http://localhost:5000/authorised");
     dispatch({ type: LOGIN, data: res.data });
   } catch (error) {
     dispatch({ type: LOGOUT });

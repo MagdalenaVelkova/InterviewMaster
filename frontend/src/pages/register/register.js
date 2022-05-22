@@ -36,7 +36,7 @@ function Register() {
         password: password,
       };
       const res = await axios.post(
-        "http://localhost:8000/api/register",
+        "http://localhost:5000/api/users/register",
         payload
       );
     } catch (error) {

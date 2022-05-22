@@ -1,13 +1,13 @@
+import axios from "axios";
+import "bootstrap/dist/css/bootstrap.min.css";
 import React from "react";
 import ReactDOM from "react-dom";
-import "./index.css";
 import App from "./App";
-import "bootstrap/dist/css/bootstrap.min.css";
-import axios from "axios";
+import "./index.css";
 
 axios.interceptors.request.use(
   (config) => {
-    const token = sessionStorage.getItem("token");
+    const token = localStorage.getItem("token");
     config.headers["Authorization"] = `Bearer ${token}`;
     return config;
   },

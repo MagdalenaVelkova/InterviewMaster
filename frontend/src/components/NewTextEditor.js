@@ -6,13 +6,19 @@ import * as reactDraftWysiwyg from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import BaseButton from "./buttons/BaseButton";
 const NewTextEditor = ({ interviewQuestionId }) => {
-  const USER_ID = "6248688a883d00ca573c9392";
+  const [profile, setProfile] = useState("");
   const [userSolution, setUserSolution] = useState({});
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
 
+  const getProfile = async () => {
+    const res = await axios.get(`http://localhost:5000/userprofile`);
+    setProfile(res.data);
+  };
+
   const fetchSolution = async () => {
+    console.log(profile.userId);
     const res = await axios.get(
-      `http://localhost:5000/api/usersolutions/${interviewQuestionId}/${USER_ID}`
+      `http://localhost:5000/api/usersolutions/${interviewQuestionId}/${profile.userId}`
     );
     setUserSolution(res.data);
     setEditorState(
@@ -23,8 +29,12 @@ const NewTextEditor = ({ interviewQuestionId }) => {
   };
 
   useEffect(() => {
-    fetchSolution();
+    getProfile();
   }, []);
+
+  useEffect(() => {
+    fetchSolution();
+  }, [profile]);
 
   const onEditorStateChange = (newState) => {
     setEditorState(newState);
@@ -39,8 +49,8 @@ const NewTextEditor = ({ interviewQuestionId }) => {
       );
       const payload = {
         id: userSolution.id || "",
-        userId: userSolution.userId,
-        interviewQuestionId: userSolution.interviewQuestionId,
+        userId: profile.userId,
+        interviewQuestionId: interviewQuestionId,
         response: rawResponse,
       };
 

@@ -1,15 +1,21 @@
 import React from "react";
 import { Container, Nav, Navbar } from "react-bootstrap";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { LinkContainer } from "react-router-bootstrap";
 import { useLocation } from "react-router-dom";
+import { logoutUser } from "../redux/actions";
 
 function Header() {
   const isAuthenticated = useSelector(
     (state) => state.userReducer.isAuthenticated
   );
   let pageLocation = useLocation();
+  const dispatch = useDispatch();
 
+  const handleLogout = () => {
+    console.log("logout button");
+    dispatch(logoutUser());
+  };
   if (pageLocation.pathname.includes("questionslibrary/")) {
     return <div></div>;
   } else {
@@ -49,8 +55,8 @@ function Header() {
                   <LinkContainer to="/myprofile">
                     <Nav.Link>My Profile</Nav.Link>
                   </LinkContainer>
-                  <LinkContainer to="/logout">
-                    <Nav.Link>Logout</Nav.Link>
+                  <LinkContainer to="/">
+                    <Nav.Link onClick={handleLogout}>Logout </Nav.Link>
                   </LinkContainer>
                 </Nav>
               ) : (

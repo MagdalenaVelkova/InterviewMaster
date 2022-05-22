@@ -90,6 +90,11 @@ namespace InterviewMaster.Persistance.Repositories
             return entity.Id;
         }
 
+        public bool QuestionExists(string id)
+        {
+                return Query().Any(x => x.Id == id);
+        }
+
 
         //get all question
 

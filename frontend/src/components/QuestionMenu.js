@@ -6,13 +6,15 @@ import FavoriteRoundedIcon from "@material-ui/icons/FavoriteRounded";
 import ListRoundedIcon from "@material-ui/icons/ListRounded";
 import React from "react";
 import { Container, Nav, Navbar } from "react-bootstrap";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { LinkContainer } from "react-router-bootstrap";
+import { logoutUser } from "../redux/actions";
 
 function QuestionMenu() {
   const isAuthenticated = useSelector(
     (state) => state.userReducer.isAuthenticated
   );
+  const dispatch = useDispatch();
 
   return (
     <Navbar
@@ -88,10 +90,9 @@ function QuestionMenu() {
                     </IconButton>
                   </Nav.Link>
                 </LinkContainer>
-                <LinkContainer to="/logout">
+                <LinkContainer to="/" onClick={() => dispatch(logoutUser())}>
                   <Nav.Link>
                     <IconButton color="inherit">
-                      {" "}
                       <ExitToAppRoundedIcon></ExitToAppRoundedIcon>
                     </IconButton>
                   </Nav.Link>

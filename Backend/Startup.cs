@@ -50,7 +50,7 @@ namespace InterviewMaster
                 x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(x=>
             {
-                var Key = Encoding.ASCII.GetBytes(Configuration.GetSection("JwtKey").ToString());
+                var Key = Encoding.ASCII.GetBytes(Configuration["Jwt:Key"]);
                 x.RequireHttpsMetadata = false;
                 x.SaveToken = true;
                 x.TokenValidationParameters = new TokenValidationParameters
