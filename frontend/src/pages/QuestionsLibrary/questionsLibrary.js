@@ -1,9 +1,31 @@
+import Tab from "@mui/material/Tab";
+import Tabs from "@mui/material/Tabs";
 import React from "react";
 import { Container, Row } from "react-bootstrap";
-import Tabs from "../../components/tabs/BaseTabs";
+import Questions from "./Questions";
 import styles from "./QuestionsLibrary.module.css";
 
+function a11yProps(index) {
+  return {
+    id: `simple-tab-${index}`,
+    "aria-controls": `simple-tabpanel-${index}`,
+  };
+}
+
 const QuestionsLibrary = () => {
+  const [value, setValue] = React.useState(0);
+  const topics = [
+    "All",
+    "General",
+    "Collaboration",
+    "Problem Solving",
+    "Adaptability",
+  ];
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
   return (
     <div>
       <section className={styles.sectionTitle}>
@@ -11,7 +33,7 @@ const QuestionsLibrary = () => {
           <Row className={styles.row}>
             <h1 className={styles.mainHeadings}>Interview Questions Library</h1>
             <p className="lead text-center text-muted mb-6 mb-lg-8">
-              Concquer all interviews and get on top of your employability game!
+              Conquer all interviews and get on top of your employability game!
             </p>
           </Row>
         </Container>
@@ -19,7 +41,21 @@ const QuestionsLibrary = () => {
       <div className={styles.waveSection}></div>
       <section className={styles.sectionContent}>
         <Container>
-          <Tabs />
+          <Row>
+            <Tabs
+              value={value}
+              onChange={handleChange}
+              centered
+              textColor="primary"
+            >
+              {topics.map((topic, index) => (
+                <Tab label={topic} {...a11yProps(0)} key={index} margin={10} />
+              ))}
+            </Tabs>
+          </Row>
+          <Row>
+            <Questions topic={topics[value]}></Questions>
+          </Row>
         </Container>
       </section>
     </div>

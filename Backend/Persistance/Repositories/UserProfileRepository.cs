@@ -71,16 +71,36 @@ namespace InterviewMaster.Persistance.Repositories
             }).FirstOrDefault();
         }
 
-        public UserProfile GetUserProfile(string email, string password)
+        public string  GetUserId(Credentials credentials)
         {
-            return Query().Where(x => x.Email == email && x.Password == password).Select(x => new UserProfile()
+            var user =  Query().FirstOrDefault(x => x.Email == credentials.Email && x.Password == credentials.Password);
+
+            if (user != null)
+            { 
+            return user.Id;
+            }
+            return null;
+        }
+
+        public async Task<string> RemoveFromFavourite(string questionId, string userId)
+        {
             {
-                UserId = x.Id,
-                FirstName = x.FirstName,
-                LastName = x.LastName,
-                FavouriteQuestionsIds = x.FavouriteQuestions,
-                UserSolutionIds = x.UserSolutions
-            }).FirstOrDefault(); ;
+
+                var filterProfile = Builders<UserProfileDTO>.Filter.Eq(x => x.Id, userId);
+                var updateFavourite = Builders<UserProfileDTO>.Update.Pull(x => x.FavouriteQuestions, questionId);
+
+                var result = await Collection.FindOneAndUpdateAsync<UserProfileDTO>(filterProfile, updateFavourite);
+
+                if (result == null)
+                {
+                    return null;
+
+                }
+                return questionId;
+
+                //Collection.Update(Query().Where(x => x.Id == userId), Update.Push(FavouriteQuestions, questionId));
+
+            }
         }
 
         public bool UserExists(string id)

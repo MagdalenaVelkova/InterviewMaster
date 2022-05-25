@@ -7,6 +7,7 @@ namespace InterviewMaster.Domain.Identity
 {
     public class UserProfile
     {
+
         public string UserId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -18,6 +19,11 @@ namespace InterviewMaster.Domain.Identity
 
 
         //hash password here method? 
+        public static string HashPassword(string rawPassword)
+        {
+            // this.PasswordHash = string.Empty;
+            return rawPassword;
+        }
     }
 
 }

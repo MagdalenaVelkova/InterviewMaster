@@ -9,9 +9,10 @@ namespace InterviewMaster.Application.Services
 
         public UserProfile? GetUser(string userId);
 
-        public UserProfile? GetUserProfile(string email, string password);
+        public string GetUserId(Credentials credentials);
 
         public Task<string>? AddToFavourite(string questionId, string userId);
+        public Task<string>? RemoveFromFavourite(string questionId, string userId);
 
         public bool UserExists(string id);
     }

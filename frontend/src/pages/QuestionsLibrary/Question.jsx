@@ -7,40 +7,26 @@ import axios from "axios";
 import React, { useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import CardHeader from "react-bootstrap/esm/CardHeader";
-import { useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import styles from "./QuestionItem.module.css";
 
-function QuestionItem({ question, fetchProfile, favouriteQuestions }) {
-  const isAuthenticated = useSelector(
-    (state) => state.userReducer.isAuthenticated
-  );
-
-  const history = useHistory();
+const Question = ({ question, isFavourite, fetchFavourites }) => {
   const favouritedQuestion = "#F97D7D";
   const nonFavouritedQuestion = "#6C6A71";
-
-  console.log(favouriteQuestions);
-  // change to get the actual value of favourite
-  const [favouriteValue, setFavouriteValue] = useState(
-    favouriteQuestions?.includes(question.id)
-  );
-
-  const getIndividualQuestion = (id) => {
-    history.push(`/questionslibrary/${id}`);
-  };
+  const [favourite, setFavourite] = useState(isFavourite);
 
   const favouriteQuestionIconClick = async (event) => {
-    setFavouriteValue(!favouriteValue);
+    setFavourite(!favourite);
 
-    if (favouriteValue) {
+    if (favourite) {
+      console.log(favourite);
       event.target.style.fill = nonFavouritedQuestion;
       {
         try {
           await axios.post(
             `http://localhost:5000/api/users/removefavourite/${question.id}`
           );
-          fetchProfile();
+          fetchFavourites();
         } catch (error) {
           console.error("submission failed", error);
         }
@@ -55,14 +41,18 @@ function QuestionItem({ question, fetchProfile, favouriteQuestions }) {
               questionId: question.id,
             }
           );
-          fetchProfile();
+          fetchFavourites();
         } catch (error) {
           console.error("submission failed", error);
         }
       }
     }
   };
-  console.log(question.id, favouriteValue);
+
+  const history = useHistory();
+  const getIndividualQuestion = (id) => {
+    history.push(`/questionslibrary/${id}`);
+  };
   return (
     <Card className={styles.root}>
       <CardHeader className={styles.header}>
@@ -70,27 +60,22 @@ function QuestionItem({ question, fetchProfile, favouriteQuestions }) {
           <Col>
             <p className={styles.topic}>{question.topic.value}</p>
           </Col>
-
-          {isAuthenticated ? (
-            <Col>
-              <Typography align="right">
-                <IconButton
-                  className={styles.iconButton}
-                  onClick={favouriteQuestionIconClick}
-                >
-                  <FavoriteIcon
-                    style={
-                      favouriteValue
-                        ? { color: favouritedQuestion }
-                        : { color: nonFavouritedQuestion }
-                    }
-                  />
-                </IconButton>
-              </Typography>
-            </Col>
-          ) : (
-            <div></div>
-          )}
+          <Col>
+            <Typography align="right">
+              <IconButton
+                className={styles.iconButton}
+                onClick={favouriteQuestionIconClick}
+              >
+                <FavoriteIcon
+                  style={
+                    isFavourite
+                      ? { color: favouritedQuestion }
+                      : { color: nonFavouritedQuestion }
+                  }
+                />
+              </IconButton>
+            </Typography>
+          </Col>
         </Row>
       </CardHeader>
       <CardContent
@@ -105,6 +90,6 @@ function QuestionItem({ question, fetchProfile, favouriteQuestions }) {
       </CardContent>
     </Card>
   );
-}
+};
 
-export default QuestionItem;
+export default Question;

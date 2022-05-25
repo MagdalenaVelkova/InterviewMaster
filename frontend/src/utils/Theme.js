@@ -13,8 +13,17 @@ const theme = createTheme({
       default: "#22272A",
     },
     text: {
-      primary: "#ECF3FE",
-      secondary: "#bdb3e6",
+      primary: "#ECF3FE !important",
+      secondary: "#bdb3e6 !important",
+    },
+  },
+  components: {
+    MuiTab: {
+      styleOverrides: {
+        root: {
+          padding: "0.5rem !important",
+        },
+      },
     },
   },
 });

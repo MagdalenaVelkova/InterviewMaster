@@ -70,9 +70,7 @@ const Routes = () => {
     <Switch>
       {/* eslint-disable-next-line array-callback-return */}
       {routes.map((route, index) => {
-        console.log("rendering route", route);
         if (route.isPrivate && isUserAuthenticated) {
-          console.log("route is private and user is auth,", route);
           return (
             <Route
               key={index}
@@ -82,7 +80,6 @@ const Routes = () => {
             />
           );
         } else {
-          console.log("route is public");
           return (
             <Route
               key={index}

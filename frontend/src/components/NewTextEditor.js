@@ -16,7 +16,6 @@ const NewTextEditor = ({ interviewQuestionId }) => {
   };
 
   const fetchSolution = async () => {
-    console.log(profile.userId);
     const res = await axios.get(
       `http://localhost:5000/api/usersolutions/${interviewQuestionId}/${profile.userId}`
     );
@@ -42,7 +41,6 @@ const NewTextEditor = ({ interviewQuestionId }) => {
 
   const handleSubmit = async (event) => {
     try {
-      console.log(convertToRaw(editorState.getCurrentContent()));
       event.preventDefault();
       const rawResponse = JSON.stringify(
         convertToRaw(editorState.getCurrentContent())

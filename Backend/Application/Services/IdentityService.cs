@@ -1,4 +1,5 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using InterviewMaster.Domain.Identity;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Configuration;
 using System.IdentityModel.Tokens.Jwt;
@@ -25,19 +26,21 @@ namespace InterviewMaster.Application.Services
             // var key = ConfigurationManager.GetSection("JwtKey").ToString();
             this.tokenkey = Encoding.ASCII.GetBytes("VrFPOluCe4zkUnnFA8Q5gIxSh6T7u6MO");
         }
-        public string? Authenticate(string email, string password)
+        public string? Authenticate(Credentials credentials)
         {
-            var user = userProfileService.GetUserProfile(email, password);
+            // var passwordHash = credentials.PasswordHash
+            var userId = userProfileService.GetUserId(credentials);
 
-            if (user == null)
+            if (userId == null)
             {
                 return null;
             }
-
+            else
+            { 
             var tokenDescriptor = new SecurityTokenDescriptor()
             {
                 Subject = new ClaimsIdentity(new Claim[]{
-            new Claim(ClaimTypes.Sid, user.UserId),
+            new Claim(ClaimTypes.Sid, userId),
 
                 }),
 
@@ -49,6 +52,7 @@ namespace InterviewMaster.Application.Services
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
+            }
         }
 
         public string GetUserIdFromToken(string token)

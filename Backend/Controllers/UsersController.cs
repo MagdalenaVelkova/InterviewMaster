@@ -30,8 +30,23 @@ namespace Application.Controllers
 
         }
 
+        private string getToken()
+        {
+            StringValues bearerToken;
+            var tokenExists = HttpContext.Request.Headers.TryGetValue("Authorization", out bearerToken);
+
+            if (tokenExists)
+            {
+                var token = bearerToken.ToString().Split(" ")[1];
+
+                var id = identityService.GetUserIdFromToken(token.ToString());
+                return token;
+            }
+            return null;
+        }
+
         [HttpGet("/authorised")]
-        public  IActionResult GetIsAuthorised()
+        public IActionResult GetIsAuthorised()
         {
             return Ok();
         }
@@ -39,27 +54,22 @@ namespace Application.Controllers
         [HttpGet("/userprofile")]
         public IActionResult GetUserProfile()
         {
-            StringValues bearerToken;
-            var tokenExists  =  HttpContext.Request.Headers.TryGetValue("Authorization", out bearerToken);
-            if (tokenExists)
+            var token = getToken();
+            var id = identityService.GetUserIdFromToken(token.ToString());
+            var userProfile = userProfileService.GetUser(id);
+            if (userProfile != null)
             {
-                var token = bearerToken.ToString().Split(" ")[1];
-
-                var id = identityService.GetUserIdFromToken(token.ToString());
-                var userProfile = userProfileService.GetUser(id);
-                if (userProfile != null)
-                {
-                    return Ok(userProfile);
-                }
-
-                return NotFound();
+                return Ok(userProfile);
             }
-            return Unauthorized();
+
+            return NotFound();
         }
 
-        [HttpGet("{id}/favourites")]
-        public IActionResult GetFavouriteQuestions(string id)
+        [HttpGet("/favourites")]
+        public IActionResult GetFavouriteQuestions()
         {
+            var token = getToken();
+            var id = identityService.GetUserIdFromToken(token.ToString());
             var userProfile = userProfileService.GetUser(id);
             var questions = new List<InterviewQuestion>();
             if (userProfile != null)
@@ -74,10 +84,12 @@ namespace Application.Controllers
             return NotFound();
         }
 
-        [HttpGet("{id}/solutions")]
-        public IActionResult GetRespondedQuestions(string id)
+        [HttpGet("/solutions")]
+        public IActionResult GetRespondedQuestions()
         {
-            var userProfile = userProfileService.GetUser(id);
+            var token = getToken();
+            var userId = identityService.GetUserIdFromToken(token.ToString());
+            var userProfile = userProfileService.GetUser(userId);
             var questions = new List<InterviewQuestion>();
             if (userProfile != null)
             {
@@ -95,34 +107,71 @@ namespace Application.Controllers
             return NotFound();
         }
 
-        [HttpPost("addfavourite")]
-        public async Task<IActionResult> AddFavourite(string questionId, string userId)
+        [HttpPost("addfavourite/{questionId}")]
+        public async Task<IActionResult> AddFavourite(string questionId)
         {
+            var token = getToken();
+            var userId = identityService.GetUserIdFromToken(token.ToString());
             if (userProfileService.UserExists(userId) && questionsService.QuestionExists(questionId))
             {
                 var result = await userProfileService.AddToFavourite(questionId, userId);
-                if (result != null) { 
-                return Ok();
+                if (result != null)
+                {
+                    return Ok();
                 }
                 return NotFound();
             }
-            
-                return BadRequest();
+
+            return BadRequest();
+
+        }
+
+
+        [HttpPost("removefavourite/{questionId}")]
+        public async Task<IActionResult> RemoveFavourite(string questionId)
+        {
+            var token = getToken();
+            var userId = identityService.GetUserIdFromToken(token.ToString());
+            if (userProfileService.UserExists(userId) && questionsService.QuestionExists(questionId))
+            {
+                var result = await userProfileService.RemoveFromFavourite(questionId, userId);
+                if (result != null)
+                {
+                    return Ok();
+                }
+                return NotFound();
+            }
+
+            return BadRequest();
 
         }
 
         [AllowAnonymous]
         [HttpPost("register")]
-        public async Task<string> Register(UserProfile userProfile)
+        public async Task<IActionResult> Register(UserRegisterDTO userRegisterDTO)
         {
-            return await userProfileService.CreateUser(userProfile);
+            var userProfile = new UserProfile()
+            {
+                FirstName = userRegisterDTO.FirstName,
+                LastName = userRegisterDTO.LastName,
+                Email = userRegisterDTO.Email,
+                PasswordHash = UserProfile.HashPassword(userRegisterDTO.Password),
+            };
+            var userId = await userProfileService.CreateUser(userProfile);
+
+            return Ok(userId);
         }
 
         [AllowAnonymous]
         [HttpPost("login")]
-        public IActionResult Login([FromBody] UserLoginDTO userCredentials)
+        public IActionResult Login([FromBody] UserLoginDTO userLoginDTO)
         {
-            var token = identityService.Authenticate(userCredentials.Email, userCredentials.Password);
+            var credentials = new Credentials
+            {
+                Email = userLoginDTO.Email,
+                Password = userLoginDTO.Password,
+            };
+            var token = identityService.Authenticate(credentials);
 
             if (token == null)
             {
