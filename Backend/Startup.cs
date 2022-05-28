@@ -68,9 +68,10 @@ namespace InterviewMaster
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Interview Master Docs", Version = "v1" });
             });
             services.AddScoped<IIdGenerator, IdGenerator>();
-            services.AddScoped<IQuestionsService, QuestionsRepository>();
-            services.AddScoped<IUserProfileService, UserProfileRepository>();
-            services.AddScoped<IUserSolutionsService, UserSolutionsRepository>();
+            services.AddScoped<IQuestionsRespository, QuestionsRepository>();
+            services.AddScoped<IUserProfileRepository, UserProfileRepository>();
+            services.AddScoped<IUserSolutionsRepository, UserSolutionsRepository>();
+            services.AddScoped<IIdentityRepository, IdentityRepository>();
             services.AddScoped<IdentityService>();
 
 

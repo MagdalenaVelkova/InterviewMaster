@@ -9,6 +9,7 @@ namespace InterviewMaster.Persistance.Repositories
         protected BaseRepository(IMongoDatabase database)
         {
             Collection = database.GetCollection<T>(DbCollectionName);
+            InitialiseIndecies();
         }
 
         public abstract string DbCollectionName { get; }
@@ -18,5 +19,8 @@ namespace InterviewMaster.Persistance.Repositories
         {
             return Collection.AsQueryable();
         }
+
+        protected virtual void InitialiseIndecies()
+        { }
     }
 }

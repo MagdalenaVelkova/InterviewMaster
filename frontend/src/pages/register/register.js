@@ -1,7 +1,9 @@
-import axios from "axios";
 import { useState } from "react";
 import { Col, Container, Form, Row } from "react-bootstrap";
+import { useDispatch } from "react-redux";
+import { useHistory } from "react-router";
 import BaseButton from "../../components/buttons/BaseButton";
+import { registerUser } from "../../redux/actions";
 import styles from "./Register.module.css";
 
 function Register() {
@@ -26,18 +28,14 @@ function Register() {
     setLastName(event.target.value);
   };
 
+  const history = useHistory();
+  const dispatch = useDispatch();
+
   const handleSubmit = async (event) => {
     try {
       event.preventDefault();
-      const payload = {
-        email: email,
-        first_name: firstName,
-        last_name: lastName,
-        password: password,
-      };
-      const res = await axios.post(
-        "http://localhost:5000/api/users/register",
-        payload
+      dispatch(registerUser(email, password, firstName, lastName)).then(
+        history.push(`/`)
       );
     } catch (error) {
       console.error("submission failed", error);

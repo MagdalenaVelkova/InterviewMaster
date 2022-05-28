@@ -25,6 +25,14 @@ const theme = createTheme({
         },
       },
     },
+    MuiTabs: {
+      styleOverrides: {
+        scroller: {
+          marginBottom: "2rem !important",
+          marginTop: "0.5rem !important",
+        },
+      },
+    },
   },
 });
 

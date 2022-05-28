@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace InterviewMaster.Persistance.Repositories
 {
-    public class QuestionsRepository : BaseRepository<InterviewQuestionDTO>, IQuestionsService
+    public class QuestionsRepository : BaseRepository<InterviewQuestionDTO>, IQuestionsRespository
     {
         private readonly IIdGenerator idGenerator;
 
@@ -94,12 +94,5 @@ namespace InterviewMaster.Persistance.Repositories
         {
                 return Query().Any(x => x.Id == id);
         }
-
-
-        //get all question
-
-
-        //get question by id
-
     }
 }

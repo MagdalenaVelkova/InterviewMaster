@@ -1,10 +1,11 @@
 ﻿using InterviewMaster.Domain.Identity;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
-using System.Configuration;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,45 +15,54 @@ namespace InterviewMaster.Application.Services
 
 
     {
-        private readonly IUserProfileService userProfileService;
+        private readonly IUserProfileRepository userProfileService;
+        private readonly IIdentityRepository identityRepository;
         private readonly JwtSecurityTokenHandler tokenHandler;
         private readonly byte[] tokenkey;
-        
 
-        public IdentityService(IUserProfileService userProfileService)
+
+        public IdentityService(IUserProfileRepository userProfileService, IIdentityRepository identityRepository, IConfiguration configuration)
         {
             this.userProfileService = userProfileService;
+            this.identityRepository = identityRepository;
             this.tokenHandler = new JwtSecurityTokenHandler();
-            // var key = ConfigurationManager.GetSection("JwtKey").ToString();
-            this.tokenkey = Encoding.ASCII.GetBytes("VrFPOluCe4zkUnnFA8Q5gIxSh6T7u6MO");
+            this.tokenkey = Encoding.ASCII.GetBytes(configuration["Jwt:Key"]);
         }
         public string? Authenticate(Credentials credentials)
         {
-            // var passwordHash = credentials.PasswordHash
-            var userId = userProfileService.GetUserId(credentials);
+            var userIdentity = identityRepository.GetUserIdentity(credentials);
 
-            if (userId == null)
+            if (userIdentity == null)
             {
                 return null;
             }
             else
-            { 
-            var tokenDescriptor = new SecurityTokenDescriptor()
             {
-                Subject = new ClaimsIdentity(new Claim[]{
-            new Claim(ClaimTypes.Sid, userId),
-
-                }),
-
-                Expires = DateTime.UtcNow.AddHours(1),
-
-                SigningCredentials = new SigningCredentials(
-            new SymmetricSecurityKey(tokenkey), SecurityAlgorithms.HmacSha256Signature)
-
-            };
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
+                var passwordIsVerified = AreEqual(credentials.Password, userIdentity.PasswordHash, userIdentity.PasswordSalt);
+                if (passwordIsVerified)
+                {
+                    return GenerateToken(userIdentity);
+                }
+                else
+                {
+                    return null;
+                }
             }
+        }
+
+        public UserAuth GenerateUserIdentityFromCredentials(Credentials credentials)
+        {
+            var salt = CreateSalt();
+            var hashedPassword = GenerateHash(credentials.Password, salt);
+
+            var userIdentity = new UserAuth()
+            {
+                Email = credentials.Email,
+                PasswordHash = hashedPassword,
+                PasswordSalt = salt,
+            };
+
+            return userIdentity;
         }
 
         public string GetUserIdFromToken(string token)
@@ -76,6 +86,46 @@ namespace InterviewMaster.Application.Services
                 return false;
             }
 
+        }
+        private string GenerateToken(UserAuth userAuth)
+        {
+            var tokenDescriptor = new SecurityTokenDescriptor()
+            {
+                Subject = new ClaimsIdentity(new Claim[]{
+            new Claim(ClaimTypes.Sid, userAuth.Id),
+
+                }),
+
+                Expires = DateTime.UtcNow.AddHours(1),
+
+                SigningCredentials = new SigningCredentials(
+            new SymmetricSecurityKey(tokenkey), SecurityAlgorithms.HmacSha256Signature)
+
+            };
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            return tokenHandler.WriteToken(token);
+        }
+        private string CreateSalt()
+        {
+            //Generate a cryptographic random number.
+            RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
+            byte[] buff = new byte[64];
+            rng.GetBytes(buff);
+            return Convert.ToBase64String(buff);
+        }
+
+        private string GenerateHash(string input, string salt)
+        {
+            byte[] bytes = Encoding.UTF8.GetBytes(input + salt);
+            SHA256Managed sHA256ManagedString = new SHA256Managed();
+            byte[] hash = sHA256ManagedString.ComputeHash(bytes);
+            return Convert.ToBase64String(hash);
+        }
+
+        private bool AreEqual(string plainTextInput, string hashedInput, string salt)
+        {
+            string newHashedPin = GenerateHash(plainTextInput, salt);
+            return newHashedPin.Equals(hashedInput);
         }
     }
 }

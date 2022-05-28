@@ -13,9 +13,9 @@ namespace Application.Controllers
     [ApiController]
     public class QuestionsController : ControllerBase
     {
-        private readonly IQuestionsService questionsService;
+        private readonly IQuestionsRespository questionsService;
 
-        public QuestionsController(IQuestionsService questionsService)
+        public QuestionsController(IQuestionsRespository questionsService)
         {
             this.questionsService = questionsService;
         }

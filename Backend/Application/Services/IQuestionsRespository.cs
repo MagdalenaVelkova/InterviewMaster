@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace InterviewMaster.Application.Services
 {
-    public interface IQuestionsService
+    public interface IQuestionsRespository
     {
         public Task<List<InterviewQuestion>> GetAllQuestions();
 

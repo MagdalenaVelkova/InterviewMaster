@@ -14,9 +14,9 @@ namespace InterviewMaster.Controllers
     [ApiController]
     public class UserSolutionsController : ControllerBase
     {
-        private readonly IUserSolutionsService userSolutionsService;
+        private readonly IUserSolutionsRepository userSolutionsService;
 
-        public UserSolutionsController(IUserSolutionsService userSolutionsService)
+        public UserSolutionsController(IUserSolutionsRepository userSolutionsService)
         {
             this.userSolutionsService = userSolutionsService;
         }

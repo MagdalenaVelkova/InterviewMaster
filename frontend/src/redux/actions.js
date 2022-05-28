@@ -30,16 +30,25 @@ export const loginUser = (email, password) => async (dispatch) => {
   }
 };
 
-export const registerUser = (values) => async (dispatch) => {
-  try {
-    const payload = {
-      emailAddress: values.email,
-      password: values.password,
-    };
-    const res = await axios.post(payload);
-    dispatch(loginUser(values));
-  } catch (error) {}
-};
+export const registerUser =
+  (email, password, firstName, lastName) => async (dispatch) => {
+    try {
+      const payload = {
+        email: email,
+        password: password,
+        firstName: firstName,
+        lastName: lastName,
+      };
+      const res = await axios.post(
+        "http://localhost:5000/api/users/register",
+        payload,
+        {
+          "Content-Type": "application/json",
+        }
+      );
+      dispatch(loginUser(email, password));
+    } catch (error) {}
+  };
 
 export const logoutUser = () => async (dispatch) => {
   console.log("dispatching logout");

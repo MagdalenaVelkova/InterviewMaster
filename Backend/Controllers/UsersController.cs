@@ -16,17 +16,19 @@ namespace Application.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly IUserProfileService userProfileService;
-        private readonly IQuestionsService questionsService;
-        private readonly IUserSolutionsService userSolutionsService;
+        private readonly IUserProfileRepository userProfileRepository;
+        private readonly IQuestionsRespository questionsRespository;
+        private readonly IUserSolutionsRepository userSolutionsRepository;
         private readonly IdentityService identityService;
+        private readonly IIdentityRepository identityRepository;
 
-        public UsersController(IUserProfileService userProfileService, IQuestionsService questionsService, IUserSolutionsService userSolutionsService, IdentityService identityService)
+        public UsersController(IUserProfileRepository userProfileRepository, IQuestionsRespository questionsRespository, IUserSolutionsRepository userSolutionsRepository, IdentityService identityService, IIdentityRepository identityRepository)
         {
-            this.userProfileService = userProfileService;
-            this.questionsService = questionsService;
-            this.userSolutionsService = userSolutionsService;
+            this.userProfileRepository = userProfileRepository;
+            this.questionsRespository = questionsRespository;
+            this.userSolutionsRepository = userSolutionsRepository;
             this.identityService = identityService;
+            this.identityRepository = identityRepository;
 
         }
 
@@ -56,7 +58,7 @@ namespace Application.Controllers
         {
             var token = getToken();
             var id = identityService.GetUserIdFromToken(token.ToString());
-            var userProfile = userProfileService.GetUser(id);
+            var userProfile = userProfileRepository.GetUser(id);
             if (userProfile != null)
             {
                 return Ok(userProfile);
@@ -70,13 +72,13 @@ namespace Application.Controllers
         {
             var token = getToken();
             var id = identityService.GetUserIdFromToken(token.ToString());
-            var userProfile = userProfileService.GetUser(id);
+            var userProfile = userProfileRepository.GetUser(id);
             var questions = new List<InterviewQuestion>();
             if (userProfile != null)
             {
                 foreach (var questionId in userProfile.FavouriteQuestionsIds)
                 {
-                    var question = questionsService.GetQuestion(questionId);
+                    var question = questionsRespository.GetQuestion(questionId);
                     questions.Add(question);
                 }
                 return Ok(questions);
@@ -89,14 +91,14 @@ namespace Application.Controllers
         {
             var token = getToken();
             var userId = identityService.GetUserIdFromToken(token.ToString());
-            var userProfile = userProfileService.GetUser(userId);
+            var userProfile = userProfileRepository.GetUser(userId);
             var questions = new List<InterviewQuestion>();
             if (userProfile != null)
             {
                 foreach (var userSolutionId in userProfile.UserSolutionIds)
                 {
-                    var userSolution = userSolutionsService.GetUserSolutionById(userSolutionId);
-                    var question = questionsService.GetQuestion(userSolution.InterviewQuestionId);
+                    var userSolution = userSolutionsRepository.GetUserSolutionById(userSolutionId);
+                    var question = questionsRespository.GetQuestion(userSolution.InterviewQuestionId);
                     if (question != null)
                     {
                         questions.Add(question);
@@ -112,9 +114,9 @@ namespace Application.Controllers
         {
             var token = getToken();
             var userId = identityService.GetUserIdFromToken(token.ToString());
-            if (userProfileService.UserExists(userId) && questionsService.QuestionExists(questionId))
+            if (userProfileRepository.UserExists(userId) && questionsRespository.QuestionExists(questionId))
             {
-                var result = await userProfileService.AddToFavourite(questionId, userId);
+                var result = await userProfileRepository.AddQuestionToFavourite(questionId, userId);
                 if (result != null)
                 {
                     return Ok();
@@ -132,9 +134,9 @@ namespace Application.Controllers
         {
             var token = getToken();
             var userId = identityService.GetUserIdFromToken(token.ToString());
-            if (userProfileService.UserExists(userId) && questionsService.QuestionExists(questionId))
+            if (userProfileRepository.UserExists(userId) && questionsRespository.QuestionExists(questionId))
             {
-                var result = await userProfileService.RemoveFromFavourite(questionId, userId);
+                var result = await userProfileRepository.RemoveQuestionFromFavourite(questionId, userId);
                 if (result != null)
                 {
                     return Ok();
@@ -150,16 +152,32 @@ namespace Application.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register(UserRegisterDTO userRegisterDTO)
         {
-            var userProfile = new UserProfile()
+            var credentials = new Credentials()
             {
-                FirstName = userRegisterDTO.FirstName,
-                LastName = userRegisterDTO.LastName,
                 Email = userRegisterDTO.Email,
-                PasswordHash = UserProfile.HashPassword(userRegisterDTO.Password),
+                Password = userRegisterDTO.Password,
             };
-            var userId = await userProfileService.CreateUser(userProfile);
 
-            return Ok(userId);
+            var userIdentity = identityService.GenerateUserIdentityFromCredentials(credentials);
+
+            // transaction here? 
+            var userId = await identityRepository.CreateIdentity(userIdentity);
+
+            if (userId != null)
+            {
+                var userProfile = new UserProfile()
+                {
+                    UserId = userId,
+                    FirstName = userRegisterDTO.FirstName,
+                    LastName = userRegisterDTO.LastName,
+                };
+
+                await userProfileRepository.CreateUser(userProfile);
+
+                return Ok(userId);
+            }
+            return BadRequest();
+
         }
 
         [AllowAnonymous]

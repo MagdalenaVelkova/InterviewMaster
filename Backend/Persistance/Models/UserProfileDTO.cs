@@ -20,14 +20,6 @@ namespace InterviewMaster.Persistance.Models
         [BsonElement("lastName")]
         public string LastName { get; set; }
 
-        [BsonRequired]
-        [BsonElement("email")]
-        public string Email { get; set; }
-
-        [BsonRequired]
-        [BsonElement("password")]
-        public string Password { get; set; }
-
         [BsonElement("favouriteQuestions")]
         public IEnumerable<string> FavouriteQuestions { get; set; }
 

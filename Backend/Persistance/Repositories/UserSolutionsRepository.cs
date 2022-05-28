@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace InterviewMaster.Persistance.Repositories
 {
-    public class UserSolutionsRepository : BaseRepository<UserSolutionDTO>, IUserSolutionsService
+    public class UserSolutionsRepository : BaseRepository<UserSolutionDTO>, IUserSolutionsRepository
     {
         private readonly IIdGenerator idGenerator;
 

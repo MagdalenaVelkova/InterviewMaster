@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace InterviewMaster.Persistance.Repositories
 {
-    public class UserProfileRepository : BaseRepository<UserProfileDTO>, IUserProfileService
+    public class UserProfileRepository : BaseRepository<UserProfileDTO>, IUserProfileRepository
     {
         private readonly IIdGenerator idGenerator;
 
@@ -20,35 +20,14 @@ namespace InterviewMaster.Persistance.Repositories
         }
         public override string DbCollectionName => "UserProfile";
 
-        public async Task<string>?  AddToFavourite(string questionId, string userId)
-        {
-
-            var filterProifile = Builders<UserProfileDTO>.Filter.Eq(x => x.Id, userId);
-            var updateFavourite = Builders<UserProfileDTO>.Update.Push(x => x.FavouriteQuestions, questionId);
-
-            var result = await Collection.FindOneAndUpdateAsync<UserProfileDTO>(filterProifile, updateFavourite);
-
-            if (result ==null)
-            {
-                return null;
-
-            }
-            return questionId;
-
-            //Collection.Update(Query().Where(x => x.Id == userId), Update.Push(FavouriteQuestions, questionId));
-
-        }
-
-        // create user
+        // create user profile
         public async Task<string> CreateUser(UserProfile user)
         {
             var entity = new UserProfileDTO
             {
-                Id = idGenerator.Generate(),
+                Id = user.UserId,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                Email = user.Email,
-                Password = user.PasswordHash,
                 FavouriteQuestions = new List<string>(),
                 UserSolutions = new List<string>()
             };
@@ -58,7 +37,12 @@ namespace InterviewMaster.Persistance.Repositories
             return entity.Id;
         }
 
-        // find user
+        public bool UserExists(string id)
+        {
+            return Query().Any(x => x.Id == id);
+        }
+
+        // find user profile
         public UserProfile? GetUser(string userId)
         {
             return Query().Where(x => x.Id == userId).Select(x => new UserProfile()
@@ -70,19 +54,22 @@ namespace InterviewMaster.Persistance.Repositories
                 UserSolutionIds = x.UserSolutions
             }).FirstOrDefault();
         }
-
-        public string  GetUserId(Credentials credentials)
+        public async Task<string>? AddQuestionToFavourite(string questionId, string userId)
         {
-            var user =  Query().FirstOrDefault(x => x.Email == credentials.Email && x.Password == credentials.Password);
 
-            if (user != null)
-            { 
-            return user.Id;
+            var filterProifile = Builders<UserProfileDTO>.Filter.Eq(x => x.Id, userId);
+            var updateFavourite = Builders<UserProfileDTO>.Update.Push(x => x.FavouriteQuestions, questionId);
+
+            var result = await Collection.FindOneAndUpdateAsync<UserProfileDTO>(filterProifile, updateFavourite);
+
+            if (result == null)
+            {
+                return null;
+
             }
-            return null;
+            return questionId;
         }
-
-        public async Task<string> RemoveFromFavourite(string questionId, string userId)
+        public async Task<string> RemoveQuestionFromFavourite(string questionId, string userId)
         {
             {
 
@@ -97,21 +84,7 @@ namespace InterviewMaster.Persistance.Repositories
 
                 }
                 return questionId;
-
-                //Collection.Update(Query().Where(x => x.Id == userId), Update.Push(FavouriteQuestions, questionId));
-
             }
         }
-
-        public bool UserExists(string id)
-        {
-            return Query().Any(x => x.Id == id);
-        }
-
-
-
-        //update user
-
-        // deleteuser
     }
 }

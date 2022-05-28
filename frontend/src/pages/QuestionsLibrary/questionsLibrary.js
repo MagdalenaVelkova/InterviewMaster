@@ -41,13 +41,8 @@ const QuestionsLibrary = () => {
       <div className={styles.waveSection}></div>
       <section className={styles.sectionContent}>
         <Container>
-          <Row>
-            <Tabs
-              value={value}
-              onChange={handleChange}
-              centered
-              textColor="primary"
-            >
+          <Row stlye={{ marginBottom: "2rem" }}>
+            <Tabs value={value} onChange={handleChange} centered>
               {topics.map((topic, index) => (
                 <Tab label={topic} {...a11yProps(0)} key={index} margin={10} />
               ))}

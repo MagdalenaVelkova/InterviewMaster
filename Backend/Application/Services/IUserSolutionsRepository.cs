@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace InterviewMaster.Application.Services
 {
-    public interface IUserSolutionsService
+    public interface IUserSolutionsRepository
     {
         public Task<string> CreateOneOrUpdate(UserSolution userSolution);
         public UserSolution? GetUserSolutionById(string id);
