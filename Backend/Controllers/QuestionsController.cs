@@ -2,6 +2,7 @@
 using InterviewMaster.Domain.InterviewPreparation;
 using InterviewMaster.Domain.InterviewPreparation.ValueObjects;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -13,51 +14,51 @@ namespace Application.Controllers
     [ApiController]
     public class QuestionsController : ControllerBase
     {
-        private readonly IQuestionsRespository questionsService;
+        private readonly IQuestionsRespository questionsRepository;
 
-        public QuestionsController(IQuestionsRespository questionsService)
+        public QuestionsController(IQuestionsRespository questionsRepository)
         {
-            this.questionsService = questionsService;
+            this.questionsRepository = questionsRepository;
         }
 
         [HttpGet]
         public async Task<List<InterviewQuestion>> GetQuestions()
         {
-            var questions = await questionsService.GetAllQuestions();
+            var questions = await questionsRepository.GetAllQuestions();
             return questions;
         }
 
 
         // GET api/<ValuesController>/5
         [HttpGet("/topic/{topicValue}")]
-        public async Task<List<InterviewQuestion>> GetQuestionsByTopic(string topicValue)
+        public async Task<IActionResult> GetQuestionsByTopic(string topicValue)
         {
             if (topicValue.ToLower() == "all")
             {
-                return await GetQuestions();
+                var allQuestions = await GetQuestions();
+                return Ok(allQuestions);
             }
-            var topic = new Topic(topicValue);
-            var questions = await questionsService.GetQuestionsByTopic(topic);
-            return questions;
+            try
+            {
+                var topic = new Topic(topicValue);
+                var questions = await questionsRepository.GetQuestionsByTopic(topic);
+                return Ok(questions);
+            }
+            catch (ArgumentException e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
         [HttpGet("{id}")]
-        public ActionResult GetQuestionById(string id)
+        public IActionResult GetQuestionById(string id)
         {
-            var question= questionsService.GetQuestion(id);
+            var question = questionsRepository.GetQuestion(id);
             if (question != null)
             {
                 return Ok(question);
             }
             return NotFound();
         }
-
-        // Needs fixing 
-        [HttpPost]
-        public async Task<string> Post([FromBody] InterviewQuestion interviewQuestion)
-        {
-         return await questionsService.PostQuestion(interviewQuestion);
-        }
-
     }
 }

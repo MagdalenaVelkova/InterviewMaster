@@ -1,23 +1,26 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace InterviewMaster.Domain.InterviewPreparation.ValueObjects
 {
+    [ExcludeFromCodeCoverage]
     public class Topic : ValueObject
     {
         public string Value { get; }
-
-        public Topic(string value)
+        private readonly HashSet<string> topics = new HashSet<string> { "general", "collaboration", "problem solving", "adaptability", "organisation" };
+    public Topic(string value)
         {
-            var topics = new HashSet<string> { "general", "collaboration", "problem solving", "adaptability", "organisation" };
             if (topics.Contains(value.ToLower()))
             {
                 Value = value.ToLower();
             }
             else
             {
-                Value = "general";
+                throw new ArgumentException();
             }
         }
+
         public override string ToString()
         {
             return Value;

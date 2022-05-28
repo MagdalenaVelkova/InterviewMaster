@@ -1,9 +1,11 @@
 ﻿using InterviewMaster.Domain.InterviewPreparation.ValueObjects;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace InterviewMaster.Domain.InterviewPreparation
 {
+    [ExcludeFromCodeCoverage]
     public class InterviewQuestion
     {
         public string Id { get; set; }

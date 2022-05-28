@@ -32,8 +32,8 @@ const IndividualQuestionPage = () => {
 
   useEffect(() => {
     getQuestion();
+    getFavourites();
   }, []);
-  console.log("interviewQuestionId=", interviewQuestionId);
   return (
     <div>
       <section className={styles.mainSection}>

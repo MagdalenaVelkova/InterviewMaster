@@ -1,8 +1,10 @@
 ﻿using InterviewMaster.Domain.InterviewPreparation.ValueObjects;
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace InterviewMaster.Domain.InterviewPreparation
 {
+    [ExcludeFromCodeCoverage]
     public class UserSolution
     {
         public string Id { get; set; }

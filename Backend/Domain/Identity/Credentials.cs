@@ -1,5 +1,8 @@
-﻿namespace InterviewMaster.Domain.Identity
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace InterviewMaster.Domain.Identity
 {
+    [ExcludeFromCodeCoverage]
     public class Credentials
     {
         public string Email { get; set; }

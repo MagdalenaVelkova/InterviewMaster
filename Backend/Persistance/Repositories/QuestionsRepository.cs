@@ -74,22 +74,6 @@ namespace InterviewMaster.Persistance.Repositories
             }).ToListAsync();
         }
 
-        public async Task<string> PostQuestion(InterviewQuestion interviewQuestion)
-        {
-            var entity = new InterviewQuestionDTO
-            {
-                Id = idGenerator.Generate(),
-                Question = interviewQuestion.Question,
-                Topic = interviewQuestion.Topic.Value,
-                Prompts = interviewQuestion.Prompts.Select(prompt => prompt.Value),
-                ExampleAnswers = interviewQuestion.ExampleAnswers.Select(exampleAnswer => exampleAnswer.Value)
-            };
-
-            await Collection.InsertOneAsync(entity);
-
-            return entity.Id;
-        }
-
         public bool QuestionExists(string id)
         {
                 return Query().Any(x => x.Id == id);

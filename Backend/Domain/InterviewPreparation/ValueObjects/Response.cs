@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace InterviewMaster.Domain.InterviewPreparation.ValueObjects
 {
+    [ExcludeFromCodeCoverage]
     public class Response : ValueObject
     {
         public string Value { get; }

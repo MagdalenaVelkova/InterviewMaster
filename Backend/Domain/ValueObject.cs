@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace InterviewMaster.Domain
 {
+    [ExcludeFromCodeCoverage]
     public abstract class ValueObject
     {
         protected static bool EqualOperator(ValueObject left, ValueObject right)

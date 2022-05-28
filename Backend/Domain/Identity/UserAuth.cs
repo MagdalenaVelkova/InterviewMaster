@@ -1,5 +1,8 @@
-﻿namespace InterviewMaster.Domain.Identity
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace InterviewMaster.Domain.Identity
 {
+    [ExcludeFromCodeCoverage]
     public class UserAuth
     {
         public string Id { get; set; }

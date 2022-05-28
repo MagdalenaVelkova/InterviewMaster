@@ -10,8 +10,6 @@ namespace InterviewMaster.Application.Services
         public Task<List<InterviewQuestion>> GetAllQuestions();
 
         public Task<List<InterviewQuestion>> GetQuestionsByTopic(Topic topic);
-
-        public Task<string> PostQuestion(InterviewQuestion interviewQuestion);
         public InterviewQuestion? GetQuestion(string id);
 
         public bool QuestionExists(string id);

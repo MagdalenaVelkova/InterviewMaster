@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.32126.315
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32516.85
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InterviewMaster", "InterviewMaster.csproj", "{DFA624B7-BBDB-4486-ADF3-A4D27E1BEFCF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InterviewMasterTest", "..\InterviewMasterTest\InterviewMasterTest.csproj", "{89EA821F-473A-4AD3-8D05-3EBB0105A72B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InterviewMaster.Test", "..\InterviewMasterTest\InterviewMaster.Test.csproj", "{89EA821F-473A-4AD3-8D05-3EBB0105A72B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
