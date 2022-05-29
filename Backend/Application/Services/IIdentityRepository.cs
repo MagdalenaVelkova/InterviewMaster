@@ -8,7 +8,10 @@ namespace InterviewMaster.Application.Services
     {
         public UserAuth GetUserIdentity(Credentials credentials);
         public bool UserCredentialsExists(string id);
+
+        public bool UserEmailExists(string email);
         public Task<string> CreateIdentity(UserAuth userAuth);
+
     }
 
 }

@@ -1,5 +1,8 @@
-﻿namespace InterviewMaster.Controllers.DTOs
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace InterviewMaster.Controllers.DTOs
 {
+    [ExcludeFromCodeCoverage]
     public class UserSolutionDTO
     {
         public string Id { get; set; }

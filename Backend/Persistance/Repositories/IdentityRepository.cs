@@ -76,5 +76,10 @@ namespace InterviewMaster.Persistance.Repositories
             var indexModel = new CreateIndexModel<UserIdentityDTO>(indexKeys, indexOptions);
             Collection.Indexes.CreateOne(indexModel);
         }
+
+        public bool UserEmailExists(string email)
+        {
+            return Query().Any(x => x.Email == email);
+        }
     }
 }

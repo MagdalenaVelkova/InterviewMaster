@@ -1,5 +1,4 @@
-﻿using Application.Controllers;
-using InterviewMaster.Test.Util;
+﻿using InterviewMaster.Test.Util;
 using System.Threading.Tasks;
 using Xunit;
 using InterviewMaster.Test.TestData;
@@ -8,6 +7,7 @@ using InterviewMaster.Domain.InterviewPreparation;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using InterviewMaster.Controllers;
 
 namespace InterviewMaster.Test
 {

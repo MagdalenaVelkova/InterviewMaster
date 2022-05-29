@@ -2,9 +2,11 @@
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace InterviewMaster.Persistance.Models
 {
+    [ExcludeFromCodeCoverage]
     [BsonCollection("Identity")]
     public class UserIdentityDTO
     {

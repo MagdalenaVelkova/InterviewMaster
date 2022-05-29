@@ -9,7 +9,7 @@ using Microsoft.Extensions.Primitives;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Application.Controllers
+namespace InterviewMaster.Controllers
 {
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/[controller]")]
@@ -41,7 +41,7 @@ namespace Application.Controllers
             {
                 var token = bearerToken.ToString().Split(" ")[1];
 
-                var id = identityService.GetUserIdFromToken(token.ToString());
+                identityService.GetUserIdFromToken(token.ToString());
                 return token;
             }
             return null;
@@ -152,30 +152,35 @@ namespace Application.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register(UserRegisterDTO userRegisterDTO)
         {
-            var credentials = new Credentials()
+            var emailExists = identityRepository.UserEmailExists(userRegisterDTO.Email);
+            if (!emailExists)
             {
-                Email = userRegisterDTO.Email,
-                Password = userRegisterDTO.Password,
-            };
-
-            var userIdentity = identityService.GenerateUserIdentityFromCredentials(credentials);
-
-            // transaction here? 
-            var userId = await identityRepository.CreateIdentity(userIdentity);
-
-            if (userId != null)
-            {
-                var userProfile = new UserProfile()
+                var credentials = new Credentials()
                 {
-                    UserId = userId,
-                    FirstName = userRegisterDTO.FirstName,
-                    LastName = userRegisterDTO.LastName,
+                    Email = userRegisterDTO.Email,
+                    Password = userRegisterDTO.Password,
                 };
 
-                await userProfileRepository.CreateUser(userProfile);
+                var userIdentity = identityService.GenerateUserIdentityFromCredentials(credentials);
 
-                return Ok(userId);
+                // transaction here? 
+                var userId = await identityRepository.CreateIdentity(userIdentity);
+
+                if (userId != null)
+                {
+                    var userProfile = new UserProfile()
+                    {
+                        UserId = userId,
+                        FirstName = userRegisterDTO.FirstName,
+                        LastName = userRegisterDTO.LastName,
+                    };
+
+                    await userProfileRepository.CreateUser(userProfile);
+
+                    return Ok(userId);
+                }
             }
+
             return BadRequest();
 
         }

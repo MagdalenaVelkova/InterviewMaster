@@ -12,7 +12,7 @@ namespace InterviewMaster.Test.Util
 {
     public class FakeQuestionsRepository : IQuestionsRespository, IDisposable
     {
-        private List<InterviewQuestion> questions;
+        private List<InterviewQuestion> questions = new List<InterviewQuestion>();
 
         public Task<List<InterviewQuestion>> GetAllQuestions()
         {
@@ -21,8 +21,7 @@ namespace InterviewMaster.Test.Util
 
         public InterviewQuestion GetQuestion(string id)
         {
-            var q = questions.FirstOrDefault(x => x.Id == id);
-            return q;
+            return questions.FirstOrDefault(x => x.Id == id);
         }
 
         public Task<List<InterviewQuestion>> GetQuestionsByTopic(Topic topic)
@@ -37,7 +36,7 @@ namespace InterviewMaster.Test.Util
         }
 
         public void AddMultiple(List<InterviewQuestion> questionsToAdd) {
-            questions = questionsToAdd;
+            questions.AddRange(questionsToAdd);
         }
 
         public void AddOne(InterviewQuestion questionToAdd) {

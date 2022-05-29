@@ -32,7 +32,6 @@ const IndividualQuestionPage = () => {
 
   useEffect(() => {
     getQuestion();
-    getFavourites();
   }, []);
   return (
     <div>

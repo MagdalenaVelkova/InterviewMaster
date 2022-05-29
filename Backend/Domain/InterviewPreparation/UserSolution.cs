@@ -12,8 +12,4 @@ namespace InterviewMaster.Domain.InterviewPreparation
         public string InterviewQuestionId { get; set; }
         public Response Response { get; set; }
     }
-
-    // add response
-
-    //create constructor and updaTE DATE FOR EACH RESPONSE 
 }

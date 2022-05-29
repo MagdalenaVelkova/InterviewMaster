@@ -3,9 +3,11 @@ using InterviewMaster.Persistance.Extensions;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace InterviewMaster.Persistance.Models
 {
+    [ExcludeFromCodeCoverage]
     [BsonCollection("UserSolutions")]
     public class UserSolutionDTO
     {

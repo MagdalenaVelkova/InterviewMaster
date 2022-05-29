@@ -11,22 +11,20 @@ using System.Threading.Tasks;
 
 namespace InterviewMaster.Application.Services
 {
-    public class IdentityService
+    public class IdentityService 
 
 
     {
-        private readonly IUserProfileRepository userProfileService;
         private readonly IIdentityRepository identityRepository;
         private readonly JwtSecurityTokenHandler tokenHandler;
         private readonly byte[] tokenkey;
 
 
-        public IdentityService(IUserProfileRepository userProfileService, IIdentityRepository identityRepository, IConfiguration configuration)
+        public IdentityService(IIdentityRepository identityRepository, IConfiguration configuration)
         {
-            this.userProfileService = userProfileService;
             this.identityRepository = identityRepository;
             this.tokenHandler = new JwtSecurityTokenHandler();
-            this.tokenkey = Encoding.ASCII.GetBytes(configuration["Jwt:Key"]);
+            this.tokenkey = Encoding.ASCII.GetBytes(configuration.GetSection("Jwt:Key").ToString());
         }
         public string? Authenticate(Credentials credentials)
         {
@@ -87,7 +85,7 @@ namespace InterviewMaster.Application.Services
             }
 
         }
-        private string GenerateToken(UserAuth userAuth)
+        public string GenerateToken(UserAuth userAuth)
         {
             var tokenDescriptor = new SecurityTokenDescriptor()
             {
