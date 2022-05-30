@@ -58,7 +58,7 @@ namespace InterviewMaster.Persistance.Repositories
         {
 
             var filterProifile = Builders<UserProfileDTO>.Filter.Eq(x => x.Id, userId);
-            var updateFavourite = Builders<UserProfileDTO>.Update.Push(x => x.FavouriteQuestions, questionId);
+            var updateFavourite = Builders<UserProfileDTO>.Update.AddToSet(x => x.FavouriteQuestions, questionId);
 
             var result = await Collection.FindOneAndUpdateAsync<UserProfileDTO>(filterProifile, updateFavourite);
 
@@ -85,6 +85,21 @@ namespace InterviewMaster.Persistance.Repositories
                 }
                 return questionId;
             }
+        }
+
+        public async Task<string> AddQuestionToSolved(string questionId, string userId)
+        {
+            var filterProifile = Builders<UserProfileDTO>.Filter.Eq(x => x.Id, userId);
+            var updateFavourite = Builders<UserProfileDTO>.Update.AddToSet(x => x.UserSolutions, questionId);
+
+            var result = await Collection.FindOneAndUpdateAsync<UserProfileDTO>(filterProifile, updateFavourite);
+
+            if (result == null)
+            {
+                return null;
+
+            }
+            return questionId;
         }
     }
 }

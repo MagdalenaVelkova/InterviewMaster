@@ -1,5 +1,7 @@
 ﻿using InterviewMaster.Domain.Identity;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Primitives;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IdentityModel.Tokens.Jwt;
@@ -24,7 +26,21 @@ namespace InterviewMaster.Application.Services
         {
             this.identityRepository = identityRepository;
             this.tokenHandler = new JwtSecurityTokenHandler();
-            this.tokenkey = Encoding.ASCII.GetBytes(configuration.GetSection("Jwt:Key").ToString());
+            this.tokenkey = Encoding.ASCII.GetBytes(configuration["Jwt:Key"]);
+        }
+        public string getToken(HttpContext httpContext)
+        {
+            StringValues bearerToken;
+            bool tokenExists = httpContext.Request.Headers.TryGetValue("Authorization", out bearerToken);
+
+            if (tokenExists)
+            {
+                var token = bearerToken.ToString().Split(" ")[1];
+
+                GetUserIdFromToken(token.ToString());
+                return token;
+            }
+            return null;
         }
         public string? Authenticate(Credentials credentials)
         {
@@ -72,7 +88,13 @@ namespace InterviewMaster.Application.Services
 
         public async Task<bool> isAuthorised(string token)
         {
-            var validationParameters = new TokenValidationParameters();
+            var validationParameters = new TokenValidationParameters()
+            {
+                ValidateIssuer = false,
+                ValidateAudience = false,
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(tokenkey)
+            };
             var tokenValidationResult = await tokenHandler.ValidateTokenAsync(token, validationParameters);
 
             if (tokenValidationResult.IsValid)

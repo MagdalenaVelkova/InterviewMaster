@@ -87,13 +87,14 @@ namespace InterviewMaster
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Interview Master Docs v1"));
             }
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseHttpsRedirection();
 
             app.UseRouting();
 
-            app.UseAuthentication();
-            app.UseAuthorization();
+
 
             app.UseEndpoints(endpoints =>
             {

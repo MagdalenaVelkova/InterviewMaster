@@ -5,7 +5,6 @@ using InterviewMaster.Domain.InterviewPreparation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Primitives;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -32,31 +31,28 @@ namespace InterviewMaster.Controllers
 
         }
 
-        private string getToken()
-        {
-            StringValues bearerToken;
-            var tokenExists = HttpContext.Request.Headers.TryGetValue("Authorization", out bearerToken);
-
-            if (tokenExists)
-            {
-                var token = bearerToken.ToString().Split(" ")[1];
-
-                identityService.GetUserIdFromToken(token.ToString());
-                return token;
-            }
-            return null;
-        }
 
         [HttpGet("/authorised")]
-        public IActionResult GetIsAuthorised()
+        public async Task<IActionResult> GetIsAuthorised()
         {
-            return Ok();
+            var token = identityService.getToken(HttpContext);
+            if (token != null)
+            {
+                var isAuthorised = await identityService.isAuthorised(token);
+                if (isAuthorised)
+                { 
+                    return Ok(); 
+                }
+                return Unauthorized();
+            }
+            return Unauthorized();
+
         }
 
         [HttpGet("/userprofile")]
         public IActionResult GetUserProfile()
         {
-            var token = getToken();
+            var token = identityService.getToken(HttpContext);
             var id = identityService.GetUserIdFromToken(token.ToString());
             var userProfile = userProfileRepository.GetUser(id);
             if (userProfile != null)
@@ -70,7 +66,7 @@ namespace InterviewMaster.Controllers
         [HttpGet("/favourites")]
         public IActionResult GetFavouriteQuestions()
         {
-            var token = getToken();
+            var token = identityService.getToken(HttpContext);
             var id = identityService.GetUserIdFromToken(token.ToString());
             var userProfile = userProfileRepository.GetUser(id);
             var questions = new List<InterviewQuestion>();
@@ -89,7 +85,7 @@ namespace InterviewMaster.Controllers
         [HttpGet("/solutions")]
         public IActionResult GetRespondedQuestions()
         {
-            var token = getToken();
+            var token = identityService.getToken(HttpContext);
             var userId = identityService.GetUserIdFromToken(token.ToString());
             var userProfile = userProfileRepository.GetUser(userId);
             var questions = new List<InterviewQuestion>();
@@ -112,7 +108,7 @@ namespace InterviewMaster.Controllers
         [HttpPost("addfavourite/{questionId}")]
         public async Task<IActionResult> AddFavourite(string questionId)
         {
-            var token = getToken();
+            var token = identityService.getToken(HttpContext);
             var userId = identityService.GetUserIdFromToken(token.ToString());
             if (userProfileRepository.UserExists(userId) && questionsRespository.QuestionExists(questionId))
             {
@@ -132,7 +128,7 @@ namespace InterviewMaster.Controllers
         [HttpPost("removefavourite/{questionId}")]
         public async Task<IActionResult> RemoveFavourite(string questionId)
         {
-            var token = getToken();
+            var token = identityService.getToken(HttpContext);
             var userId = identityService.GetUserIdFromToken(token.ToString());
             if (userProfileRepository.UserExists(userId) && questionsRespository.QuestionExists(questionId))
             {

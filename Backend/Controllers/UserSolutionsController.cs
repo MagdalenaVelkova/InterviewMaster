@@ -2,29 +2,33 @@
 using InterviewMaster.Controllers.DTOs;
 using InterviewMaster.Domain.InterviewPreparation;
 using InterviewMaster.Domain.InterviewPreparation.ValueObjects;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace InterviewMaster.Controllers
 {
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/[controller]")]
     [ApiController]
     public class UserSolutionsController : ControllerBase
     {
-        private readonly IUserSolutionsRepository userSolutionsService;
+        private readonly IUserSolutionsRepository userSolutionsRepository;
+        private readonly IUserProfileRepository userProfileRepository;
+        private readonly IdentityService identityService;
 
-        public UserSolutionsController(IUserSolutionsRepository userSolutionsService)
+        public UserSolutionsController(IUserSolutionsRepository userSolutionsRepository, IdentityService identityService, IUserProfileRepository userProfileRepository)
         {
-            this.userSolutionsService = userSolutionsService;
+            this.userSolutionsRepository = userSolutionsRepository;
+            this.identityService = identityService;
+            this.userProfileRepository = userProfileRepository;
         }
 
         [HttpGet("{id}")]
-        public IActionResult Get(string id)
+        public IActionResult GetById(string id)
         {
-            var userProfile = userSolutionsService.GetUserSolutionById(id);
+            var userProfile = userSolutionsRepository.GetUserSolutionById(id);
             if (userProfile != null)
             {
                 return Ok(userProfile);
@@ -32,10 +36,12 @@ namespace InterviewMaster.Controllers
             return NotFound();
         }
 
-        [HttpGet("{questionId}/{userId}")]
-        public IActionResult Get(string questionId, string userId)
+        [HttpGet("user/{questionId}")]
+        public IActionResult GetByQuestion(string questionId)
         {
-            var userSolution = userSolutionsService.GetUserSolutionByUserAndQuestion(questionId, userId);
+            var token = identityService.getToken(HttpContext);
+            var userId = identityService.GetUserIdFromToken(token.ToString());
+            var userSolution = userSolutionsRepository.GetUserSolutionByUserAndQuestion(questionId, userId);
             if (userSolution != null)
             {
                 return Ok(userSolution);
@@ -44,16 +50,25 @@ namespace InterviewMaster.Controllers
         }
 
         [HttpPost]
-        public async Task<string> PostSolution(UserSolutionDTO userSolutionDTO)
+        public async Task<IActionResult> PostSolution(UserSolutionDTO userSolutionDTO)
         {
+            var token = identityService.getToken(HttpContext);
+            var userId = identityService.GetUserIdFromToken(token.ToString());
+
             var userSolution = new UserSolution() {
-            Id = userSolutionDTO.Id,
-            UserId = userSolutionDTO.UserId,
+            UserId = userId,
             InterviewQuestionId = userSolutionDTO.InterviewQuestionId,
             Response = new Response(userSolutionDTO.Response)
             };
 
-            return await userSolutionsService.CreateOneOrUpdate(userSolution);
+            var userSolutionId = await userSolutionsRepository.CreateOneOrUpdate(userSolution);
+
+            if (userSolutionId != null)
+            {
+                await userProfileRepository.AddQuestionToSolved(userSolution.InterviewQuestionId, userId);
+                return Ok(userSolutionId);
+            }
+            return Problem();
         }
     }
 }

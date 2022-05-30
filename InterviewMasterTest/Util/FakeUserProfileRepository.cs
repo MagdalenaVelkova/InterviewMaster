@@ -50,6 +50,25 @@ namespace InterviewMaster.Test.Util
             return null;
         }
 
+        public Task<string> AddQuestionToSolved(string questionId, string userId)
+        {
+            var userProfile = userProfiles.FirstOrDefault(x => x.UserId == userId);
+            if (userProfile != null)
+            {
+                var temp = new List<string>();
+                temp.AddRange(userProfile.UserSolutionIds);
+                if (userProfile.UserSolutionIds.Contains(questionId))
+                {
+                    return Task.FromResult(questionId);
+                }
+                temp.Add(questionId);
+                userProfile.UserSolutionIds = temp;
+                return Task.FromResult(questionId);
+            }
+
+            return null;
+        }
+
         public void AddOne(UserProfile userProfile)
         {
             userProfiles.Add(userProfile);
@@ -59,5 +78,7 @@ namespace InterviewMaster.Test.Util
         {
             userProfiles.Clear();
         }
+
+
     }
 }

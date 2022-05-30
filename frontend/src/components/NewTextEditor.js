@@ -17,7 +17,7 @@ const NewTextEditor = ({ interviewQuestionId }) => {
 
   const fetchSolution = async () => {
     const res = await axios.get(
-      `http://localhost:5000/api/usersolutions/${interviewQuestionId}/${profile.userId}`
+      `http://localhost:5000/api/usersolutions/user/${interviewQuestionId}`
     );
     setUserSolution(res.data);
     setEditorState(
@@ -47,7 +47,6 @@ const NewTextEditor = ({ interviewQuestionId }) => {
       );
       const payload = {
         id: userSolution.id || "",
-        userId: profile.userId,
         interviewQuestionId: interviewQuestionId,
         response: rawResponse,
       };

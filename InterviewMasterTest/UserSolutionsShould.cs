@@ -9,7 +9,7 @@ namespace InterviewMaster.Test
     {
         //have question id and user id
         [Fact]
-        public void Have_Question_Id_And_User_Id()
+        public void Be_Saved()
         {
             //arrange
 

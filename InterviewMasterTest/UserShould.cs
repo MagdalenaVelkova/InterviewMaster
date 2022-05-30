@@ -12,6 +12,7 @@ using InterviewMaster.Controllers;
 using InterviewMaster.Controllers.DTOs;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using System.Text;
 
 namespace InterviewMaster.Test
 {
@@ -23,6 +24,8 @@ namespace InterviewMaster.Test
         private FakeUserSolutionsRepository fakeUserSolutionsRepository;
         private FakeUserIdentityRepository fakeUserIdentityRepository;
         private IdentityService identityService;
+
+        private IConfiguration fakeConfiguration;
 
         public UserShould()
         {
@@ -118,10 +121,21 @@ namespace InterviewMaster.Test
             // how to validate token
             var token = resultObjectLogin.Value.ToString();
 
-            var validationParameters = new TokenValidationParameters();
+            usersController.ControllerContext = new ControllerContext();
+            usersController.ControllerContext.HttpContext = new DefaultHttpContext();
+            usersController.ControllerContext.HttpContext.Request.Headers["Authorization"] = string.Concat("Bearer ", token);
+
+            var tokenkey = Encoding.ASCII.GetBytes(fakeConfiguration["Jwt:Key"]);
+            var validationParameters = new TokenValidationParameters()
+            {
+                ValidateIssuer = false,
+                ValidateAudience = false,
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(tokenkey)
+            };
             var tokenHandler = new JwtSecurityTokenHandler();
             var tokenValidationResult = await tokenHandler.ValidateTokenAsync(token, validationParameters);
-            
+
             Assert.NotNull(token);
             Assert.True(tokenValidationResult.IsValid);
             
