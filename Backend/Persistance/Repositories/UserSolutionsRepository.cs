@@ -20,8 +20,8 @@ namespace InterviewMaster.Persistance.Repositories
         {
             this.idGenerator = idGenerator;
         }
-        public override string DbCollectionName => "UserSolutions";
-
+        public const string CollectionName = "UserSolutions";
+        public override string DbCollectionName => CollectionName;
 
 
         public UserSolution GetUserSolutionById(string id)

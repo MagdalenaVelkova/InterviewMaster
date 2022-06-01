@@ -166,7 +166,7 @@ namespace InterviewMaster.Controllers
                 {
                     var userProfile = new UserProfile()
                     {
-                        UserId = userId,
+                        Id = userId,
                         FirstName = userRegisterDTO.FirstName,
                         LastName = userRegisterDTO.LastName,
                     };

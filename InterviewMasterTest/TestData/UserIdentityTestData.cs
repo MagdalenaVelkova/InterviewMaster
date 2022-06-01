@@ -1,15 +1,12 @@
-﻿using InterviewMaster.Domain.Identity;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using InterviewMaster.Persistance.Models;
 
 namespace InterviewMaster.Test.TestData
 {
     public class UserIdentityTestData
     {
-        public static UserAuth GenerateValidTestUserIdentityOne()
+        public static UserIdentityDTO GenerateValidTestUserIdentityOne()
         {
-            return new UserAuth()
+            return new UserIdentityDTO ()
             {
                 Id = "6291dea19b4ee53850386abc",
                 Email = "TestUserOne@email.me", 

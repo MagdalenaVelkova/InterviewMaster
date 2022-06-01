@@ -27,6 +27,8 @@ namespace InterviewMaster
 
         public IConfiguration Configuration { get; }
 
+        public static Action<IServiceCollection> RegisterOverrides { private get; set; }
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
@@ -73,7 +75,7 @@ namespace InterviewMaster
             services.AddScoped<IUserSolutionsRepository, UserSolutionsRepository>();
             services.AddScoped<IIdentityRepository, IdentityRepository>();
             services.AddScoped<IdentityService>();
-
+            RegisterOverrides?.Invoke(services);
 
         }
 
@@ -87,13 +89,13 @@ namespace InterviewMaster
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Interview Master Docs v1"));
             }
-            app.UseAuthentication();
-            app.UseAuthorization();
+            
 
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
+            app.UseAuthentication();
+            app.UseAuthorization();
 
 
             app.UseEndpoints(endpoints =>

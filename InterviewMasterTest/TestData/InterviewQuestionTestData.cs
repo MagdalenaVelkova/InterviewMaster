@@ -1,5 +1,6 @@
 ﻿using InterviewMaster.Domain.InterviewPreparation;
 using InterviewMaster.Domain.InterviewPreparation.ValueObjects;
+using InterviewMaster.Persistance.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,47 +9,47 @@ namespace InterviewMaster.Test.TestData
 {
     public class InterviewQuestionTestData
     {
-        public static InterviewQuestion GenerateValidTestQuestionOne()
+        public static InterviewQuestionDTO GenerateValidTestQuestionOne()
         {
-            return new InterviewQuestion() {
-                Id = "61746566a01a5e8e03b788e0",
+            return new InterviewQuestionDTO() {
+                Id = "61746566a01a5e8e03b788e2",
                 Question = "Test Question One",
-                Topic = new Topic("general"),
-                Prompts = new List<Prompt>() { new Prompt("Test Prompt One") },
-                ExampleAnswers = new List<ExampleAnswer>() { new ExampleAnswer("Test Example Answer One") },
+                Topic = "general",
+                Prompts = new List<string>() { "Test Prompt One" },
+                ExampleAnswers = new List<string>() {"Test Example Answer One" },
             };
         }
 
-        public static InterviewQuestion GenerateValidTestQuestionTwo()
+        public static InterviewQuestionDTO GenerateValidTestQuestionTwo()
         {
-            return new InterviewQuestion()
+            return new InterviewQuestionDTO()
             {
                 Id = "623633119c87b612a42c587a",
                 Question = "Test Question Two",
-                Topic = new Topic("collaboration"),
-                Prompts = new List<Prompt>() { new Prompt("Test Prompt Two") },
-                ExampleAnswers = new List<ExampleAnswer>() { new ExampleAnswer("Test Example Answer Two") },
+                Topic = "collaboration",
+                Prompts = new List<string>() { "Test Prompt Two" },
+                ExampleAnswers = new List<string>() { "Test Example Answer Two" },
             };
         }
 
-        public static InterviewQuestion GenerateValidTestQuestionThree()
+        public static InterviewQuestionDTO GenerateValidTestQuestionThree()
         {
-            return new InterviewQuestion()
+            return new InterviewQuestionDTO()
             {
                 Id = "6291e4a80403ed9f166540d1",
                 Question = "Test Question Three",
-                Topic = new Topic("collaboration"),
-                Prompts = new List<Prompt>() { new Prompt("Test Prompt Three") },
-                ExampleAnswers = new List<ExampleAnswer>() { new ExampleAnswer("Test Example Answer Three") },
+                Topic = "collaboration",
+                Prompts = new List<string>() {"Test Prompt Three" },
+                ExampleAnswers = new List<string>() { "Test Example Answer Three" },
             };
         }
 
-        public static List<InterviewQuestion> GenerateMultipleQuestions() {
-            var questionOne = InterviewQuestionTestData.GenerateValidTestQuestionOne();
-            var questionTwo = InterviewQuestionTestData.GenerateValidTestQuestionTwo();
-            var questionThree = InterviewQuestionTestData.GenerateValidTestQuestionThree();
+        public static List<InterviewQuestionDTO> GenerateMultipleQuestions() {
+            var questionOne = GenerateValidTestQuestionOne();
+            var questionTwo = GenerateValidTestQuestionTwo();
+            var questionThree = GenerateValidTestQuestionThree();
 
-            return new List<InterviewQuestion>() { questionOne, questionTwo, questionThree };
+            return new List<InterviewQuestionDTO>() { questionOne, questionTwo, questionThree };
         }
 
     }

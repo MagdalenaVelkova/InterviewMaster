@@ -21,7 +21,8 @@ namespace InterviewMaster.Persistance.Repositories
         {
             this.idGenerator = idGenerator;
         }
-        public override string DbCollectionName => "Questions";
+        public const string CollectionName = "Questions";
+        public override string DbCollectionName => CollectionName;
 
         public Task<List<InterviewQuestion>> GetAllQuestions()
         {
@@ -77,6 +78,20 @@ namespace InterviewMaster.Persistance.Repositories
         public bool QuestionExists(string id)
         {
                 return Query().Any(x => x.Id == id);
+        }
+
+        public async Task<string> CreateQuestion(InterviewQuestion interviewQuestion)
+        {
+            var entity = new InterviewQuestionDTO
+            {
+                Id = idGenerator.Generate(),
+                Question = interviewQuestion.Question,
+                Topic = interviewQuestion.Topic.Value,
+                Prompts = interviewQuestion.Prompts.Select(prompt => prompt.Value),
+                ExampleAnswers = interviewQuestion.ExampleAnswers.Select(exampleAnswer => exampleAnswer.Value)
+            };
+            await Collection.InsertOneAsync(entity);
+            return entity.Id;
         }
     }
 }

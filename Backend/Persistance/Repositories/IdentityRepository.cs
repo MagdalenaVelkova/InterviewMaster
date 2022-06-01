@@ -17,9 +17,9 @@ namespace InterviewMaster.Persistance.Repositories
         {
             this.idGenerator = idGenerator;
         }
-        public override string DbCollectionName => "Identity";
 
-        // create user profile
+        public const string CollectionName = "Identity";
+        public override string DbCollectionName => CollectionName;
         public async Task<string> CreateIdentity(UserAuth userAuth)
         {
             var entity = new UserIdentityDTO

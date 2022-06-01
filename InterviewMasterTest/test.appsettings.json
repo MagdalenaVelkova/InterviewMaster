@@ -1,0 +1,18 @@
+{
+  "InterviewMasterDatabase": {
+    "ConnectionString": "mongodb+srv://admin:SkwDdH5v6M3DZ$p@cluster0.uue7v.mongodb.net/InterviewMaster?retryWrites=true&w=majority",
+    "DatabaseName": "InterviewMaster"
+  },
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft": "Warning",
+      "Microsoft.Hosting.Lifetime": "Information"
+    }
+  },
+  "AllowedHosts": "*",
+  "Jwt": {
+    "Key": "VrFPOluCe4zkUnnFA8Q5gIxSh6T7u6MO",
+    "Issuer": "InterviewMaster"
+  }
+}

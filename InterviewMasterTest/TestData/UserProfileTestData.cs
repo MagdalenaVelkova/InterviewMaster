@@ -1,21 +1,19 @@
-﻿using InterviewMaster.Domain.Identity;
-using System;
+﻿using InterviewMaster.Persistance.Models;
 using System.Collections.Generic;
-using System.Text;
 
 namespace InterviewMaster.Test.TestData
 {
     public class UserProfileTestData
     {
-        public static UserProfile GenerateValidTestUserProfileOne()
+        public static UserProfileDTO GenerateValidTestUserProfileOne()
         {
-            return new UserProfile()
+            return new UserProfileDTO()
             {
-                UserId = "6291dea19b4ee53850386abc",
+                Id = "6291dea19b4ee53850386abc",
                 FirstName = "John",
-                LastName = "Doe", 
-                FavouriteQuestionsIds = new List<string>(),
-                UserSolutionIds = new List<string>(),
+                LastName = "Doe",
+                FavouriteQuestions = new List<string>(),
+                UserSolutions = new List<string>(),
             };
         }
     }

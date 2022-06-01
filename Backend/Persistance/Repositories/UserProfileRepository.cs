@@ -18,14 +18,14 @@ namespace InterviewMaster.Persistance.Repositories
         {
             this.idGenerator = idGenerator;
         }
-        public override string DbCollectionName => "UserProfile";
 
-        // create user profile
+        public const string CollectionName = "UserProfile";
+        public override string DbCollectionName => CollectionName;
         public async Task<string> CreateUser(UserProfile user)
         {
             var entity = new UserProfileDTO
             {
-                Id = user.UserId,
+                Id = user.Id,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 FavouriteQuestions = new List<string>(),
@@ -47,7 +47,7 @@ namespace InterviewMaster.Persistance.Repositories
         {
             return Query().Where(x => x.Id == userId).Select(x => new UserProfile()
             {
-                UserId = x.Id,
+                Id = x.Id,
                 FirstName = x.FirstName,
                 LastName = x.LastName,
                 FavouriteQuestionsIds = x.FavouriteQuestions,

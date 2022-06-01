@@ -13,5 +13,7 @@ namespace InterviewMaster.Application.Services
         public InterviewQuestion? GetQuestion(string id);
 
         public bool QuestionExists(string id);
+
+        public Task<string> CreateQuestion(InterviewQuestion interviewQuestion);
     }
 }

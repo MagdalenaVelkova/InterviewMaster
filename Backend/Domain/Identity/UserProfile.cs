@@ -8,7 +8,7 @@ namespace InterviewMaster.Domain.Identity
     public class UserProfile
     {
         [Required(AllowEmptyStrings = false), DisallowNull]
-        public string UserId { get; set; }
+        public string Id { get; set; }
         [Required(AllowEmptyStrings = false), DisallowNull]
         public string FirstName { get; set; }
         [Required(AllowEmptyStrings = false), DisallowNull]

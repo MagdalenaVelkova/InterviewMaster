@@ -13,19 +13,24 @@ using InterviewMaster.Controllers.DTOs;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
+using InterviewMaster.Persistance.Repositories;
+using InterviewMaster.Domain.Identity;
+using InterviewMaster.Persistance.Extensions;
+using InterviewMaster.Persistance.Models;
+using System.Linq;
+using Snapshooter.Xunit;
 
-namespace InterviewMaster.Test
+namespace InterviewMaster.Test.Tests
 {
-    public class UserShould
+    public class UserShould : TestBase
     {
         private UsersController usersController;
-        private FakeUserProfileRepository fakeUserProfileRepository;
-        private FakeQuestionsRepository fakeQuestionsRepository;
-        private FakeUserSolutionsRepository fakeUserSolutionsRepository;
-        private FakeUserIdentityRepository fakeUserIdentityRepository;
+        private TestIdGenerator idGenerator;
+        private UserProfileRepository userProfileRepository;
+        private QuestionsRepository questionsRepository;
+        private UserSolutionsRepository userSolutionsRepository;
+        private IdentityRepository userIdentityRepository;
         private IdentityService identityService;
-
-        private IConfiguration fakeConfiguration;
 
         public UserShould()
         {
@@ -38,37 +43,47 @@ namespace InterviewMaster.Test
                 .AddInMemoryCollection(inMemorySettings)
                 .Build();
 
-            
-            fakeUserProfileRepository = new FakeUserProfileRepository();
-            fakeQuestionsRepository = new FakeQuestionsRepository();
-            fakeUserSolutionsRepository = new FakeUserSolutionsRepository();
-            fakeUserIdentityRepository = new FakeUserIdentityRepository();
+            idGenerator = AppInTest.GetService<TestIdGenerator>();
+            userProfileRepository = new UserProfileRepository(MongoDbService.MongoDatabase, idGenerator);
+            questionsRepository = new QuestionsRepository(MongoDbService.MongoDatabase, idGenerator);
+            userSolutionsRepository = new UserSolutionsRepository(MongoDbService.MongoDatabase, idGenerator);
+            userIdentityRepository = new IdentityRepository(MongoDbService.MongoDatabase, idGenerator);
 
-            identityService = new IdentityService(fakeUserIdentityRepository, fakeConfiguration);
+            identityService = new IdentityService(userIdentityRepository, fakeConfiguration);
 
             usersController = new UsersController(
-                fakeUserProfileRepository,
-                fakeQuestionsRepository,
-                fakeUserSolutionsRepository,
+                userProfileRepository,
+                questionsRepository,
+                userSolutionsRepository,
                 identityService,
-                fakeUserIdentityRepository);
+                userIdentityRepository);
+
+            idGenerator.Set("61746566a01a5e8e03b788e0");
         }
 
         private void CreateAndAuthoriseUserForTest(string userId)
         {
-            var userProfile = UserProfileTestData.GenerateValidTestUserProfileOne();
-            userProfile.UserId = userId;
+            var userProfileDTO = UserProfileTestData.GenerateValidTestUserProfileOne();
+            userProfileDTO.Id = userId;
 
-            var userIdentity = UserIdentityTestData.GenerateValidTestUserIdentityOne();
-            userIdentity.Id = userId;
+            var userIdentityDTO = UserIdentityTestData.GenerateValidTestUserIdentityOne();
+            userIdentityDTO.Id = userId;
 
-            fakeUserProfileRepository.AddOne(userProfile);
-            fakeUserIdentityRepository.AddOne(userIdentity);
+            MongoDbService.InsertDocument(userProfileDTO.ToBsonDocument(), UserProfileRepository.CollectionName);
+            MongoDbService.InsertDocument(userIdentityDTO.ToBsonDocument(), IdentityRepository.CollectionName);
 
-            var token = identityService.GenerateToken(userIdentity); 
+            var userIdentity = new UserAuth()
+            {
+                Id = userIdentityDTO.Id,
+                Email = userIdentityDTO.Email,
+                PasswordHash = userIdentityDTO.PasswordHash,
+                PasswordSalt = userIdentityDTO.PasswordSalt
+            };
+
+            var token = identityService.GenerateToken(userIdentity);
             usersController.ControllerContext = new ControllerContext();
             usersController.ControllerContext.HttpContext = new DefaultHttpContext();
-            usersController.ControllerContext.HttpContext.Request.Headers["Authorization"] = string.Concat("Bearer ",token);
+            usersController.ControllerContext.HttpContext.Request.Headers["Authorization"] = string.Concat("Bearer ", token);
         }
 
         [Fact]
@@ -85,12 +100,16 @@ namespace InterviewMaster.Test
 
             //act
             var resultObjectRegister = await usersController.Register(userInfo) as OkObjectResult;
-            
+
+            var identityCollection = MongoDbService.GetDocuments<UserIdentityDTO>(IdentityRepository.CollectionName).ToList();
+            var profileCollection = MongoDbService.GetDocuments<UserProfileDTO>(UserProfileRepository.CollectionName).ToList();
+
             //assert
             Assert.NotNull(resultObjectRegister);
+            Assert.Single(identityCollection);
+            profileCollection.MatchSnapshot("UserShould.Ba_Able_To_RegisterAsync.Profile");
         }
 
-        //get a token when logging in 
         [Fact]
         public async Task Get_Token_When_Logging_InAsync()
         {
@@ -118,31 +137,13 @@ namespace InterviewMaster.Test
             //assert
             Assert.NotNull(resultObjectLogin);
 
-            // how to validate token
             var token = resultObjectLogin.Value.ToString();
 
-            usersController.ControllerContext = new ControllerContext();
-            usersController.ControllerContext.HttpContext = new DefaultHttpContext();
-            usersController.ControllerContext.HttpContext.Request.Headers["Authorization"] = string.Concat("Bearer ", token);
-
-            var tokenkey = Encoding.ASCII.GetBytes(fakeConfiguration["Jwt:Key"]);
-            var validationParameters = new TokenValidationParameters()
-            {
-                ValidateIssuer = false,
-                ValidateAudience = false,
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(tokenkey)
-            };
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var tokenValidationResult = await tokenHandler.ValidateTokenAsync(token, validationParameters);
-
             Assert.NotNull(token);
-            Assert.True(tokenValidationResult.IsValid);
-            
-
-
+            var isValid = await identityService.isAuthorised(token);
+            Assert.True(isValid);
         }
-        //get unauthorized when inputing incorrect credentials
+
         [Fact]
         public void Not_Login_If_Credentials_Are_Incorrect()
         {
@@ -154,8 +155,12 @@ namespace InterviewMaster.Test
             };
             //act
             var resultObjectLogin = usersController.Login(userLoginDTO);
+            var identityCollection = MongoDbService.GetDocuments<UserIdentityDTO>(IdentityRepository.CollectionName).ToList();
+            var profileCollection = MongoDbService.GetDocuments<UserProfileDTO>(UserProfileRepository.CollectionName).ToList();
             //assert
             Assert.IsType<UnauthorizedResult>(resultObjectLogin);
+            Assert.Empty(identityCollection);
+            Assert.Empty(profileCollection);
         }
 
         [Fact]
@@ -180,53 +185,65 @@ namespace InterviewMaster.Test
             };
             //act
             var resultObjectRegister = await usersController.Register(duplicatedEmailUser);
-
+            var identityCollection = MongoDbService.GetDocuments<UserIdentityDTO>(IdentityRepository.CollectionName).ToList();
+            var profileCollection = MongoDbService.GetDocuments<UserProfileDTO>(UserProfileRepository.CollectionName).ToList();
 
             //assert
             Assert.IsType<OkObjectResult>(prerequisiteRegisterResult);
             Assert.IsType<BadRequestResult>(resultObjectRegister);
-
+            Assert.Single(identityCollection);
+            profileCollection.MatchSnapshot("UserShould.Provide_A_Unique_EmailAsync.Profile");
         }
 
         [Fact]
         public async Task Be_Able_To_Favourite_A_Question()
         {
             //arrange
-            var question = InterviewQuestionTestData.GenerateValidTestQuestionOne();
-            question.Id = "61746566a01a5e8e03b788e0";
-            
-            fakeQuestionsRepository.AddOne(question);
+
+            var questionId = "61746566a01a5e8e03b788e0";
+            var questionsInDb = InterviewQuestionTestData.GenerateMultipleQuestions();
+            questionsInDb[1].Id = questionId;
+            MongoDbService.InsertMany(questionsInDb.Select(x => x.ToBsonDocument()).ToList(), QuestionsRepository.CollectionName);
 
             var userId = ObjectId.GenerateNewId().ToString();
             CreateAndAuthoriseUserForTest(userId);
 
             //act
-            var resultObject = await usersController.AddFavourite("61746566a01a5e8e03b788e0") as OkResult;
+            var resultObject = await usersController.AddFavourite(questionId);
 
             //assert
-            Assert.NotNull(resultObject);
+            Assert.IsType<OkResult>(resultObject);
+            var updatedUserProfile = userProfileRepository.GetUser(userId);
+            Assert.Contains(questionId, updatedUserProfile.FavouriteQuestionsIds);
+
         }
 
         [Fact]
         public async Task Be_Able_To_Remove_Question_From_Favourites()
         {
             //arrange
-            var question = InterviewQuestionTestData.GenerateValidTestQuestionOne();
+            var question = InterviewQuestionTestData.GenerateValidTestQuestionTwo();
             var questionId = "61746566a01a5e8e03b788e0";
             question.Id = questionId;
 
-            fakeQuestionsRepository.AddOne(question);
+            MongoDbService.InsertDocument(question.ToBsonDocument(), QuestionsRepository.CollectionName);
 
             var userId = ObjectId.GenerateNewId().ToString();
             CreateAndAuthoriseUserForTest(userId);
 
-            await fakeUserProfileRepository.AddQuestionToFavourite(questionId, userId);
+            await userProfileRepository.AddQuestionToFavourite(questionId, userId);
+            var userProfile = userProfileRepository.GetUser(userId);
 
+            Assert.Contains(questionId, userProfile.FavouriteQuestionsIds);
             //act
             var resultObject = await usersController.RemoveFavourite("61746566a01a5e8e03b788e0") as OkResult;
 
             //assert
             Assert.NotNull(resultObject);
+            var updatedUserProfile = userProfileRepository.GetUser(userId);
+            Assert.DoesNotContain(questionId, updatedUserProfile.FavouriteQuestionsIds);
+
+
         }
     }
 }
