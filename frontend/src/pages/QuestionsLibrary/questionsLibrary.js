@@ -4,7 +4,6 @@ import React from "react";
 import { Container, Row } from "react-bootstrap";
 import Questions from "./Questions";
 import styles from "./QuestionsLibrary.module.css";
-
 function a11yProps(index) {
   return {
     id: `simple-tab-${index}`,
@@ -20,6 +19,7 @@ const QuestionsLibrary = () => {
     "Collaboration",
     "Problem Solving",
     "Adaptability",
+    "Organisation",
   ];
 
   const handleChange = (event, newValue) => {
@@ -48,9 +48,8 @@ const QuestionsLibrary = () => {
               ))}
             </Tabs>
           </Row>
-          <Row>
-            <Questions topic={topics[value]}></Questions>
-          </Row>
+
+          <Questions topic={topics[value]} questions={questions}></Questions>
         </Container>
       </section>
     </div>

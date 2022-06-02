@@ -16,16 +16,12 @@ const ProfilePage = (props) => {
   };
 
   const getFavouriteQuestions = async () => {
-    const res = await axios.get(
-      `http://localhost:5000/api/users/${profile.userId}/favourites`
-    );
+    const res = await axios.get(`http://localhost:5000/api/users/favourites`);
     setFavouriteQuestions(res.data);
   };
 
   const getRespondedQuestions = async () => {
-    const res = await axios.get(
-      `http://localhost:5000/api/users/${profile.userId}/solutions`
-    );
+    const res = await axios.get(`http://localhost:5000/api/users/solutions`);
     setRespondedQuestions(res.data);
   };
 

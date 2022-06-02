@@ -18,7 +18,7 @@
   background-color: #22272a;
   background-image: url("../../assets/img/questionLibraryConntentBG.svg");
   width: 100%;
-  height: auto;
+  min-height: 53.5vh;
   background-repeat: no-repeat;
   background-size: cover;
 }

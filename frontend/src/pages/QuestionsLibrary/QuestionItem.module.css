@@ -14,6 +14,8 @@
 .topic {
   font-size: 0.9rem;
   padding-top: 0.3rem;
+  margin-top: 0.4rem;
+  margin-left: 0.5rem;
   color: #664fba;
 }
 .header {
@@ -34,4 +36,9 @@
 }
 .cardContent {
   cursor: pointer;
+}
+
+.cardContentResponded {
+  cursor: pointer;
+  background-color: #ebe8f7;
 }

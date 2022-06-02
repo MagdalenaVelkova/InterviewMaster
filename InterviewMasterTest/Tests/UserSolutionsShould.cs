@@ -41,5 +41,16 @@ namespace InterviewMaster.Test.Tests
             //assert
 
         }
+
+        [Fact]
+        public void Be_Fetched_By_Question_Id()
+        {
+            //arrange
+
+            //act
+
+            //assert
+
+        }
     }
 }

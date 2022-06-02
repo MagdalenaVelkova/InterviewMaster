@@ -164,6 +164,78 @@ namespace InterviewMaster.Test.Tests
         }
 
         [Fact]
+        public async void Get_Authorisation_Status_Ok_When_Logged_In() {
+            //arrange
+            var userId = ObjectId.GenerateNewId().ToString();
+            CreateAndAuthoriseUserForTest(userId);
+
+            //act
+            var resultObject = await usersController.GetIsAuthorised();
+            //assert
+            Assert.IsType<OkResult>(resultObject);
+
+        }
+
+        [Fact]
+        public async void Get_Unauthorized_When_Not_Logged_In()
+        {
+            //arrange
+            usersController.ControllerContext = new ControllerContext();
+            usersController.ControllerContext.HttpContext = new DefaultHttpContext();
+            //act
+            var resultObject = await usersController.GetIsAuthorised();
+            //assert
+            Assert.IsType<UnauthorizedResult>(resultObject);
+
+        }
+
+        [Fact]
+        public void Get_Profile_If_It_Exists()
+        {
+            //arrange
+            var userId = idGenerator.Generate() ;
+            CreateAndAuthoriseUserForTest(userId);
+            //act
+            var resultObject = usersController.GetUserProfile() as OkObjectResult;
+            //assert
+            Assert.NotNull(resultObject);
+            resultObject.Value.MatchSnapshot();
+        }
+        [Fact]
+        public void Get_All_Favourite_Questions()
+        {
+            //arrange
+            var userId = idGenerator.Generate();
+            CreateAndAuthoriseUserForTest(userId);
+            //act
+            Assert.False(true);
+            //assert
+
+        }
+
+        [Fact]
+        public async Task Get_All_Responded_Questions()
+        {
+            //arrange
+            var userId = idGenerator.Generate();
+            CreateAndAuthoriseUserForTest(userId);
+
+            var question = InterviewQuestionTestData.GenerateValidTestQuestionTwo();
+
+            MongoDbService.InsertDocument(question.ToBsonDocument(), QuestionsRepository.CollectionName);
+
+            await usersController.AddFavourite(question.Id);
+
+            //act
+            var resultObject = usersController.GetFavouriteQuestions() as OkObjectResult;
+
+            //assert
+            Assert.NotNull (resultObject);
+            var favouriteQuestions = resultObject.Value;
+            favouriteQuestions.MatchSnapshot();
+        }
+
+        [Fact]
         public async Task Provide_A_Unique_EmailAsync()
         {
             //arrange

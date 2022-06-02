@@ -4,22 +4,24 @@ import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import axios from "axios";
-import React, { useState } from "react";
+import React from "react";
 import { Col, Row } from "react-bootstrap";
 import CardHeader from "react-bootstrap/esm/CardHeader";
+import { useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import styles from "./QuestionItem.module.css";
 
-const Question = ({ question, isFavourite, fetchFavourites }) => {
+const Question = ({ question, isFavourite, fetchFavourites, isResponded }) => {
+  const isAuthenticated = useSelector(
+    (state) => state.userReducer.isAuthenticated
+  );
+
   const favouritedQuestion = "#F97D7D";
   const nonFavouritedQuestion = "#6C6A71";
-  const [favourite, setFavourite] = useState(isFavourite);
 
   const favouriteQuestionIconClick = async (event) => {
-    setFavourite(!favourite);
-
-    if (favourite) {
-      console.log(favourite);
+    if (isFavourite) {
+      console.log(isFavourite);
       event.target.style.fill = nonFavouritedQuestion;
       {
         try {
@@ -57,29 +59,35 @@ const Question = ({ question, isFavourite, fetchFavourites }) => {
     <Card className={styles.root}>
       <CardHeader className={styles.header}>
         <Row>
-          <Col>
+          <Col md="8">
             <p className={styles.topic}>{question.topic.value}</p>
           </Col>
           <Col>
             <Typography align="right">
-              <IconButton
-                className={styles.iconButton}
-                onClick={favouriteQuestionIconClick}
-              >
-                <FavoriteIcon
-                  style={
-                    isFavourite
-                      ? { color: favouritedQuestion }
-                      : { color: nonFavouritedQuestion }
-                  }
-                />
-              </IconButton>
+              {isAuthenticated ? (
+                <IconButton
+                  className={styles.iconButton}
+                  onClick={favouriteQuestionIconClick}
+                >
+                  <FavoriteIcon
+                    style={
+                      isFavourite
+                        ? { color: favouritedQuestion }
+                        : { color: nonFavouritedQuestion }
+                    }
+                  />
+                </IconButton>
+              ) : (
+                ""
+              )}
             </Typography>
           </Col>
         </Row>
       </CardHeader>
       <CardContent
-        className={styles.cardContent}
+        className={
+          isResponded ? styles.cardContentResponded : styles.cardContent
+        }
         onClick={() => getIndividualQuestion(question.id)}
       >
         <div className={styles.sizer}>

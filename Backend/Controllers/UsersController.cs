@@ -89,12 +89,11 @@ namespace InterviewMaster.Controllers
             var userId = identityService.GetUserIdFromToken(token.ToString());
             var userProfile = userProfileRepository.GetUser(userId);
             var questions = new List<InterviewQuestion>();
-            if (userProfile != null)
+            if (userProfile != null && userProfile?.UserSolutionIds != null)
             {
-                foreach (var userSolutionId in userProfile.UserSolutionIds)
-                {
-                    var userSolution = userSolutionsRepository.GetUserSolutionById(userSolutionId);
-                    var question = questionsRespository.GetQuestion(userSolution.InterviewQuestionId);
+                foreach (var Id in userProfile.UserSolutionIds)
+                { 
+                    var question = questionsRespository.GetQuestion(Id);
                     if (question != null)
                     {
                         questions.Add(question);

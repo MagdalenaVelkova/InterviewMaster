@@ -25,17 +25,6 @@ namespace InterviewMaster.Controllers
             this.userProfileRepository = userProfileRepository;
         }
 
-        [HttpGet("{id}")]
-        public IActionResult GetById(string id)
-        {
-            var userProfile = userSolutionsRepository.GetUserSolutionById(id);
-            if (userProfile != null)
-            {
-                return Ok(userProfile);
-            }
-            return NotFound();
-        }
-
         [HttpGet("user/{questionId}")]
         public IActionResult GetByQuestion(string questionId)
         {

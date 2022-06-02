@@ -60,5 +60,13 @@ namespace InterviewMaster.Controllers
             }
             return NotFound();
         }
+
+
+        [HttpPost]
+        public async Task<string> Post([FromBody] InterviewQuestion interviewQuestion)
+        {
+            return await questionsRepository.CreateQuestion(interviewQuestion);
+        }
+
     }
 }
