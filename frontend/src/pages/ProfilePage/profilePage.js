@@ -8,8 +8,7 @@ import { Col, Container, Row } from "react-bootstrap";
 import Questions from "../questionsLibrary/Questions";
 import styles from "./ProfilePage.module.css";
 
-const ProfilePage = (props) => {
-  const columnNumber = 3;
+const ProfilePage = () => {
   const [profile, setProfile] = useState("");
   const [favouriteQuestions, setFavouriteQuestions] = useState([]);
   const [respondedQuestions, setRespondedQuestions] = useState([]);

@@ -7,7 +7,7 @@ import React from "react";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import "./App.css";
-import FixedTopContainer from "./components/FixedTopContainer";
+import FixedTopContainer from "./common/FixedTopContainer";
 import store from "./redux/store";
 import Routes from "./router/Routes";
 import createEmotionCache from "./utils/CreateCache";

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Fragment, useEffect, useState } from "react";
 import Masonry from "react-masonry-css";
-import Question from "./Question";
+import QuestionItem from "./QuestionItem";
 import styles from "./Questions.module.css";
 
 const Questions = ({ questions }) => {
@@ -47,7 +47,7 @@ const Questions = ({ questions }) => {
         columnClassName={styles.myMasonryGridColumn}
       >
         {questions.map((question, index) => (
-          <Question
+          <QuestionItem
             question={question}
             isFavourite={favourite.has(question.id)}
             fetchFavourites={fetchFavourites}

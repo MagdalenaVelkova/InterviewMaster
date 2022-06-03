@@ -7,9 +7,9 @@ import CardHeader from "react-bootstrap/esm/CardHeader";
 import { ReflexContainer, ReflexElement, ReflexSplitter } from "react-reflex";
 import "react-reflex/styles.css";
 import { useParams } from "react-router-dom";
-import NewTextEditor from "../../components/NewTextEditor";
-import QuestionMenu from "../../components/QuestionMenu";
+import NewTextEditor from "../../common/NewTextEditor";
 import styles from "./IndividualQuestionPage.module.css";
+import QuestionMenu from "./QuestionMenu";
 
 // https://www.npmjs.com/package/react-draft-wysiwyg
 // https://stackoverflow.com/questions/51180361/react-draft-wysiwyg-render-saved-content-to-update

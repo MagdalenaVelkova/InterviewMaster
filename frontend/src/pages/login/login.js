@@ -2,9 +2,9 @@ import { useState } from "react";
 import { Col, Container, Form, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
-import BaseButton from "../../components/buttons/BaseButton";
+import BaseButton from "../../common/buttons/BaseButton";
 import { loginUser } from "../../redux/actions";
-import styles from "./LoginStyles.module.css";
+import styles from "./Login.module.css";
 
 const Login = () => {
   const isAuthenticated = useSelector(

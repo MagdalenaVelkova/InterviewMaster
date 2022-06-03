@@ -11,7 +11,12 @@ import { useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import styles from "./QuestionItem.module.css";
 
-const Question = ({ question, isFavourite, fetchFavourites, isResponded }) => {
+const QuestionItem = ({
+  question,
+  isFavourite,
+  fetchFavourites,
+  isResponded,
+}) => {
   const isAuthenticated = useSelector(
     (state) => state.userReducer.isAuthenticated
   );
@@ -65,10 +70,7 @@ const Question = ({ question, isFavourite, fetchFavourites, isResponded }) => {
           <Col>
             <Typography align="right">
               {isAuthenticated ? (
-                <IconButton
-                  className={styles.iconButton}
-                  onClick={favouriteQuestionIconClick}
-                >
+                <IconButton onClick={favouriteQuestionIconClick}>
                   <FavoriteIcon
                     style={
                       isFavourite
@@ -88,7 +90,9 @@ const Question = ({ question, isFavourite, fetchFavourites, isResponded }) => {
         className={
           isResponded ? styles.cardContentResponded : styles.cardContent
         }
-        onClick={() => getIndividualQuestion(question.id)}
+        onClick={
+          isAuthenticated ? () => getIndividualQuestion(question.id) : ""
+        }
       >
         <div className={styles.sizer}>
           <Typography variant="h6" component="h2" className={styles.title}>
@@ -100,4 +104,4 @@ const Question = ({ question, isFavourite, fetchFavourites, isResponded }) => {
   );
 };
 
-export default Question;
+export default QuestionItem;
