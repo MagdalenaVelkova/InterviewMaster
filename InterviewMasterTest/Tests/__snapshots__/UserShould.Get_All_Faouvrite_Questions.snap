@@ -1,0 +1,19 @@
+﻿[
+  {
+    "Id": "623633119c87b612a42c587a",
+    "Question": "Test Question Two",
+    "Topic": {
+      "Value": "collaboration"
+    },
+    "Prompts": [
+      {
+        "Value": "Test Prompt Two"
+      }
+    ],
+    "ExampleAnswers": [
+      {
+        "Value": "Test Example Answer Two"
+      }
+    ]
+  }
+]

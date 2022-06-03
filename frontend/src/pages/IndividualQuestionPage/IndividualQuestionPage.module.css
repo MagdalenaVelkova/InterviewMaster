@@ -36,20 +36,20 @@ p {
 }
 
 .headerCard {
-  height: 4vh;
+  min-height: 4vh;
   width: 100%;
   margin: 0;
 }
 .rowOne {
-  height: 37vh;
+  min-height: 37vh;
   overflow: auto;
 }
 .answerStyle {
-  height: 83vh;
+  min-height: 83vh;
   overflow: auto;
 }
 .Cards {
-  height: 93%;
+  min-height: 93%;
   background: rgba(27, 31, 34, 0.9) !important;
   margin-top: 1rem;
   margin-bottom: 1rem;
@@ -57,7 +57,7 @@ p {
 }
 
 .rowTwo {
-  height: 37vh;
+  min-height: 37vh;
   overflow: auto;
 }
 .cardHeaders {

@@ -2,7 +2,6 @@ import AccountCircleRoundedIcon from "@material-ui/icons/AccountCircleRounded";
 import ArrowBackRoundedIcon from "@material-ui/icons/ArrowBackRounded";
 import ArrowForwardRoundedIcon from "@material-ui/icons/ArrowForwardRounded";
 import ExitToAppRoundedIcon from "@material-ui/icons/ExitToAppRounded";
-import FavoriteRoundedIcon from "@material-ui/icons/FavoriteRounded";
 import ListRoundedIcon from "@material-ui/icons/ListRounded";
 import React from "react";
 import { Container, Nav, Navbar } from "react-bootstrap";
@@ -12,7 +11,13 @@ import { LinkContainer } from "react-router-bootstrap";
 import { logoutUser } from "../../redux/actions";
 import QuestionMenuIconLink from "./QuestionsMenuIconLink";
 
-const QuestionMenu = () => {
+const QuestionMenu = ({
+  questionIds,
+  questionId,
+  setPrevious,
+  setNext,
+  setFavourite,
+}) => {
   let dispatch = useDispatch();
   const history = useHistory();
 
@@ -21,15 +26,21 @@ const QuestionMenu = () => {
   };
 
   const handlePreviousQuestion = () => {
-    history.push(`/questionslibrary`);
+    let previous = setPrevious();
+    history.push({
+      pathname: `/questionslibrary/${previous}`,
+      state: { questionIds: questionIds },
+    });
+    history.go(0);
   };
 
   const handleNextQuestion = () => {
-    history.push(`/questionslibrary`);
-  };
-
-  const handleFavoriteQuestion = () => {
-    history.push(`/questionslibrary`);
+    let next = setNext();
+    history.push({
+      pathname: `/questionslibrary/${next}`,
+      state: { questionIds: questionIds },
+    });
+    history.go(0);
   };
 
   const handleMyProfile = () => {
@@ -49,10 +60,6 @@ const QuestionMenu = () => {
     {
       icon: <ArrowForwardRoundedIcon style={{ color: "white" }} />,
       action: handleNextQuestion,
-    },
-    {
-      icon: <FavoriteRoundedIcon style={{ color: "white" }} />,
-      action: handleFavoriteQuestion,
     },
   ];
 

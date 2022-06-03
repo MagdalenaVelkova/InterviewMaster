@@ -201,39 +201,7 @@ namespace InterviewMaster.Test.Tests
             Assert.NotNull(resultObject);
             resultObject.Value.MatchSnapshot();
         }
-        [Fact]
-        public void Get_All_Favourite_Questions()
-        {
-            //arrange
-            var userId = idGenerator.Generate();
-            CreateAndAuthoriseUserForTest(userId);
-            //act
-            Assert.False(true);
-            //assert
-
-        }
-
-        [Fact]
-        public async Task Get_All_Responded_Questions()
-        {
-            //arrange
-            var userId = idGenerator.Generate();
-            CreateAndAuthoriseUserForTest(userId);
-
-            var question = InterviewQuestionTestData.GenerateValidTestQuestionTwo();
-
-            MongoDbService.InsertDocument(question.ToBsonDocument(), QuestionsRepository.CollectionName);
-
-            await usersController.AddFavourite(question.Id);
-
-            //act
-            var resultObject = usersController.GetFavouriteQuestions() as OkObjectResult;
-
-            //assert
-            Assert.NotNull (resultObject);
-            var favouriteQuestions = resultObject.Value;
-            favouriteQuestions.MatchSnapshot();
-        }
+      
 
         [Fact]
         public async Task Provide_A_Unique_EmailAsync()
@@ -316,6 +284,47 @@ namespace InterviewMaster.Test.Tests
             Assert.DoesNotContain(questionId, updatedUserProfile.FavouriteQuestionsIds);
 
 
+        }
+        [Fact]
+        public async Task Get_All_Responded_Questions()
+        {
+            //arrange
+            var userId = idGenerator.Generate();
+            CreateAndAuthoriseUserForTest(userId);
+
+
+            var question = InterviewQuestionTestData.GenerateValidTestQuestionTwo();
+            MongoDbService.InsertDocument(question.ToBsonDocument(), QuestionsRepository.CollectionName);
+
+            await userProfileRepository.AddQuestionToSolved(question.Id, userId);
+            //act
+            var resultObject = usersController.GetRespondedQuestions() as OkObjectResult;
+            //assert
+            Assert.NotNull(resultObject);
+            var respondedQuestions = resultObject.Value;
+            respondedQuestions.MatchSnapshot();
+        }
+
+        [Fact]
+        public async Task Get_All_Faouvrite_Questions()
+        {
+            //arrange
+            var userId = idGenerator.Generate();
+            CreateAndAuthoriseUserForTest(userId);
+
+            var question = InterviewQuestionTestData.GenerateValidTestQuestionTwo();
+
+            MongoDbService.InsertDocument(question.ToBsonDocument(), QuestionsRepository.CollectionName);
+
+            await usersController.AddFavourite(question.Id);
+
+            //act
+            var resultObject = usersController.GetFavouriteQuestions() as OkObjectResult;
+
+            //assert
+            Assert.NotNull(resultObject);
+            var favouriteQuestions = resultObject.Value;
+            favouriteQuestions.MatchSnapshot();
         }
     }
 }

@@ -12,6 +12,7 @@ import { useHistory } from "react-router";
 import styles from "./QuestionItem.module.css";
 
 const QuestionItem = ({
+  questionIds,
   question,
   isFavourite,
   fetchFavourites,
@@ -58,7 +59,10 @@ const QuestionItem = ({
 
   const history = useHistory();
   const getIndividualQuestion = (id) => {
-    history.push(`/questionslibrary/${id}`);
+    history.push({
+      pathname: `/questionslibrary/${id}`,
+      state: { questionIds: questionIds },
+    });
   };
   return (
     <Card className={styles.root}>

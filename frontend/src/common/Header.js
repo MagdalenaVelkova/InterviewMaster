@@ -16,6 +16,7 @@ function Header() {
     console.log("logout button");
     dispatch(logoutUser());
   };
+
   if (pageLocation.pathname.includes("questionslibrary/")) {
     return <div></div>;
   } else {
@@ -33,22 +34,12 @@ function Header() {
 
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
-            {isAuthenticated ? (
-              <Nav className="me-auto">
-                <LinkContainer to="/questionslibrary">
-                  <Nav.Link>Questions Library</Nav.Link>
-                </LinkContainer>
-                <LinkContainer to="/applications">
-                  <Nav.Link>My Applications</Nav.Link>
-                </LinkContainer>
-              </Nav>
-            ) : (
-              <Nav className="me-auto">
-                <LinkContainer to="/questionslibrary">
-                  <Nav.Link>Questions Library</Nav.Link>
-                </LinkContainer>
-              </Nav>
-            )}
+            <Nav className="me-auto">
+              <LinkContainer to="/questionslibrary">
+                <Nav.Link>Questions Library</Nav.Link>
+              </LinkContainer>
+            </Nav>
+
             <Nav>
               {isAuthenticated ? (
                 <Nav className="me-auto">

@@ -12,6 +12,8 @@ namespace InterviewMaster.Test.Util
             AppInTest = InterviewMasterTestApp.BuildApp();
             MongoDbService = AppInTest.GetService<MongoDbService>();
         }
+
+
         public void Dispose()
         {
             Dispose(true);

@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import CardHeader from "react-bootstrap/esm/CardHeader";
 import { ReflexContainer, ReflexElement, ReflexSplitter } from "react-reflex";
 import "react-reflex/styles.css";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import NewTextEditor from "../../common/NewTextEditor";
 import styles from "./IndividualQuestionPage.module.css";
 import QuestionMenu from "./QuestionMenu";
@@ -21,6 +21,9 @@ const IndividualQuestionPage = () => {
   const [exampleAnswers, setExampleAnswers] = useState([]);
   const [questionPrompts, setQuestionPrompts] = useState([]);
 
+  const location = useLocation();
+  const questionIds = location?.state?.questionIds;
+
   const getQuestion = async () => {
     const res = await axios.get(
       `http://localhost:5000/api/questions/${interviewQuestionId}`
@@ -33,12 +36,46 @@ const IndividualQuestionPage = () => {
   useEffect(() => {
     getQuestion();
   }, []);
+
+  const setPrevious = () => {
+    const idx = questionIds?.indexOf(interviewQuestionId);
+    console.log(questionIds);
+    console.log(idx);
+    if (idx >= 1) {
+      return questionIds[idx - 1];
+    } else {
+      return questionIds[questionIds.length - 1];
+    }
+  };
+
+  const setNext = () => {
+    const idx = questionIds?.indexOf(interviewQuestionId);
+    console.log(questionIds);
+    console.log(idx);
+    if (idx < questionIds?.length - 1) {
+      return questionIds[idx + 1];
+    } else {
+      return questionIds[0];
+    }
+  };
+  function getWindowDimensions() {
+    const { innerWidth: width } = window;
+    return width;
+  }
+  console.log(getWindowDimensions());
   return (
     <div>
       <section className={styles.mainSection}>
-        <QuestionMenu></QuestionMenu>
+        <QuestionMenu
+          questionIds={questionIds}
+          questionId={interviewQuestionId}
+          setPrevious={setPrevious}
+          setNext={setNext}
+        ></QuestionMenu>
         <ReflexContainer
-          orientation="vertivertical"
+          orientation={
+            getWindowDimensions() > 1100 ? "vertivertical" : "horizontal"
+          }
           className={styles.root}
           windowResizeAware="true"
         >

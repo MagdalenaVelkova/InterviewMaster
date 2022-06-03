@@ -48,6 +48,7 @@ const Questions = ({ questions }) => {
       >
         {questions.map((question, index) => (
           <QuestionItem
+            questionIds={questions.map((item) => item.id)}
             question={question}
             isFavourite={favourite.has(question.id)}
             fetchFavourites={fetchFavourites}

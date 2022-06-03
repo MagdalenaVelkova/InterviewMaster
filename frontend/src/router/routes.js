@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Route, Switch } from "react-router-dom";
-import AllApplicationsPage from "../pages/allApplicationsPage/AllApplicationsPage";
 import IndividualQuestionPage from "../pages/individualQuestionPage/IndividualQuestionPage";
 import LandingPage from "../pages/landing/Landing";
 import Login from "../pages/login/Login";
@@ -38,12 +37,6 @@ const Routes = () => {
       isExact: true,
       path: "/questionslibrary/:interviewQuestionId",
       component: IndividualQuestionPage,
-      isPrivate: true,
-    },
-    {
-      isExact: true,
-      path: "/applications",
-      component: AllApplicationsPage,
       isPrivate: true,
     },
     {
