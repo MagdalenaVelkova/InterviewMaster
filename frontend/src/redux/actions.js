@@ -47,6 +47,7 @@ export const registerUser =
         }
       );
       dispatch(loginUser(email, password));
+      return res;
     } catch (error) {}
   };
 

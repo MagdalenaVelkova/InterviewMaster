@@ -54,7 +54,7 @@ const Routes = () => {
     },
     {
       isExact: true,
-      path: "/myprofile/:id",
+      path: "/myprofile",
       component: ProfilePage,
       isPrivate: true,
     },

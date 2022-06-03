@@ -4,12 +4,10 @@ import Masonry from "react-masonry-css";
 import Question from "./Question";
 import styles from "./Questions.module.css";
 
-const Questions = ({ topic }) => {
-  const [questions, setQuestions] = useState([]);
+const Questions = ({ questions }) => {
   const [favourite, setFavourite] = useState(new Map());
   const [responded, setResponded] = useState(new Map());
 
-  console.log(topic);
   const fetchFavourites = async () => {
     const res = await axios.get(`http://localhost:5000/favourites`);
 
@@ -30,18 +28,10 @@ const Questions = ({ topic }) => {
     setResponded(temp);
   };
 
-  const getQuestions = async (topic) => {
-    const questionsResult = await axios.get(
-      `http://localhost:5000/topic/${topic}`
-    );
-    setQuestions(questionsResult.data);
-  };
-
   useEffect(() => {
     fetchFavourites();
     fetchResponded();
-    getQuestions(topic);
-  }, [topic]);
+  }, [questions]);
   const breakpointColumnsObj = {
     default: 5,
     1100: 3,

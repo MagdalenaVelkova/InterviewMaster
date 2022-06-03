@@ -1,12 +1,16 @@
 import { useState } from "react";
 import { Col, Container, Form, Row } from "react-bootstrap";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import BaseButton from "../../components/buttons/BaseButton";
 import { loginUser } from "../../redux/actions";
 import styles from "./LoginStyles.module.css";
 
 const Login = () => {
+  const isAuthenticated = useSelector(
+    (state) => state.userReducer.isAuthenticated
+  );
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorDisplay, setErrorDisplay] = useState("");
@@ -24,8 +28,12 @@ const Login = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    dispatch(loginUser(email, password)).then(history.push(`/`));
+    dispatch(loginUser(email, password));
   };
+
+  if (isAuthenticated) {
+    history.push(`/`);
+  }
 
   return (
     <Container className={styles.containerRoot} fluid>

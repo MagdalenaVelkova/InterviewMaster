@@ -1,6 +1,7 @@
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { Container, Row } from "react-bootstrap";
 import Questions from "./Questions";
 import styles from "./QuestionsLibrary.module.css";
@@ -12,6 +13,7 @@ function a11yProps(index) {
 }
 
 const QuestionsLibrary = () => {
+  const [questions, setQuestions] = useState([]);
   const [value, setValue] = React.useState(0);
   const topics = [
     "All",
@@ -21,6 +23,21 @@ const QuestionsLibrary = () => {
     "Adaptability",
     "Organisation",
   ];
+
+  const getQuestions = async (topic) => {
+    const questionsResult = await axios.get(
+      `http://localhost:5000/topic/${topic}`
+    );
+    setQuestions(questionsResult.data);
+  };
+
+  useEffect(() => {
+    getQuestions(topics[value]);
+  }, [value]);
+
+  useEffect(() => {
+    getQuestions(topics[value]);
+  }, []);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);

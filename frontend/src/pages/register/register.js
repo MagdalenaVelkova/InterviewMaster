@@ -1,12 +1,16 @@
 import { useState } from "react";
 import { Col, Container, Form, Row } from "react-bootstrap";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import BaseButton from "../../components/buttons/BaseButton";
 import { registerUser } from "../../redux/actions";
 import styles from "./Register.module.css";
 
 function Register() {
+  const isAuthenticated = useSelector(
+    (state) => state.userReducer.isAuthenticated
+  );
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -41,6 +45,11 @@ function Register() {
       console.error("submission failed", error);
     }
   };
+
+  if (isAuthenticated) {
+    history.push(`/`);
+  }
+
   return (
     <Container className={styles.containerRoot} fluid>
       <section>
