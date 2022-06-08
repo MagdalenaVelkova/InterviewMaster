@@ -1,14 +1,14 @@
 ﻿using InterviewMaster.Application.Services;
 using InterviewMaster.Domain.Identity;
-using InterviewMaster.Persistance.Extensions;
-using InterviewMaster.Persistance.Models;
+using InterviewMaster.Persistence.Extensions;
+using InterviewMaster.Persistence.Models;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace InterviewMaster.Persistance.Repositories
+namespace InterviewMaster.Persistence.Repositories
 {
     public class UserProfileRepository : BaseRepository<UserProfileDTO>, IUserProfileRepository
     {

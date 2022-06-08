@@ -1,11 +1,11 @@
 ﻿using InterviewMaster.Domain.InterviewPreparation.ValueObjects;
-using InterviewMaster.Persistance.Extensions;
+using InterviewMaster.Persistence.Extensions;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
-namespace InterviewMaster.Persistance.Models
+namespace InterviewMaster.Persistence.Models
 {
     [ExcludeFromCodeCoverage]
     [BsonCollection("UserSolutions")]

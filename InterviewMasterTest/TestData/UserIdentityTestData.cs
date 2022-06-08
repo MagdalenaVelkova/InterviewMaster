@@ -1,4 +1,4 @@
-﻿using InterviewMaster.Persistance.Models;
+﻿using InterviewMaster.Persistence.Models;
 
 namespace InterviewMaster.Test.TestData
 {

@@ -1,20 +1,18 @@
 using InterviewMaster.Application.Services;
-using InterviewMaster.Persistance.Extensions;
-using InterviewMaster.Persistance.Repositories;
+using InterviewMaster.Persistence.Extensions;
+using InterviewMaster.Persistence.Repositories;
 using InterviewMaster.Settings;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using MongoDB.Driver;
 using System;
-using Google.Apis.Auth.AspNetCore3;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using System.IdentityModel.Tokens.Jwt;
 using System.Text;
-using Microsoft.IdentityModel.Tokens;
 
 namespace InterviewMaster
 {
@@ -50,7 +48,7 @@ namespace InterviewMaster
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(x=>
+            }).AddJwtBearer(x =>
             {
                 var Key = Encoding.ASCII.GetBytes(Configuration["Jwt:Key"]);
                 x.RequireHttpsMetadata = false;
@@ -63,14 +61,13 @@ namespace InterviewMaster
                     IssuerSigningKey = new SymmetricSecurityKey(Key)
                 };
             });
-
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Interview Master Docs", Version = "v1" });
             });
             services.AddScoped<IIdGenerator, IdGenerator>();
-            services.AddScoped<IQuestionsRespository, QuestionsRepository>();
+            services.AddScoped<IQuestionsRepository, QuestionsRepository>();
             services.AddScoped<IUserProfileRepository, UserProfileRepository>();
             services.AddScoped<IUserSolutionsRepository, UserSolutionsRepository>();
             services.AddScoped<IIdentityRepository, IdentityRepository>();
@@ -84,12 +81,12 @@ namespace InterviewMaster
         {
             if (env.IsDevelopment())
             {
-                app.UseCors(x => x.WithOrigins("http://localhost:3000").AllowAnyHeader().AllowAnyMethod().WithMethods(new string[] { "POST", "PUT", "GET"}));
+                app.UseCors(x => x.WithOrigins("http://localhost:3000").AllowAnyHeader().AllowAnyMethod().WithMethods(new string[] { "POST", "PUT", "GET" }));
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Interview Master Docs v1"));
             }
-            
+
 
             app.UseHttpsRedirection();
 

@@ -16,16 +16,14 @@ namespace InterviewMaster.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IUserProfileRepository userProfileRepository;
-        private readonly IQuestionsRespository questionsRespository;
-        private readonly IUserSolutionsRepository userSolutionsRepository;
+        private readonly IQuestionsRepository questionsRepository;
         private readonly IdentityService identityService;
         private readonly IIdentityRepository identityRepository;
 
-        public UsersController(IUserProfileRepository userProfileRepository, IQuestionsRespository questionsRespository, IUserSolutionsRepository userSolutionsRepository, IdentityService identityService, IIdentityRepository identityRepository)
+        public UsersController(IUserProfileRepository userProfileRepository, IQuestionsRepository questionsRepository, IdentityService identityService, IIdentityRepository identityRepository)
         {
             this.userProfileRepository = userProfileRepository;
-            this.questionsRespository = questionsRespository;
-            this.userSolutionsRepository = userSolutionsRepository;
+            this.questionsRepository = questionsRepository;
             this.identityService = identityService;
             this.identityRepository = identityRepository;
 
@@ -74,7 +72,7 @@ namespace InterviewMaster.Controllers
             {
                 foreach (var questionId in userProfile.FavouriteQuestionsIds)
                 {
-                    var question = questionsRespository.GetQuestion(questionId);
+                    var question = questionsRepository.GetQuestion(questionId);
                     questions.Add(question);
                 }
                 return Ok(questions);
@@ -93,7 +91,7 @@ namespace InterviewMaster.Controllers
             {
                 foreach (var Id in userProfile.UserSolutionIds)
                 { 
-                    var question = questionsRespository.GetQuestion(Id);
+                    var question = questionsRepository.GetQuestion(Id);
                     if (question != null)
                     {
                         questions.Add(question);
@@ -109,7 +107,7 @@ namespace InterviewMaster.Controllers
         {
             var token = identityService.getToken(HttpContext);
             var userId = identityService.GetUserIdFromToken(token.ToString());
-            if (userProfileRepository.UserExists(userId) && questionsRespository.QuestionExists(questionId))
+            if (userProfileRepository.UserExists(userId) && questionsRepository.QuestionExists(questionId))
             {
                 var result = await userProfileRepository.AddQuestionToFavourite(questionId, userId);
                 if (result != null)
@@ -129,7 +127,7 @@ namespace InterviewMaster.Controllers
         {
             var token = identityService.getToken(HttpContext);
             var userId = identityService.GetUserIdFromToken(token.ToString());
-            if (userProfileRepository.UserExists(userId) && questionsRespository.QuestionExists(questionId))
+            if (userProfileRepository.UserExists(userId) && questionsRepository.QuestionExists(questionId))
             {
                 var result = await userProfileRepository.RemoveQuestionFromFavourite(questionId, userId);
                 if (result != null)

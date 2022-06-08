@@ -13,10 +13,10 @@ using InterviewMaster.Controllers.DTOs;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
-using InterviewMaster.Persistance.Repositories;
+using InterviewMaster.Persistence.Repositories;
 using InterviewMaster.Domain.Identity;
-using InterviewMaster.Persistance.Extensions;
-using InterviewMaster.Persistance.Models;
+using InterviewMaster.Persistence.Extensions;
+using InterviewMaster.Persistence.Models;
 using System.Linq;
 using Snapshooter.Xunit;
 

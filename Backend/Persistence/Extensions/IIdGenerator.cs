@@ -1,4 +1,4 @@
-﻿namespace InterviewMaster.Persistance.Extensions
+﻿namespace InterviewMaster.Persistence.Extensions
 {
     public interface IIdGenerator
     {

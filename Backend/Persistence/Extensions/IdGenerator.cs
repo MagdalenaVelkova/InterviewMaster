@@ -1,6 +1,6 @@
 ﻿using MongoDB.Bson;
 
-namespace InterviewMaster.Persistance.Extensions
+namespace InterviewMaster.Persistence.Extensions
 {
     public class IdGenerator : IIdGenerator
     {

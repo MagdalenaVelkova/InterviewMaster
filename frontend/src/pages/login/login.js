@@ -68,17 +68,6 @@ const Login = () => {
                 <BaseButton text="Submit" clickHandler={handleSubmit}>
                   {errorDisplay}
                 </BaseButton>
-
-                <p style={{ display: "inline-block", paddingRight: "0.8rem" }}>
-                  or...
-                </p>
-
-                <BaseButton
-                  text="Log in with Google"
-                  clickHandler={handleSubmit}
-                >
-                  {errorDisplay}
-                </BaseButton>
               </Form>
             </Col>
           </Row>

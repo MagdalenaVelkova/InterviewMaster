@@ -1,9 +1,9 @@
 ﻿using InterviewMaster.Controllers;
 using InterviewMaster.Domain.InterviewPreparation;
 using InterviewMaster.Domain.InterviewPreparation.ValueObjects;
-using InterviewMaster.Persistance.Extensions;
-using InterviewMaster.Persistance.Models;
-using InterviewMaster.Persistance.Repositories;
+using InterviewMaster.Persistence.Extensions;
+using InterviewMaster.Persistence.Models;
+using InterviewMaster.Persistence.Repositories;
 using InterviewMaster.Test.TestData;
 using InterviewMaster.Test.Util;
 using Microsoft.AspNetCore.Mvc;

@@ -14,9 +14,9 @@ namespace InterviewMaster.Controllers
     [ApiController]
     public class QuestionsController : ControllerBase
     {
-        private readonly IQuestionsRespository questionsRepository;
+        private readonly IQuestionsRepository questionsRepository;
 
-        public QuestionsController(IQuestionsRespository questionsRepository)
+        public QuestionsController(IQuestionsRepository questionsRepository)
         {
             this.questionsRepository = questionsRepository;
         }
@@ -29,7 +29,6 @@ namespace InterviewMaster.Controllers
         }
 
 
-        // GET api/<ValuesController>/5
         [HttpGet("/topic/{topicValue}")]
         public async Task<IActionResult> GetQuestionsByTopic(string topicValue)
         {

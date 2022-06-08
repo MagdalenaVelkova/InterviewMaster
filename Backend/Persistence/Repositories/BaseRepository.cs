@@ -2,7 +2,7 @@
 using MongoDB.Driver.Linq;
 using System.Linq;
 
-namespace InterviewMaster.Persistance.Repositories
+namespace InterviewMaster.Persistence.Repositories
 {
     public abstract class BaseRepository<T>
     {

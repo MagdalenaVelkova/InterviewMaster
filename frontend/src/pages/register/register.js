@@ -102,13 +102,6 @@ function Register() {
                   />
                 </Form.Group>
                 <BaseButton text="Submit" clickHandler={handleSubmit} />
-                <p style={{ display: "inline-block", paddingRight: "0.8rem" }}>
-                  or...
-                </p>
-                <BaseButton
-                  text="Sign in with Google"
-                  clickHandler={handleSubmit}
-                />
               </Form>
             </Col>
           </Row>

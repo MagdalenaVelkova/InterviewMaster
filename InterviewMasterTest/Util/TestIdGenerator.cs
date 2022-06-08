@@ -1,4 +1,4 @@
-﻿using InterviewMaster.Persistance.Extensions;
+﻿using InterviewMaster.Persistence.Extensions;
 using MongoDB.Bson;
 
 namespace InterviewMaster.Test.Util

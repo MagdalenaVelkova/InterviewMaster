@@ -1,4 +1,4 @@
-﻿using InterviewMaster.Persistance.Extensions;
+﻿using InterviewMaster.Persistence.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;

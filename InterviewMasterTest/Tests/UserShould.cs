@@ -1,24 +1,20 @@
 ﻿using InterviewMaster.Application.Services;
-using InterviewMaster.Test.Util;
-using Microsoft.Extensions.Configuration;
-using System.Collections.Generic;
-using InterviewMaster.Test.TestData;
-using Xunit;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
-using MongoDB.Bson;
 using InterviewMaster.Controllers;
 using InterviewMaster.Controllers.DTOs;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Text;
-using InterviewMaster.Persistance.Repositories;
 using InterviewMaster.Domain.Identity;
-using InterviewMaster.Persistance.Extensions;
-using InterviewMaster.Persistance.Models;
-using System.Linq;
+using InterviewMaster.Persistence.Models;
+using InterviewMaster.Persistence.Repositories;
+using InterviewMaster.Test.TestData;
+using InterviewMaster.Test.Util;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using MongoDB.Bson;
 using Snapshooter.Xunit;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Xunit;
 
 namespace InterviewMaster.Test.Tests
 {
@@ -28,7 +24,6 @@ namespace InterviewMaster.Test.Tests
         private TestIdGenerator idGenerator;
         private UserProfileRepository userProfileRepository;
         private QuestionsRepository questionsRepository;
-        private UserSolutionsRepository userSolutionsRepository;
         private IdentityRepository userIdentityRepository;
         private IdentityService identityService;
 
@@ -46,7 +41,6 @@ namespace InterviewMaster.Test.Tests
             idGenerator = AppInTest.GetService<TestIdGenerator>();
             userProfileRepository = new UserProfileRepository(MongoDbService.MongoDatabase, idGenerator);
             questionsRepository = new QuestionsRepository(MongoDbService.MongoDatabase, idGenerator);
-            userSolutionsRepository = new UserSolutionsRepository(MongoDbService.MongoDatabase, idGenerator);
             userIdentityRepository = new IdentityRepository(MongoDbService.MongoDatabase, idGenerator);
 
             identityService = new IdentityService(userIdentityRepository, fakeConfiguration);
@@ -54,7 +48,7 @@ namespace InterviewMaster.Test.Tests
             usersController = new UsersController(
                 userProfileRepository,
                 questionsRepository,
-                userSolutionsRepository,
+
                 identityService,
                 userIdentityRepository);
 
@@ -164,7 +158,8 @@ namespace InterviewMaster.Test.Tests
         }
 
         [Fact]
-        public async void Get_Authorisation_Status_Ok_When_Logged_In() {
+        public async void Get_Authorisation_Status_Ok_When_Logged_In()
+        {
             //arrange
             var userId = ObjectId.GenerateNewId().ToString();
             CreateAndAuthoriseUserForTest(userId);
@@ -193,7 +188,7 @@ namespace InterviewMaster.Test.Tests
         public void Get_Profile_If_It_Exists()
         {
             //arrange
-            var userId = idGenerator.Generate() ;
+            var userId = idGenerator.Generate();
             CreateAndAuthoriseUserForTest(userId);
             //act
             var resultObject = usersController.GetUserProfile() as OkObjectResult;
@@ -201,7 +196,7 @@ namespace InterviewMaster.Test.Tests
             Assert.NotNull(resultObject);
             resultObject.Value.MatchSnapshot();
         }
-      
+
 
         [Fact]
         public async Task Provide_A_Unique_EmailAsync()

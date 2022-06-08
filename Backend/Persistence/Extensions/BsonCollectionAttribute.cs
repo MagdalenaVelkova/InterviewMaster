@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace InterviewMaster.Persistance.Extensions
+namespace InterviewMaster.Persistence.Extensions
 {
 
     [AttributeUsage(AttributeTargets.Class, Inherited = false)]

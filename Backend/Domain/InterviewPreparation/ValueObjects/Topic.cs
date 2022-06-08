@@ -9,16 +9,13 @@ namespace InterviewMaster.Domain.InterviewPreparation.ValueObjects
     {
         public string Value { get; }
         private readonly HashSet<string> topics = new HashSet<string> { "general", "collaboration", "problem solving", "adaptability", "organisation" };
-    public Topic(string value)
+        public Topic(string value)
         {
-            if (topics.Contains(value.ToLower()))
-            {
-                Value = value.ToLower();
-            }
-            else
+            if (!topics.Contains(value.ToLower()))
             {
                 throw new ArgumentException();
             }
+            Value = value.ToLower();
         }
 
         public override string ToString()
