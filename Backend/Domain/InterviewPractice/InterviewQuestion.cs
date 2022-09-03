@@ -1,9 +1,9 @@
-﻿using InterviewMaster.Domain.InterviewPreparation.ValueObjects;
+﻿using InterviewMaster.Domain.InterviewPractice.ValueObjects;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 
-namespace InterviewMaster.Domain.InterviewPreparation
+namespace InterviewMaster.Domain.InterviewPractice
 {
     [ExcludeFromCodeCoverage]
     public class InterviewQuestion

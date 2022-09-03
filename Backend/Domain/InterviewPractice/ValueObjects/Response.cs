@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
-namespace InterviewMaster.Domain.InterviewPreparation.ValueObjects
+namespace InterviewMaster.Domain.InterviewPractice.ValueObjects
 {
     [ExcludeFromCodeCoverage]
-    public class ExampleAnswer : ValueObject
+    public class Response : ValueObject
     {
         public string Value { get; }
 
-        public ExampleAnswer(string value)
+        public Response(string value)
         {
             Value = value;
         }

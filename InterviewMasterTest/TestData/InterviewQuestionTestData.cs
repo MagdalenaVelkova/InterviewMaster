@@ -1,5 +1,5 @@
-﻿using InterviewMaster.Domain.InterviewPreparation;
-using InterviewMaster.Domain.InterviewPreparation.ValueObjects;
+﻿using InterviewMaster.Domain.InterviewPractice;
+using InterviewMaster.Domain.InterviewPractice.ValueObjects;
 using InterviewMaster.Persistence.Models;
 using System;
 using System.Collections.Generic;

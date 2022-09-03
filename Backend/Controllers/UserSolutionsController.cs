@@ -1,7 +1,7 @@
 ﻿using InterviewMaster.Application.Services;
 using InterviewMaster.Controllers.DTOs;
-using InterviewMaster.Domain.InterviewPreparation;
-using InterviewMaster.Domain.InterviewPreparation.ValueObjects;
+using InterviewMaster.Domain.InterviewPractice;
+using InterviewMaster.Domain.InterviewPractice.ValueObjects;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

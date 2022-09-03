@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
-namespace InterviewMaster.Domain.InterviewPreparation.ValueObjects
+namespace InterviewMaster.Domain.InterviewPractice.ValueObjects
 {
     [ExcludeFromCodeCoverage]
     public class Topic : ValueObject

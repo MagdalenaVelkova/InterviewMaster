@@ -39,9 +39,11 @@ namespace InterviewMaster
             {
                 var config = serviceProvider.GetService<IConfiguration>();
                 var url = new MongoUrl(Configuration["InterviewMasterDatabase:ConnectionString"]);
+
                 var settings = MongoClientSettings.FromUrl(url);
                 var client = new MongoClient(settings);
-                return client.GetDatabase(url.DatabaseName, new MongoDatabaseSettings());
+                var db = client.GetDatabase(url.DatabaseName, new MongoDatabaseSettings());
+                return db;
             }
 );
             services.AddAuthentication(x =>

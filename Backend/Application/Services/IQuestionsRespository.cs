@@ -1,5 +1,5 @@
-﻿using InterviewMaster.Domain.InterviewPreparation;
-using InterviewMaster.Domain.InterviewPreparation.ValueObjects;
+﻿using InterviewMaster.Domain.InterviewPractice;
+using InterviewMaster.Domain.InterviewPractice.ValueObjects;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

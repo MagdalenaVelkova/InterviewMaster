@@ -1,5 +1,5 @@
 ﻿using InterviewMaster.Domain.Identity;
-using InterviewMaster.Domain.InterviewPreparation;
+using InterviewMaster.Domain.InterviewPractice;
 using System.Threading.Tasks;
 
 namespace InterviewMaster.Application.Services

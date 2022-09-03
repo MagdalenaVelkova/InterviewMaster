@@ -1,7 +1,7 @@
 ﻿using InterviewMaster.Application.Services;
 using InterviewMaster.Controllers.DTOs;
 using InterviewMaster.Domain.Identity;
-using InterviewMaster.Domain.InterviewPreparation;
+using InterviewMaster.Domain.InterviewPractice;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -20,7 +20,10 @@ namespace InterviewMaster.Controllers
         private readonly IdentityService identityService;
         private readonly IIdentityRepository identityRepository;
 
-        public UsersController(IUserProfileRepository userProfileRepository, IQuestionsRepository questionsRepository, IdentityService identityService, IIdentityRepository identityRepository)
+        public UsersController(IUserProfileRepository userProfileRepository,
+            IQuestionsRepository questionsRepository,
+            IdentityService identityService,
+            IIdentityRepository identityRepository)
         {
             this.userProfileRepository = userProfileRepository;
             this.questionsRepository = questionsRepository;

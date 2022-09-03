@@ -1,6 +1,7 @@
 {
   "InterviewMasterDatabase": {
-    "ConnectionString": "mongodb+srv://admin:SkwDdH5v6M3DZ$p@cluster0.uue7v.mongodb.net/InterviewMaster?retryWrites=true&w=majority",
+
+    "ConnectionString": "mongodb+srv://main:cX2ED6O8Ox3v6fCZ@cluster0.uue7v.mongodb.net/InterviewMaster?ssl=true&replicaSet=atlas-xedbnw-shard-0&authSource=admin&retryWrites=true&w=majority",
     "DatabaseName": "InterviewMaster"
   },
   "Logging": {

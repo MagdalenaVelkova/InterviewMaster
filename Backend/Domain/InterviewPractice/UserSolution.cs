@@ -1,8 +1,8 @@
-﻿using InterviewMaster.Domain.InterviewPreparation.ValueObjects;
+﻿using InterviewMaster.Domain.InterviewPractice.ValueObjects;
 using System;
 using System.Diagnostics.CodeAnalysis;
 
-namespace InterviewMaster.Domain.InterviewPreparation
+namespace InterviewMaster.Domain.InterviewPractice
 {
     [ExcludeFromCodeCoverage]
     public class UserSolution

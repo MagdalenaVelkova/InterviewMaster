@@ -1,4 +1,4 @@
-﻿using InterviewMaster.Domain.InterviewPreparation.ValueObjects;
+﻿using InterviewMaster.Domain.InterviewPractice.ValueObjects;
 using InterviewMaster.Persistence.Extensions;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
