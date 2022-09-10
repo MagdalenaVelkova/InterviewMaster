@@ -17,7 +17,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "Infrastructure": {
+    "InterviewMaster": {
       "commandName": "Project",
       "dotnetRunMessages": "true",
       "launchBrowser": true,
