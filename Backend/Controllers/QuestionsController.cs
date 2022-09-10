@@ -29,7 +29,7 @@ namespace InterviewMaster.Controllers
         }
 
 
-        [HttpGet("/topic/{topicValue}")]
+        [HttpGet("topic/{topicValue}")]
         public async Task<IActionResult> GetQuestionsByTopic(string topicValue)
         {
             if (topicValue.ToLower() == "all")

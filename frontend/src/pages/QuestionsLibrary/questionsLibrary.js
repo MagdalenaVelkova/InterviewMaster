@@ -26,7 +26,7 @@ const QuestionsLibrary = () => {
 
   const getQuestions = async (topic) => {
     const questionsResult = await axios.get(
-      `http://localhost:5000/topic/${topic}`
+      `http://localhost:5000/api/questions/topic/${topic}`
     );
     setQuestions(questionsResult.data);
   };

@@ -15,17 +15,17 @@ const ProfilePage = () => {
 
   // need to dynamically get user id with redux
   const getProfile = async () => {
-    const res = await axios.get(`http://localhost:5000/userprofile`);
+    const res = await axios.get(`http://localhost:5000/api/Users/userprofile`);
     setProfile(res.data);
   };
 
   const getFavouriteQuestions = async () => {
-    const res = await axios.get(`http://localhost:5000/favourites`);
+    const res = await axios.get(`http://localhost:5000/api/Users/favourites`);
     setFavouriteQuestions(res.data);
   };
 
   const getRespondedQuestions = async () => {
-    const res = await axios.get(`http://localhost:5000/solutions`);
+    const res = await axios.get(`http://localhost:5000/api/Users/solutions`);
     setRespondedQuestions(res.data);
   };
 

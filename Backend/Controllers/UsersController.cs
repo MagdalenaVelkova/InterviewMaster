@@ -33,7 +33,7 @@ namespace InterviewMaster.Controllers
         }
 
 
-        [HttpGet("/authorised")]
+        [HttpGet("authorised")]
         public async Task<IActionResult> GetIsAuthorised()
         {
             var token = identityService.getToken(HttpContext);
@@ -50,7 +50,7 @@ namespace InterviewMaster.Controllers
 
         }
 
-        [HttpGet("/userprofile")]
+        [HttpGet("userprofile")]
         public IActionResult GetUserProfile()
         {
             var token = identityService.getToken(HttpContext);
@@ -64,7 +64,7 @@ namespace InterviewMaster.Controllers
             return NotFound();
         }
 
-        [HttpGet("/favourites")]
+        [HttpGet("favourites")]
         public IActionResult GetFavouriteQuestions()
         {
             var token = identityService.getToken(HttpContext);
@@ -83,7 +83,7 @@ namespace InterviewMaster.Controllers
             return NotFound();
         }
 
-        [HttpGet("/solutions")]
+        [HttpGet("solutions")]
         public IActionResult GetRespondedQuestions()
         {
             var token = identityService.getToken(HttpContext);

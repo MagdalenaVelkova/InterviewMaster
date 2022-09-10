@@ -11,7 +11,7 @@ const NewTextEditor = ({ interviewQuestionId }) => {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
 
   const getProfile = async () => {
-    const res = await axios.get(`http://localhost:5000/userprofile`);
+    const res = await axios.get(`http://localhost:5000/api/Users/userprofile`);
     setProfile(res.data);
   };
 

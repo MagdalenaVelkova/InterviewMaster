@@ -60,7 +60,7 @@ export const logoutUser = () => async (dispatch) => {
 export const validateToken = () => async (dispatch) => {
   try {
     dispatch({ type: USER_LOADING });
-    const res = await axios.get("http://localhost:5000/authorised");
+    const res = await axios.get("http://localhost:5000/api/Users/authorised");
     dispatch({ type: LOGIN, data: res.data });
   } catch (error) {
     dispatch({ type: LOGOUT });
