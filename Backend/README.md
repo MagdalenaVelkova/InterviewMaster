@@ -23,3 +23,10 @@ This is an API for Interview Master web application , created for the completion
 - The development server is going to start on [http://localhost:5000/](http://localhost:5000/)
 
 ##Go to [http://localhost:5000/swagger/](http://localhost:5000/swagger/) to access Swagger!
+
+## How To Run Unit Tests
+
+- Open solution in Visual Studio
+- Right-click the test project and select `run tests`
+
+This should run the unit tests and launch the Test Explorer and Fine Code Covarage tool.
