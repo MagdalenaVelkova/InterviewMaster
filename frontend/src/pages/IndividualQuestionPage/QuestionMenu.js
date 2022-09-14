@@ -47,7 +47,10 @@ const QuestionMenu = ({
     history.push(`/myprofile`);
   };
 
-  const handleLogOut = () => dispatch(logoutUser());
+  const handleLogOut = () => {
+    dispatch(logoutUser());
+    history.push(`/`);
+  };
   const leftIconActions = [
     {
       icon: <ListRoundedIcon style={{ color: "white" }} />,

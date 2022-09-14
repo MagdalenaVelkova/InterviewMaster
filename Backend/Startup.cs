@@ -46,6 +46,8 @@ namespace InterviewMaster
                 return db;
             }
 );
+            // Singh, S. 2022. Implement JWT Authentication in Asp.net Core 5 Web API [Token Base Auth]. Available at: https://codepedia.info/jwt-authentication-in-aspnet-core-web-api-token [Accessed: 8 May 2022].
+
             services.AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

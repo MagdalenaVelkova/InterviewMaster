@@ -4,6 +4,8 @@ using System.Linq;
 
 namespace InterviewMaster.Domain
 {
+    // nishanil (2022). Implementing value objects. Available at: https://docs.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/implement-value-objects [Accessed: 4 September 2022].
+
     [ExcludeFromCodeCoverage]
     public abstract class ValueObject
     {
